@@ -1,8 +1,8 @@
 // @flow weak
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from 'material-ui/utils/customPropTypes';
+import compose from 'recompose/compose';
+import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
 import withWidth from 'material-ui/utils/withWidth';
@@ -11,7 +11,8 @@ import Typography from 'material-ui/Typography';
 const styleSheet = createStyleSheet('GridIntegration', (theme) => ({
   root: {
     flexGrow: 1,
-    marginTop: 30,
+    paddingTop: 42,
+    position: 'relative',
   },
   paper: {
     padding: 16,
@@ -27,8 +28,8 @@ const styleSheet = createStyleSheet('GridIntegration', (theme) => ({
   },
 }));
 
-function GridIntegration(props, context) {
-  const classes = context.styleManager.render(styleSheet);
+function GridIntegration(props) {
+  const classes = props.classes;
 
   return (
     <div className={classes.root}>
@@ -57,11 +58,11 @@ function GridIntegration(props, context) {
 }
 
 GridIntegration.propTypes = {
+  classes: PropTypes.object.isRequired,
   width: PropTypes.string,
 };
 
-GridIntegration.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
-};
-
-export default withWidth()(GridIntegration);
+export default compose(
+  withStyles(styleSheet),
+  withWidth(),
+)(GridIntegration);
