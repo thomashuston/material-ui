@@ -36,12 +36,12 @@ function createPackageFile() {
       keywords,
       repository,
       license,
-      bugs,
       homepage,
       peerDependencies,
       dependencies,
     } = packageData;
 
+    repository.url = "https://github.com/alienfast/material-ui.git";
     const minimalPackage = {
       name: '@alienfast/material-ui',
       author,
@@ -53,7 +53,6 @@ function createPackageFile() {
       keywords,
       repository,
       license,
-      bugs,
       homepage,
       peerDependencies,
       dependencies,
