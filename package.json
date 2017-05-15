@@ -1,6 +1,5 @@
 {
   "name": "@alienfast/material-ui",
-  "private": true,
   "author": "Material-UI Team",
   "version": "0.16.105",
   "description": "Material Design UI components built with React",
