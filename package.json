@@ -20,7 +20,7 @@
   },
   "homepage": "http://material-ui.com/",
   "scripts": {
-    "af-publish": "npm version patch && npm run build && cd build && npm publish && cd .. && npm run clean:build",
+    "af-publish": "npm version patch && npm run build && cd build && npm publish --tag af && cd .. && npm run clean:build",
     "deploy": "cd docs && yarn build && firebase deploy",
     "build": "npm run build:es2015 && npm run build:es2015modules && npm run build:copy-files && npm run build:umd:dev && npm run build:umd:min",
     "build:es2015": "cross-env NODE_ENV=production babel ./src --ignore *.spec.js --out-dir ./build",
