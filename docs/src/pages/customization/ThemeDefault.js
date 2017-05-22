@@ -1,4 +1,4 @@
-// @flow weak
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ const style = {
 function ThemeDefault(props) {
   const {
     theme: {
-      id,
+      id, // eslint-disable-line no-unused-vars
       ...theme
     },
   } = props;

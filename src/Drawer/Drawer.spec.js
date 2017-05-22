@@ -6,17 +6,14 @@ import { createShallow } from 'src/test-utils';
 import Drawer, { styleSheet } from './Drawer';
 import Slide from '../transitions/Slide';
 import Modal from '../internal/Modal';
-import { duration } from '../styles/transitions';
+import Paper from '../Paper';
 
-/**
- * An item that goes in lists.
- */
 describe('<Drawer />', () => {
   let shallow;
   let classes;
 
   before(() => {
-    shallow = createShallow();
+    shallow = createShallow({ dive: true });
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
@@ -24,7 +21,7 @@ describe('<Drawer />', () => {
     const wrapper = shallow(
       <Drawer />,
     );
-    assert.strictEqual(wrapper.name(), 'Modal');
+    assert.strictEqual(wrapper.name(), 'withStyles(Modal)');
   });
 
   it('should render Slide > Paper inside the Modal', () => {
@@ -40,11 +37,7 @@ describe('<Drawer />', () => {
     );
 
     const paper = slide.childAt(0);
-    assert.strictEqual(
-      paper.length === 1 && paper.is('Paper'),
-      true,
-      'Slide child should be Paper',
-    );
+    assert.strictEqual(paper.length === 1 && paper.name(), 'withStyles(Paper)');
 
     assert.strictEqual(paper.hasClass(classes.paper), true, 'should have the paper class');
   });
@@ -52,10 +45,6 @@ describe('<Drawer />', () => {
   describe('enterTransitionDuration property', () => {
     const enterDuration = 854;
     const leaveDuration = 2967;
-
-    it('default value should be from standard timings', () => {
-      assert.strictEqual(Drawer.defaultProps.enterTransitionDuration, duration.enteringScreen);
-    });
 
     it('should be passed to Slide', () => {
       const wrapper = shallow(<Drawer enterTransitionDuration={enterDuration} />);
@@ -77,10 +66,6 @@ describe('<Drawer />', () => {
   describe('leaveTransitionDuration property', () => {
     const enterDuration = 6577;
     const leaveDuration = 1889;
-
-    it('default value should be from standard timings', () => {
-      assert.strictEqual(Drawer.defaultProps.leaveTransitionDuration, duration.leavingScreen);
-    });
 
     it('should be passed to Slide', () => {
       const wrapper = shallow(<Drawer leaveTransitionDuration={leaveDuration} />);
@@ -107,7 +92,7 @@ describe('<Drawer />', () => {
 
   it('should set the Paper className', () => {
     const wrapper = shallow(<Drawer paperClassName="woof"><h1>Hello</h1></Drawer>);
-    const paper = wrapper.find('Paper');
+    const paper = wrapper.find(Paper);
     assert.strictEqual(paper.hasClass(classes.paper), true, 'should have the paper class');
     assert.strictEqual(paper.hasClass('woof'), true, 'should have the woof class');
   });
@@ -168,11 +153,7 @@ describe('<Drawer />', () => {
       );
 
       const paper = slide.childAt(0);
-      assert.strictEqual(
-        paper.length === 1 && paper.is('Paper'),
-        true,
-        'Slide child should be Paper',
-      );
+      assert.strictEqual(paper.length === 1 && paper.name(), 'withStyles(Paper)');
     });
   });
 

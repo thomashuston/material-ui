@@ -16,7 +16,7 @@ export const EXITING = 4;
 
 type State = {
   status: 0 | 1 | 2 | 3 | 4,
-}
+};
 
 type DOMNode = Element | Text | null; // return type of ReactDOM.findDOMNode()
 
@@ -41,7 +41,7 @@ type Props = DefaultProps & {
    */
   children?: ReactElement<*>,
   /**
-   * The CSS class name of the root element.
+   * @ignore
    */
   className?: string,
   /**
@@ -111,6 +111,9 @@ type Props = DefaultProps & {
    */
   unmountOnExit?: boolean,
 };
+
+// Name the function so it is clearer in the documentation
+function noop() {}
 
 /**
  * Drawn from https://raw.githubusercontent.com/react-bootstrap/react-overlays/master/src/Transition.js
@@ -376,8 +379,5 @@ class Transition extends Component<DefaultProps, Props, State> {
     );
   }
 }
-
-// Name the function so it is clearer in the documentation
-function noop() {}
 
 export default Transition;

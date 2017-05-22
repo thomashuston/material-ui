@@ -42,11 +42,12 @@ class ConfirmationDialog extends Component {
 
   componentWillUpdate(nextProps) {
     if (nextProps.selectedValue !== this.props.selectedValue) {
+      // eslint-disable-next-line react/no-will-update-set-state
       this.setState({ selectedValue: nextProps.selectedValue });
     }
   }
 
-  radioGroup = undefined;
+  radioGroup = null;
 
   handleEntering = () => {
     this.radioGroup.focus();
@@ -76,7 +77,7 @@ class ConfirmationDialog extends Component {
         <DialogTitle>Phone Ringtone</DialogTitle>
         <DialogContent>
           <RadioGroup
-            ref={(c) => { this.radioGroup = c; }}
+            innerRef={(node) => { this.radioGroup = node; }}
             aria-label="Gender"
             name="gender"
             selectedValue={this.state.selectedValue}

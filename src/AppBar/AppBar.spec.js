@@ -10,7 +10,7 @@ describe('<AppBar />', () => {
   let classes;
 
   before(() => {
-    shallow = createShallow();
+    shallow = createShallow({ dive: true });
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
@@ -18,7 +18,7 @@ describe('<AppBar />', () => {
     const wrapper = shallow(
       <AppBar>Hello World</AppBar>,
     );
-    assert.strictEqual(wrapper.name(), 'Paper');
+    assert.strictEqual(wrapper.name(), 'withStyles(Paper)');
     assert.strictEqual(wrapper.props().elevation, 4, 'should render with a 4dp shadow');
   });
 

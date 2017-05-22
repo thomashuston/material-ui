@@ -4,10 +4,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
-import { easing } from '../styles/transitions';
 import customPropTypes from '../utils/customPropTypes';
 
-export const styleSheet = createStyleSheet('MuiRipple', () => ({
+export const styleSheet = createStyleSheet('MuiRipple', (theme) => ({
   ripple: {
     width: 50,
     height: 50,
@@ -21,7 +20,7 @@ export const styleSheet = createStyleSheet('MuiRipple', () => ({
   rippleVisible: {
     opacity: 0.3,
     transform: 'scale(1)',
-    animation: `mui-ripple-enter 550ms ${easing.easeInOut}`,
+    animation: `mui-ripple-enter 550ms ${theme.transitions.easing.easeInOut}`,
   },
   rippleFast: {
     animationDuration: '200ms',
@@ -31,7 +30,7 @@ export const styleSheet = createStyleSheet('MuiRipple', () => ({
   },
   containerLeaving: {
     opacity: 0,
-    animation: `mui-ripple-exit 550ms ${easing.easeInOut}`,
+    animation: `mui-ripple-exit 550ms ${theme.transitions.easing.easeInOut}`,
   },
   containerPulsating: {
     position: 'absolute',
@@ -40,7 +39,7 @@ export const styleSheet = createStyleSheet('MuiRipple', () => ({
     display: 'block',
     width: '100%',
     height: '100%',
-    animation: `mui-ripple-pulsate 1500ms ${easing.easeInOut} 200ms infinite`,
+    animation: `mui-ripple-pulsate 1500ms ${theme.transitions.easing.easeInOut} 200ms infinite`,
     rippleVisible: {
       opacity: 0.2,
     },
@@ -74,36 +73,12 @@ export const styleSheet = createStyleSheet('MuiRipple', () => ({
   },
 }));
 
-export default class Ripple extends Component {
-  static propTypes = {
-    /**
-     * The CSS class name of the root element.
-     */
-    className: PropTypes.string,
-    /**
-     * If `true`, the ripple pulsates, typically indicating the keyboard focus state of an element.
-     */
-    pulsate: PropTypes.bool,
-    /**
-     * Diameter of the ripple.
-     */
-    rippleSize: PropTypes.number.isRequired,
-    /**
-     * Horizontal position of the ripple center.
-     */
-    rippleX: PropTypes.number.isRequired,
-    /**
-     * Vertical position of the ripple center.
-     */
-    rippleY: PropTypes.number.isRequired,
-  };
-
+/**
+ * @ignore - internal component.
+ */
+class Ripple extends Component {
   static defaultProps = {
     pulsate: false,
-  };
-
-  static contextTypes = {
-    styleManager: customPropTypes.muiRequired,
   };
 
   state = {
@@ -127,7 +102,7 @@ export default class Ripple extends Component {
   }
 
   ripple = null;
-  leaveTimer = undefined;
+  leaveTimer = null;
 
   start = (callback) => {
     this.setState({
@@ -144,14 +119,12 @@ export default class Ripple extends Component {
   getRippleStyles() {
     const { rippleSize, rippleX, rippleY } = this.props;
 
-    const rippleStyles = {
+    return {
       width: rippleSize,
       height: rippleSize,
       top: -(rippleSize / 2) + rippleY,
       left: -(rippleSize / 2) + rippleX,
     };
-
-    return rippleStyles;
   }
 
   render() {
@@ -178,3 +151,32 @@ export default class Ripple extends Component {
     );
   }
 }
+
+Ripple.propTypes = {
+  /**
+   * @ignore
+   */
+  className: PropTypes.string,
+  /**
+   * If `true`, the ripple pulsates, typically indicating the keyboard focus state of an element.
+   */
+  pulsate: PropTypes.bool,
+  /**
+   * Diameter of the ripple.
+   */
+  rippleSize: PropTypes.number.isRequired,
+  /**
+   * Horizontal position of the ripple center.
+   */
+  rippleX: PropTypes.number.isRequired,
+  /**
+   * Vertical position of the ripple center.
+   */
+  rippleY: PropTypes.number.isRequired,
+};
+
+Ripple.contextTypes = {
+  styleManager: customPropTypes.muiRequired,
+};
+
+export default Ripple;

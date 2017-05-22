@@ -4,37 +4,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiListSubheader', (theme) => {
-  return {
-    root: {
-      boxSizing: 'border-box',
-      lineHeight: '48px',
-      paddingLeft: 16,
-      color: theme.palette.text.secondary,
-      fontFamily: theme.typography.fontFamily,
-      fontWeight: theme.typography.fontWeightMedium,
-      fontSize: theme.typography.fontSize,
-    },
-    primary: {
-      color: theme.palette.primary[500],
-    },
-    inset: {
-      paddingLeft: 72,
-    },
-  };
-});
+export const styleSheet = createStyleSheet('MuiListSubheader', (theme) => ({
+  root: {
+    boxSizing: 'border-box',
+    lineHeight: '48px',
+    paddingLeft: 16,
+    color: theme.palette.text.secondary,
+    fontFamily: theme.typography.fontFamily,
+    fontWeight: theme.typography.fontWeightMedium,
+    fontSize: theme.typography.fontSize,
+  },
+  primary: {
+    color: theme.palette.primary[500],
+  },
+  inset: {
+    paddingLeft: theme.spacing.unit * 9,
+  },
+}));
 
-export default function ListSubheader(props, context) {
+function ListSubheader(props) {
   const {
+    classes,
     className: classNameProp,
     primary,
     inset,
     children,
     ...other
   } = props;
-  const classes = context.styleManager.render(styleSheet);
   const className = classNames(classes.root, {
     [classes.primary]: primary,
     [classes.inset]: inset,
@@ -53,7 +51,11 @@ ListSubheader.propTypes = {
    */
   children: PropTypes.node,
   /**
-   * The CSS class name of the root element.
+   * Useful to extend the style applied to components.
+   */
+  classes: PropTypes.object.isRequired,
+  /**
+   * @ignore
    */
   className: PropTypes.string,
   /**
@@ -71,6 +73,4 @@ ListSubheader.defaultProps = {
   primary: false,
 };
 
-ListSubheader.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
-};
+export default withStyles(styleSheet)(ListSubheader);

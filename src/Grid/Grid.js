@@ -11,10 +11,11 @@
  * Follow this flexbox Guide to better understand the underlying model:
  * - https://css-tricks.com/snippets/css/a-guide-to-flexbox/
  */
+
 import React, { Element } from 'react';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import withStyles from '../styles/withStyles';
 import requirePropFactory from '../utils/requirePropFactory';
 import Hidden from '../Hidden';
 import type { HiddenProps } from '../Hidden/types';
@@ -96,6 +97,7 @@ export const styleSheet = createStyleSheet('MuiGrid', (theme) => {
     typeItem: {
       boxSizing: 'border-box',
       flex: '0 0 auto',
+      margin: '0', // For instance, it's useful when used with a `figure` element.
     },
     'direction-xs-column': {
       flexDirection: 'column',
@@ -140,7 +142,7 @@ export const styleSheet = createStyleSheet('MuiGrid', (theme) => {
   };
 });
 
-type GridSizes = boolean | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+type GridSizes = boolean | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 type Props = {
   /**
@@ -148,7 +150,11 @@ type Props = {
    */
   children?: Element<*>,
   /**
-   * The CSS class name of the root element.
+   * Useful to extend the style applied to components.
+   */
+  classes: Object,
+  /**
+   * @ignore
    */
   className?: string,
   /**
@@ -222,8 +228,9 @@ type Props = {
   xl?: GridSizes,
 };
 
-function Grid(props: Props, context: any) {
+function Grid(props: Props) {
   const {
+    classes,
     className: classNameProp,
     component,
     container,
@@ -242,7 +249,6 @@ function Grid(props: Props, context: any) {
     ...other
   } = props;
 
-  const classes = context.styleManager.render(styleSheet);
   const className = classNames({
     [classes.typeContainer]: container,
     [classes.typeItem]: item,
@@ -290,10 +296,6 @@ Grid.defaultProps = {
   hidden: undefined,
 };
 
-Grid.contextTypes = {
-  styleManager: customPropTypes.muiRequired,
-};
-
 /**
  * Add a wrapper component to generate some helper messages in the development
  * environment.
@@ -318,4 +320,4 @@ if (process.env.NODE_ENV !== 'production') {
   };
 }
 
-export default GridWrapper;
+export default withStyles(styleSheet)(GridWrapper);

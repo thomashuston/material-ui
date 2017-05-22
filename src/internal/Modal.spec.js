@@ -6,6 +6,7 @@ import { spy, stub } from 'sinon';
 import keycode from 'keycode';
 import contains from 'dom-helpers/query/contains';
 import { createShallow, createMount, consoleErrorMock } from 'src/test-utils';
+import Backdrop from './Backdrop';
 import Modal, { styleSheet } from './Modal';
 
 describe('<Modal />', () => {
@@ -14,17 +15,13 @@ describe('<Modal />', () => {
   let classes;
 
   before(() => {
-    shallow = createShallow();
+    shallow = createShallow({ dive: true });
     classes = shallow.context.styleManager.render(styleSheet);
     mount = createMount();
   });
 
   after(() => {
     mount.cleanUp();
-  });
-
-  it('should not show by default', () => {
-    assert.strictEqual(Modal.defaultProps.show, false, 'should be false by default');
   });
 
   it('should render null by default', () => {
@@ -84,18 +81,10 @@ describe('<Modal />', () => {
           it('should call hasAttribute with tabIndex', () => {
             assert.strictEqual(instance.modal.lastChild.hasAttribute.callCount, 1);
             assert.strictEqual(instance.modal.lastChild.hasAttribute.calledWith('tabIndex'), true);
-          });
-
-          it('should not call setAttribute', () => {
-            assert.strictEqual(instance.modal.lastChild.setAttribute.callCount, 0);
-          });
-
-          it('should not call console.error', () => {
-            assert.strictEqual(consoleErrorMock.callCount(), 0);
-          });
-
-          it('should call focus', () => {
-            assert.strictEqual(instance.modal.lastChild.focus.callCount, 1);
+            assert.strictEqual(instance.modal.lastChild.setAttribute.callCount, 0,
+              'should not call setAttribute');
+            assert.strictEqual(consoleErrorMock.callCount(), 0, 'should not call console.error');
+            assert.strictEqual(instance.modal.lastChild.focus.callCount, 1, 'should call focus');
           });
         });
 
@@ -121,14 +110,8 @@ describe('<Modal />', () => {
             assert.strictEqual(instance.modal.lastChild.setAttribute.callCount, 1);
             assert.strictEqual(
               instance.modal.lastChild.setAttribute.calledWith('tabIndex', -1), true);
-          });
-
-          it('should call console.error', () => {
-            assert.strictEqual(consoleErrorMock.callCount(), 1);
-          });
-
-          it('should call focus', () => {
-            assert.strictEqual(instance.modal.lastChild.focus.callCount, 1);
+            assert.strictEqual(consoleErrorMock.callCount(), 1, 'should call console.error');
+            assert.strictEqual(instance.modal.lastChild.focus.callCount, 1, 'should call focus');
           });
         });
       });
@@ -153,7 +136,7 @@ describe('<Modal />', () => {
       assert.strictEqual(transition.is('Fade'), true, 'should be the fade transition');
       assert.strictEqual(transition.prop('in'), true, 'should set the transition to in');
       const backdrop = transition.childAt(0);
-      assert.strictEqual(backdrop.is('Backdrop'), true, 'should be the backdrop component');
+      assert.strictEqual(backdrop.is(Backdrop), true, 'should be the backdrop component');
     });
 
     it('should pass a transitionDuration prop to the transition component', () => {
@@ -168,7 +151,7 @@ describe('<Modal />', () => {
       wrapper.setProps({ onRequestClose });
 
       const handler = wrapper.instance().handleBackdropClick;
-      const backdrop = wrapper.find('Backdrop');
+      const backdrop = wrapper.find(Backdrop);
       assert.strictEqual(backdrop.prop('onClick'), handler,
         'should attach the handleBackdropClick handler');
 

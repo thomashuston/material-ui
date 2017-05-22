@@ -4,34 +4,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import withStyles from '../styles/withStyles';
 import Typography from '../Typography';
 
-export const styleSheet = createStyleSheet('MuiListItemText', () => {
-  return {
-    root: {
-      flex: '1 1 auto',
-      padding: '0 16px',
-      '&:first-child': {
-        paddingLeft: 0,
-      },
+export const styleSheet = createStyleSheet('MuiListItemText', (theme) => ({
+  root: {
+    flex: '1 1 auto',
+    padding: '0 16px',
+    '&:first-child': {
+      paddingLeft: 0,
     },
-    inset: {
-      '&:first-child': {
-        paddingLeft: 56,
-      },
+  },
+  inset: {
+    '&:first-child': {
+      paddingLeft: theme.spacing.unit * 7,
     },
-    dense: {
-      fontSize: 13,
-    },
-    text: {
-      fontSize: 'inherit',
-    },
-  };
-});
+  },
+  dense: {
+    fontSize: 13,
+  },
+  text: {
+    fontSize: 'inherit',
+  },
+}));
 
-export default function ListItemText(props, context) {
+function ListItemText(props, context) {
   const {
+    classes,
     className: classNameProp,
     primary,
     secondary,
@@ -39,7 +38,6 @@ export default function ListItemText(props, context) {
     ...other
   } = props;
   const { dense } = context;
-  const classes = context.styleManager.render(styleSheet);
   const className = classNames(classes.root, {
     [classes.dense]: dense,
     [classes.inset]: inset,
@@ -67,7 +65,11 @@ export default function ListItemText(props, context) {
 
 ListItemText.propTypes = {
   /**
-   * The CSS class name of the root element.
+   * Useful to extend the style applied to components.
+   */
+  classes: PropTypes.object.isRequired,
+  /**
+   * @ignore
    */
   className: PropTypes.string,
   /**
@@ -87,5 +89,6 @@ ListItemText.defaultProps = {
 
 ListItemText.contextTypes = {
   dense: PropTypes.bool,
-  styleManager: customPropTypes.muiRequired,
 };
+
+export default withStyles(styleSheet)(ListItemText);

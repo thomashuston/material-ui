@@ -11,7 +11,7 @@ describe('<MenuItem />', () => {
   let classes;
 
   before(() => {
-    shallow = createShallow();
+    shallow = createShallow({ dive: true });
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
@@ -19,7 +19,7 @@ describe('<MenuItem />', () => {
     const wrapper = shallow(
       <MenuItem />,
     );
-    assert.strictEqual(wrapper.name(), 'ListItem');
+    assert.strictEqual(wrapper.name(), 'withStyles(ListItem)');
     assert.strictEqual(wrapper.props().button, true, 'should have the button prop');
     assert.strictEqual(wrapper.props().ripple, false, 'should not have a ripple');
   });
@@ -41,7 +41,7 @@ describe('<MenuItem />', () => {
   });
 
   it('should have a role of option', () => {
-    const wrapper = shallow(<MenuItem role="option" />);
+    const wrapper = shallow(<MenuItem role="option" aria-selected={false} />);
     assert.strictEqual(wrapper.props().role, 'option', 'should have the option role');
   });
 

@@ -12,13 +12,13 @@ describe('<Menu />', () => {
   let classes;
 
   before(() => {
-    shallow = createShallow();
+    shallow = createShallow({ dive: true });
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
   it('should render a Popover', () => {
     const wrapper = shallow(<Menu />);
-    assert.strictEqual(wrapper.name(), 'Popover');
+    assert.strictEqual(wrapper.name(), 'withStyles(Popover)');
   });
 
   it('should fire Popover transition event callbacks', () => {
@@ -103,11 +103,11 @@ describe('<Menu />', () => {
     });
 
     it('should spread other props on the list', () => {
-      assert.strictEqual(list.prop('data-test'), 'hi', 'should have the custom prop');
+      assert.strictEqual(wrapper.props()['data-test'], 'hi', 'should have the custom prop');
     });
 
     it('should have the user classes', () => {
-      assert.strictEqual(list.hasClass('test-class'), true, 'should have the user class');
+      assert.strictEqual(wrapper.hasClass('test-class'), true, 'should have the user class');
     });
   });
 
@@ -129,7 +129,7 @@ describe('<Menu />', () => {
 
     before(() => {
       mount = createMount();
-      wrapper = mount(<Menu />);
+      wrapper = mount(<Menu.Naked classes={classes} />);
       instance = wrapper.instance();
 
       selectedItemFocusSpy = spy();

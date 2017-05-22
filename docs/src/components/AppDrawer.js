@@ -1,4 +1,4 @@
-// @flow weak
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -11,33 +11,32 @@ import Divider from 'material-ui/Divider';
 import AppDrawerNavItem from 'docs/src/components/AppDrawerNavItem';
 import Link from 'docs/src/components/Link';
 
-const styleSheet = createStyleSheet('AppDrawer', (theme) => {
-  return {
-    paper: {
-      width: 250,
-      backgroundColor: theme.palette.background.paper,
+const styleSheet = createStyleSheet('AppDrawer', (theme) => ({
+  paper: {
+    width: 250,
+    backgroundColor: theme.palette.background.paper,
+  },
+  title: {
+    color: theme.palette.text.secondary,
+    '&:hover': {
+      color: theme.palette.primary[500],
     },
-    title: {
-      color: theme.palette.text.secondary,
-      '&:hover': {
-        color: theme.palette.primary[500],
-      },
-    },
-    toolbar: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    anchor: {
-      color: theme.palette.text.secondary,
-    },
-  };
-});
+  },
+  toolbar: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
+  anchor: {
+    color: theme.palette.text.secondary,
+  },
+}));
 
 function renderNavItems(props, navRoot) {
   let navItems = null;
 
   if (navRoot.childRoutes && navRoot.childRoutes.length) {
+    // eslint-disable-next-line no-use-before-define
     navItems = navRoot.childRoutes.reduce(reduceChildRoutes.bind(null, props), []);
   }
 
@@ -117,11 +116,6 @@ AppDrawer.propTypes = {
   onRequestClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   routes: PropTypes.array.isRequired,
-};
-
-AppDrawer.contextTypes = {
-  theme: PropTypes.object.isRequired,
-  styleManager: PropTypes.object.isRequired,
 };
 
 export default withStyles(styleSheet)(AppDrawer);

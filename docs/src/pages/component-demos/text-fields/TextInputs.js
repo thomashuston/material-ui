@@ -1,17 +1,17 @@
-// @flow weak
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Input from 'material-ui/Input/Input';
 
-const styleSheet = createStyleSheet('TextInputs', () => ({
+const styleSheet = createStyleSheet('TextInputs', (theme) => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
   },
   input: {
-    margin: 10,
+    margin: theme.spacing.unit,
   },
 }));
 

@@ -1,14 +1,14 @@
-// @flow weak
+// @flow
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import { LinearProgress } from 'material-ui/Progress';
 
-const styleSheet = createStyleSheet('LinearQuery', () => ({
+const styleSheet = createStyleSheet('LinearQuery', (theme) => ({
   root: {
     width: '100%',
-    marginTop: 30,
+    marginTop: theme.spacing.unit * 3,
   },
 }));
 
