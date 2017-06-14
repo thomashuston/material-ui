@@ -12,7 +12,8 @@ Upon focusing on one of the child controls, it will propagate `focused` to the l
 | row | bool | false | Display group of elements in a compact row. |
 
 Any other properties supplied will be spread to the root element.
-## Classes
+
+## CSS API
 
 You can overrides all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:

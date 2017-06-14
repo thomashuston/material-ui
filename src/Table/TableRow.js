@@ -6,12 +6,11 @@ import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiTableRow', (theme) => ({
+export const styleSheet = createStyleSheet('MuiTableRow', theme => ({
   root: {
     height: 48,
     '&:focus': {
       outline: 'none',
-      background: theme.palette.background.contentFrame,
     },
   },
   head: {
@@ -35,22 +34,19 @@ export const styleSheet = createStyleSheet('MuiTableRow', (theme) => ({
  * based on the material table element parent (head, body, etc).
  */
 function TableRow(props, context) {
-  const {
-    classes,
-    className: classNameProp,
-    children,
-    hover,
-    selected,
-    ...other
-  } = props;
+  const { classes, className: classNameProp, children, hover, selected, ...other } = props;
   const { table } = context;
 
-  const className = classNames(classes.root, {
-    [classes.head]: table && table.head,
-    [classes.footer]: table && table.footer,
-    [classes.hover]: table && hover,
-    [classes.selected]: table && selected,
-  }, classNameProp);
+  const className = classNames(
+    classes.root,
+    {
+      [classes.head]: table && table.head,
+      [classes.footer]: table && table.footer,
+      [classes.hover]: table && hover,
+      [classes.selected]: table && selected,
+    },
+    classNameProp,
+  );
 
   return (
     <tr className={className} {...other}>

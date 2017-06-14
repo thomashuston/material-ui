@@ -1,10 +1,11 @@
-// @flow weak
+// @flow
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { createStyleSheet } from 'jss-theme-reactor';
 import customPropTypes from 'material-ui/utils/customPropTypes';
 
-const globalStyleSheet = createStyleSheet('global', (theme) => {
+const globalStyleSheet = createStyleSheet('global', theme => {
   const { palette } = theme;
   return {
     '@global': {
@@ -34,7 +35,7 @@ const globalStyleSheet = createStyleSheet('global', (theme) => {
   };
 });
 
-const styleSheet = createStyleSheet('TestViewer', (theme) => {
+const styleSheet = createStyleSheet('TestViewer', theme => {
   return {
     root: {
       padding: theme.spacing.unit,

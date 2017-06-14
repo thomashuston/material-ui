@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import DialogContent, { styleSheet } from './DialogContent';
 
 describe('<DialogContent />', () => {
@@ -15,9 +15,7 @@ describe('<DialogContent />', () => {
   });
 
   it('should render a div', () => {
-    const wrapper = shallow(
-      <DialogContent />,
-    );
+    const wrapper = shallow(<DialogContent />);
     assert.strictEqual(wrapper.name(), 'div');
   });
 

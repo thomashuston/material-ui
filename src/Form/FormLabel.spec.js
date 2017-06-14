@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import FormLabel, { styleSheet } from './FormLabel';
 
 describe('<FormLabel />', () => {
@@ -37,7 +37,7 @@ describe('<FormLabel />', () => {
   });
 
   describe('prop: error', () => {
-    it('should show an error class', () => {
+    it('should have an error class', () => {
       const wrapper = shallow(<FormLabel required error />);
       const asteriskWrapper = wrapper.find('[data-mui-test="FormLabelAsterisk"]');
       assert.strictEqual(asteriskWrapper.length, 1);
@@ -46,11 +46,7 @@ describe('<FormLabel />', () => {
         true,
         'asterisk should have the error class',
       );
-      assert.strictEqual(
-        wrapper.hasClass(classes.error),
-        true,
-        'should have the error class',
-      );
+      assert.strictEqual(wrapper.hasClass(classes.error), true, 'should have the error class');
     });
   });
 
@@ -66,8 +62,7 @@ describe('<FormLabel />', () => {
     beforeEach(() => {
       wrapper = shallow(<FormLabel>Foo</FormLabel>);
     });
-
-    ['error', 'focused'].forEach((visualState) => {
+    ['error', 'focused'].forEach(visualState => {
       describe(visualState, () => {
         beforeEach(() => {
           setFormControlContext({ [visualState]: true });

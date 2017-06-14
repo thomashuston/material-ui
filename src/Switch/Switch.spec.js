@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Switch, { LabelSwitch } from '../Switch';
 import { styleSheet } from './Switch';
 
@@ -55,8 +55,10 @@ describe('<Switch />', () => {
   describe('named LabelSwitch export', () => {
     it('should be Switch wrapped with SwitchLabel', () => {
       assert.strictEqual(LabelSwitch.name, 'Style');
-      assert.strictEqual(LabelSwitch.displayName,
-        'withStyles(withSwitchLabel(withStyles(Switch)))');
+      assert.strictEqual(
+        LabelSwitch.displayName,
+        'withStyles(withSwitchLabel(withStyles(Switch)))',
+      );
     });
   });
 });

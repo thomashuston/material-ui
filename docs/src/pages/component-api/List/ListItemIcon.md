@@ -9,7 +9,8 @@ A simple wrapper to apply `List` styles to an `Icon` or `SvgIcon`.
 | classes | object |  | Useful to extend the style applied to components. |
 
 Any other properties supplied will be spread to the root element.
-## Classes
+
+## CSS API
 
 You can overrides all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:

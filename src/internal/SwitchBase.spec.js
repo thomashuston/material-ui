@@ -3,7 +3,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createShallow, createMount } from 'src/test-utils';
+import { createShallow, createMount } from '../test-utils';
 import createSwitch, { styleSheet } from './SwitchBase';
 import Icon from '../Icon';
 
@@ -38,8 +38,11 @@ function assertIsNotChecked(classes, wrapper) {
 
   const label = iconButton.childAt(0);
   const icon = label.childAt(0);
-  assert.strictEqual(icon.is('pure(CheckBoxOutlineBlank)'), true,
-    'should be the CheckBoxOutlineBlank icon');
+  assert.strictEqual(
+    icon.is('pure(CheckBoxOutlineBlank)'),
+    true,
+    'should be the CheckBoxOutlineBlank icon',
+  );
 }
 
 describe('<SwitchBase />', () => {
@@ -60,33 +63,31 @@ describe('<SwitchBase />', () => {
   });
 
   it('should render an IconButton', () => {
-    const wrapper = shallow(
-      <SwitchBase />,
-    );
+    const wrapper = shallow(<SwitchBase />);
     assert.strictEqual(wrapper.name(), 'withStyles(IconButton)');
   });
 
   it('should render an icon and input inside the button by default', () => {
-    const wrapper = shallow(
-      <SwitchBase />,
+    const wrapper = shallow(<SwitchBase />);
+    assert.strictEqual(
+      wrapper.childAt(0).is('pure(CheckBoxOutlineBlank)'),
+      true,
+      'should be an SVG icon',
     );
-    assert.strictEqual(wrapper.childAt(0).is('pure(CheckBoxOutlineBlank)'), true,
-      'should be an SVG icon');
-    assert.strictEqual(wrapper.childAt(1).is('input[type="checkbox"]'), true,
-      'should be a checkbox input');
+    assert.strictEqual(
+      wrapper.childAt(1).is('input[type="checkbox"]'),
+      true,
+      'should be a checkbox input',
+    );
   });
 
   it('should have a ripple by default', () => {
-    const wrapper = shallow(
-      <SwitchBase />,
-    );
+    const wrapper = shallow(<SwitchBase />);
     assert.strictEqual(wrapper.props().disableRipple, false, 'should set disableRipple to false');
   });
 
   it('should pass disableRipple={true} to IconButton', () => {
-    const wrapper = shallow(
-      <SwitchBase disableRipple />,
-    );
+    const wrapper = shallow(<SwitchBase disableRipple />);
     assert.strictEqual(wrapper.props().disableRipple, true, 'should set disableRipple to true');
   });
 
@@ -121,7 +122,7 @@ describe('<SwitchBase />', () => {
     const wrapper = shallow(<SwitchBase {...props} />);
     const input = wrapper.find('input');
 
-    Object.keys(props).forEach((n) => {
+    Object.keys(props).forEach(n => {
       assert.strictEqual(input.prop(n), props[n]);
     });
   });
@@ -141,9 +142,11 @@ describe('<SwitchBase />', () => {
     const disabledClassName = 'foo';
     const wrapperA = shallow(<SwitchBase disabled disabledClassName={disabledClassName} />);
 
-
-    assert.strictEqual(wrapperA.hasClass(disabledClassName), true,
-      'should have the custom disabled class');
+    assert.strictEqual(
+      wrapperA.hasClass(disabledClassName),
+      true,
+      'should have the custom disabled class',
+    );
 
     wrapperA.setProps({ disabled: false });
     wrapperA.setProps({ checked: true });
@@ -160,17 +163,16 @@ describe('<SwitchBase />', () => {
 
     beforeEach(() => {
       wrapper = mount(
-        <SwitchBase
-          className="test-class"
-          checkedClassName="test-class-checked"
-          checked={false}
-        />,
+        <SwitchBase className="test-class" checkedClassName="test-class-checked" checked={false} />,
       );
     });
 
     it('should recognize a controlled input', () => {
-      assert.strictEqual(wrapper.instance().isControlled, true,
-        'should set instance.isControlled to true');
+      assert.strictEqual(
+        wrapper.instance().isControlled,
+        true,
+        'should set instance.isControlled to true',
+      );
     });
 
     it('should not not be checked', () => {
@@ -193,17 +195,15 @@ describe('<SwitchBase />', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(
-        <SwitchBase
-          className="test-class"
-          checkedClassName="test-class-checked"
-        />,
-      );
+      wrapper = mount(<SwitchBase className="test-class" checkedClassName="test-class-checked" />);
     });
 
     it('should recognize an uncontrolled input', () => {
-      assert.strictEqual(wrapper.instance().isControlled, false,
-        'should set instance.isControlled to false');
+      assert.strictEqual(
+        wrapper.instance().isControlled,
+        false,
+        'should set instance.isControlled to false',
+      );
     });
 
     it('should not not be checked', () => {
@@ -301,6 +301,13 @@ describe('<SwitchBase />', () => {
 
       it('should change state.checked !checkedMock', () => {
         assert.strictEqual(wrapper.state('checked'), !checkedMock);
+      });
+    });
+
+    describe('prop: inputProps', () => {
+      it('should be able to add aria', () => {
+        const wrapper2 = shallow(<SwitchBase inputProps={{ 'aria-label': 'foo' }} />);
+        assert.strictEqual(wrapper2.find('input').props()['aria-label'], 'foo');
       });
     });
   });

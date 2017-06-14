@@ -1,10 +1,11 @@
 // @flow weak
 
-import React, { Component } from 'react';
+import React, { Children, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
+import { isDirty } from '../Input/Input';
 
 export const styleSheet = createStyleSheet('MuiFormControl', {
   root: {
@@ -22,6 +23,7 @@ export const styleSheet = createStyleSheet('MuiFormControl', {
  */
 class FormControl extends Component {
   static defaultProps = {
+    disabled: false,
     error: false,
     required: false,
   };
@@ -32,12 +34,13 @@ class FormControl extends Component {
   };
 
   getChildContext() {
-    const { error, required } = this.props;
+    const { disabled, error, required } = this.props;
     const { dirty, focused } = this.state;
 
     return {
       muiFormControl: {
         dirty,
+        disabled,
         error,
         focused,
         required,
@@ -49,13 +52,29 @@ class FormControl extends Component {
     };
   }
 
-  handleFocus = () => {
+  componentWillMount() {
+    // We need to iterate through the children and find the Input in order
+    // to fully support server side rendering.
+    Children.forEach(this.props.children, child => {
+      if (child && child.type && child.type.muiName === 'Input' && isDirty(child.props, true)) {
+        this.setState({ dirty: true });
+      }
+    });
+  }
+
+  handleFocus = event => {
+    if (this.props.onFocus) {
+      this.props.onFocus(event);
+    }
     if (!this.state.focused) {
       this.setState({ focused: true });
     }
   };
 
-  handleBlur = () => {
+  handleBlur = event => {
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
     if (this.state.focused) {
       this.setState({ focused: false });
     }
@@ -74,20 +93,14 @@ class FormControl extends Component {
   };
 
   render() {
-    const {
-      children,
-      classes,
-      className,
-      error, // eslint-disable-line no-unused-vars
-      ...other
-    } = this.props;
+    const { children, classes, className, disabled, error, ...other } = this.props;
 
     return (
       <div
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
         className={classNames(classes.root, className)}
         {...other}
+        onFocus={this.handleFocus}
+        onBlur={this.handleBlur}
       >
         {children}
       </div>
@@ -109,9 +122,21 @@ FormControl.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * If `true`, the label, input and helper text should be displayed in a disabled state.
+   */
+  disabled: PropTypes.bool,
+  /**
    * If `true`, the label should be displayed in an error state.
    */
   error: PropTypes.bool,
+  /**
+   * @ignore
+   */
+  onBlur: PropTypes.func,
+  /**
+   * @ignore
+   */
+  onFocus: PropTypes.func,
   /**
    * If `true`, the label will indicate that the input is required.
    */

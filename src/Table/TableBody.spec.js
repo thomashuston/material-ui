@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import TableBody, { styleSheet } from './TableBody';
 
 describe('<TableBody />', () => {
@@ -15,9 +15,7 @@ describe('<TableBody />', () => {
   });
 
   it('should render a tbody', () => {
-    const wrapper = shallow(
-      <TableBody />,
-    );
+    const wrapper = shallow(<TableBody />);
     assert.strictEqual(wrapper.name(), 'tbody');
   });
 

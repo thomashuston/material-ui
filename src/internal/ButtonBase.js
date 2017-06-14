@@ -11,9 +11,9 @@ import TouchRipple from './TouchRipple';
 import createRippleHandler from './createRippleHandler';
 
 export const styleSheet = createStyleSheet('MuiButtonBase', {
-  buttonBase: {
+  root: {
     position: 'relative',
-    WebkitTapHighlightColor: 'rgba(0,0,0,0.0)',
+    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
     outline: 'none',
     border: 0,
     cursor: 'pointer',
@@ -22,7 +22,7 @@ export const styleSheet = createStyleSheet('MuiButtonBase', {
     textDecoration: 'none',
   },
   disabled: {
-    cursor: 'not-allowed',
+    cursor: 'default',
   },
 });
 
@@ -63,9 +63,11 @@ class ButtonBase extends Component {
   keyboardFocusCheckTime = 40;
   keyboardFocusMaxCheckTimes = 5;
 
-  focus = () => this.button.focus();
+  focus = () => {
+    this.button.focus();
+  };
 
-  handleKeyDown = (event) => {
+  handleKeyDown = event => {
     const { component, focusRipple, onKeyDown, onClick } = this.props;
     const key = keycode(event);
 
@@ -96,7 +98,7 @@ class ButtonBase extends Component {
     }
   };
 
-  handleKeyUp = (event) => {
+  handleKeyUp = event => {
     if (this.props.focusRipple && keycode(event) === 'space' && this.state.keyboardFocused) {
       this.keyDown = false;
       event.persist();
@@ -117,7 +119,7 @@ class ButtonBase extends Component {
 
   handleMouseUp = createRippleHandler(this, 'MouseUp', 'stop');
 
-  handleMouseLeave = createRippleHandler(this, 'MouseLeave', 'stop', (event) => {
+  handleMouseLeave = createRippleHandler(this, 'MouseLeave', 'stop', event => {
     if (this.state.keyboardFocused) {
       event.preventDefault();
     }
@@ -130,7 +132,7 @@ class ButtonBase extends Component {
     this.setState({ keyboardFocused: false });
   });
 
-  handleFocus = (event) => {
+  handleFocus = event => {
     if (this.props.disabled) {
       return;
     }
@@ -145,7 +147,7 @@ class ButtonBase extends Component {
     }
   };
 
-  onKeyboardFocusHandler = (event) => {
+  onKeyboardFocusHandler = event => {
     this.keyDown = false;
     this.setState({ keyboardFocused: true });
 
@@ -156,7 +158,14 @@ class ButtonBase extends Component {
 
   renderRipple(ripple, center) {
     if (ripple === true && !this.props.disabled) {
-      return <TouchRipple ref={(node) => { this.ripple = node; }} center={center} />;
+      return (
+        <TouchRipple
+          ref={node => {
+            this.ripple = node;
+          }}
+          center={center}
+        />
+      );
     }
 
     return null;
@@ -169,18 +178,18 @@ class ButtonBase extends Component {
       className: classNameProp,
       component,
       disabled,
-      focusRipple, // eslint-disable-line no-unused-vars
+      focusRipple,
       keyboardFocusedClassName,
-      onBlur, // eslint-disable-line no-unused-vars
-      onFocus, // eslint-disable-line no-unused-vars
-      onKeyboardFocus, // eslint-disable-line no-unused-vars
-      onKeyDown, // eslint-disable-line no-unused-vars
-      onKeyUp, // eslint-disable-line no-unused-vars
-      onMouseDown, // eslint-disable-line no-unused-vars
-      onMouseLeave, // eslint-disable-line no-unused-vars
-      onMouseUp, // eslint-disable-line no-unused-vars
-      onTouchEnd, // eslint-disable-line no-unused-vars
-      onTouchStart, // eslint-disable-line no-unused-vars
+      onBlur,
+      onFocus,
+      onKeyboardFocus,
+      onKeyDown,
+      onKeyUp,
+      onMouseDown,
+      onMouseLeave,
+      onMouseUp,
+      onTouchEnd,
+      onTouchStart,
       ripple,
       tabIndex,
       type,
@@ -188,43 +197,55 @@ class ButtonBase extends Component {
     } = this.props;
 
     const classes = this.context.styleManager.render(styleSheet);
-    const className = classNames(classes.buttonBase, {
-      [classes.disabled]: disabled,
-      [keyboardFocusedClassName]: keyboardFocusedClassName && this.state.keyboardFocused,
-    }, classNameProp);
+    const className = classNames(
+      classes.root,
+      {
+        [classes.disabled]: disabled,
+        [keyboardFocusedClassName]: keyboardFocusedClassName && this.state.keyboardFocused,
+      },
+      classNameProp,
+    );
 
-    const buttonProps = {
-      ref: (node) => { this.button = node; },
-      onBlur: this.handleBlur,
-      onFocus: this.handleFocus,
-      onKeyDown: this.handleKeyDown,
-      onKeyUp: this.handleKeyUp,
-      onMouseDown: this.handleMouseDown,
-      onMouseLeave: this.handleMouseLeave,
-      onMouseUp: this.handleMouseUp,
-      onTouchEnd: this.handleTouchEnd,
-      onTouchStart: this.handleTouchStart,
-      tabIndex: disabled ? '-1' : tabIndex,
-      className,
-      ...other,
-    };
+    const buttonProps = {};
 
     let ComponentProp = component;
 
-    if (!ComponentProp && other.href) {
-      ComponentProp = 'a';
+    if (!ComponentProp) {
+      if (other.href) {
+        ComponentProp = 'a';
+      } else {
+        ComponentProp = 'button';
+      }
     }
 
-    if (!ComponentProp) {
-      ComponentProp = 'button';
-      buttonProps.type = type;
+    if (ComponentProp === 'button') {
+      buttonProps.type = type || 'button';
+    }
+
+    if (ComponentProp !== 'a') {
+      buttonProps.role = buttonProps.role || 'button';
       buttonProps.disabled = disabled;
-    } else if (ComponentProp !== 'a') {
-      buttonProps.role = this.props.hasOwnProperty('role') ? this.props.role : 'button';
     }
 
     return (
-      <ComponentProp {...buttonProps}>
+      <ComponentProp
+        ref={node => {
+          this.button = node;
+        }}
+        onBlur={this.handleBlur}
+        onFocus={this.handleFocus}
+        onKeyDown={this.handleKeyDown}
+        onKeyUp={this.handleKeyUp}
+        onMouseDown={this.handleMouseDown}
+        onMouseLeave={this.handleMouseLeave}
+        onMouseUp={this.handleMouseUp}
+        onTouchEnd={this.handleTouchEnd}
+        onTouchStart={this.handleTouchStart}
+        tabIndex={disabled ? '-1' : tabIndex}
+        className={className}
+        {...buttonProps}
+        {...other}
+      >
         {children}
         {this.renderRipple(ripple, centerRipple)}
       </ComponentProp>
@@ -245,11 +266,9 @@ ButtonBase.propTypes = {
   /**
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
+   * The default value is a `button`.
    */
-  component: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.func,
-  ]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   /**
    * If `true`, the base button will be disabled.
    */

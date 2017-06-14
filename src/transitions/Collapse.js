@@ -2,15 +2,14 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 import customPropTypes from '../utils/customPropTypes';
 import Transition from '../internal/Transition';
 
-const reflow = (elem) => elem.offsetHeight;
+const reflow = elem => elem.offsetHeight;
 
-export const styleSheet = createStyleSheet('MuiCollapse', (theme) => ({
+export const styleSheet = createStyleSheet('MuiCollapse', theme => ({
   container: {
     height: 0,
     overflow: 'hidden',
@@ -30,14 +29,14 @@ class Collapse extends Component {
 
   wrapper = null;
 
-  handleEnter = (element) => {
+  handleEnter = element => {
     element.style.height = '0px';
     if (this.props.onEnter) {
       this.props.onEnter(element);
     }
   };
 
-  handleEntering = (element) => {
+  handleEntering = element => {
     const { transitionDuration } = this.props;
     const wrapperHeight = this.wrapper ? this.wrapper.clientHeight : 0;
 
@@ -57,7 +56,7 @@ class Collapse extends Component {
     }
   };
 
-  handleEntered = (element) => {
+  handleEntered = element => {
     element.style.transitionDuration = '0ms'; // safari fix
     element.style.height = 'auto';
     reflow(element);
@@ -66,7 +65,7 @@ class Collapse extends Component {
     }
   };
 
-  handleExit = (element) => {
+  handleExit = element => {
     const wrapperHeight = this.wrapper ? this.wrapper.clientHeight : 0;
     element.style.height = `${wrapperHeight}px`;
     if (this.props.onExit) {
@@ -74,7 +73,7 @@ class Collapse extends Component {
     }
   };
 
-  handleExiting = (element) => {
+  handleExiting = element => {
     const { transitionDuration } = this.props;
     const wrapperHeight = this.wrapper ? this.wrapper.clientHeight : 0;
 
@@ -99,16 +98,13 @@ class Collapse extends Component {
     const {
       children,
       classes,
-      containerClassName,
-      onEnter, // eslint-disable-line no-unused-vars
-      onEntering, // eslint-disable-line no-unused-vars
-      onExit, // eslint-disable-line no-unused-vars
-      onExiting, // eslint-disable-line no-unused-vars
-      transitionDuration, // eslint-disable-line no-unused-vars
+      onEnter,
+      onEntering,
+      onExit,
+      onExiting,
+      transitionDuration,
       ...other
     } = this.props;
-
-    const containerClasses = classNames(classes.container, containerClassName);
 
     return (
       <Transition
@@ -120,8 +116,12 @@ class Collapse extends Component {
         onExit={this.handleExit}
         {...other}
       >
-        <div className={containerClasses}>
-          <div ref={(node) => { this.wrapper = node; }}>
+        <div className={classes.container}>
+          <div
+            ref={node => {
+              this.wrapper = node;
+            }}
+          >
             {children}
           </div>
         </div>
@@ -139,11 +139,6 @@ Collapse.propTypes = {
    * Useful to extend the style applied to components.
    */
   classes: PropTypes.object.isRequired,
-  /**
-   * The CSS class name passed to the wrapping container
-   * required for holding & measuring the expanding content.
-   */
-  containerClassName: PropTypes.string,
   /**
    * If `true`, the component will transition in.
    */

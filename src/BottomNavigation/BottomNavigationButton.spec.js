@@ -3,7 +3,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import BottomNavigationButton, { styleSheet } from './BottomNavigationButton';
 import Icon from '../Icon';
 
@@ -18,9 +18,7 @@ describe('<BottomNavigationButton / />', () => {
   });
 
   it('should render a ButtonBase', () => {
-    const wrapper = shallow(
-      <BottomNavigationButton icon={icon} />,
-    );
+    const wrapper = shallow(<BottomNavigationButton icon={icon} />);
     assert.strictEqual(wrapper.name(), 'ButtonBase');
   });
 
@@ -43,8 +41,11 @@ describe('<BottomNavigationButton / />', () => {
 
   it('should render with the selectedIconOnly and root classes', () => {
     const wrapper = shallow(<BottomNavigationButton icon={icon} showLabel={false} />);
-    assert.strictEqual(wrapper.hasClass(classes.selectedIconOnly), true,
-      'should have the selectedIconOnly class');
+    assert.strictEqual(
+      wrapper.hasClass(classes.selectedIconOnly),
+      true,
+      'should have the selectedIconOnly class',
+    );
     assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
   });
 
@@ -75,8 +76,11 @@ describe('<BottomNavigationButton / />', () => {
   it('should render label with the hiddenLabel class', () => {
     const wrapper = shallow(<BottomNavigationButton icon={icon} showLabel={false} />);
     const labelWrapper = wrapper.childAt(1);
-    assert.strictEqual(labelWrapper.hasClass(classes.hiddenLabel), true,
-      'should have the hiddenLabel class');
+    assert.strictEqual(
+      labelWrapper.hasClass(classes.hiddenLabel),
+      true,
+      'should have the hiddenLabel class',
+    );
     assert.strictEqual(labelWrapper.hasClass(classes.label), true, 'should have the label class');
   });
 

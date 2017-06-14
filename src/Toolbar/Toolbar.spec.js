@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Toolbar, { styleSheet } from './Toolbar';
 
 /**
@@ -18,9 +18,7 @@ describe('<Toolbar />', () => {
   });
 
   it('should render a div', () => {
-    const wrapper = shallow(
-      <Toolbar />,
-    );
+    const wrapper = shallow(<Toolbar />);
     assert.strictEqual(wrapper.name(), 'div');
   });
 
@@ -34,7 +32,10 @@ describe('<Toolbar />', () => {
   it('should disable the gutters', () => {
     const wrapper = shallow(<Toolbar disableGutters />);
     assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
-    assert.strictEqual(wrapper.hasClass(classes.gutters), false,
-      'should not have the gutters class');
+    assert.strictEqual(
+      wrapper.hasClass(classes.gutters),
+      false,
+      'should not have the gutters class',
+    );
   });
 });

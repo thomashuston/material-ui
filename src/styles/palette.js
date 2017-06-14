@@ -16,6 +16,13 @@ export const light = {
     divider: 'rgba(0, 0, 0, 0.12)',
     lightDivider: 'rgba(0, 0, 0, 0.075)',
   },
+  input: {
+    bottomLine: 'rgba(0, 0, 0, 0.42)',
+    helperText: 'rgba(0, 0, 0, 0.54)',
+    labelText: 'rgba(0, 0, 0, 0.54)',
+    inputText: 'rgba(0, 0, 0, 0.87)',
+    disabled: 'rgba(0, 0, 0, 0.42)',
+  },
   action: {
     active: 'rgba(0, 0, 0, 0.54)',
     disabled: 'rgba(0, 0, 0, 0.26)',
@@ -39,6 +46,13 @@ export const dark = {
     divider: 'rgba(255, 255, 255, 0.12)',
     lightDivider: 'rgba(255, 255, 255, 0.075)',
   },
+  input: {
+    bottomLine: 'rgba(255, 255, 255, 0.7)',
+    helperText: 'rgba(255, 255, 255, 0.7)',
+    labelText: 'rgba(255, 255, 255, 0.7)',
+    inputText: 'rgba(255, 255, 255, 1)',
+    disabled: 'rgba(255, 255, 255, 0.5)',
+  },
   action: {
     active: 'rgba(255, 255, 255, 1)',
     disabled: 'rgba(255, 255, 255, 0.3)',
@@ -60,12 +74,7 @@ function getContrastText(color) {
 }
 
 export default function createPalette(options = {}) {
-  const {
-    primary = indigo,
-    accent = pink,
-    error = red,
-    type = 'light',
-  } = options;
+  const { primary = indigo, accent = pink, error = red, type = 'light' } = options;
 
   if (process.env.NODE_ENV !== 'production') {
     class PaletteColorError extends Error {
@@ -98,7 +107,9 @@ export default function createPalette(options = {}) {
 
   return {
     type,
+    shades,
     text: shades[type].text,
+    input: shades[type].input,
     action: shades[type].action,
     background: shades[type].background,
     primary,

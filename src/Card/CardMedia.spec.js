@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import CardMedia, { styleSheet } from './CardMedia';
 
 describe('<CardMedia />', () => {
@@ -14,10 +14,8 @@ describe('<CardMedia />', () => {
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
-  it('should have the cardMedia class', () => {
-    const wrapper = shallow(
-      <CardMedia />,
-    );
-    assert.strictEqual(wrapper.hasClass(classes.cardMedia), true);
+  it('should have the root class', () => {
+    const wrapper = shallow(<CardMedia />);
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
   });
 });

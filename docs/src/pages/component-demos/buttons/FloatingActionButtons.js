@@ -7,7 +7,7 @@ import Button from 'material-ui/Button';
 import AddIcon from 'material-ui-icons/Add';
 import ModeEditIcon from 'material-ui-icons/ModeEdit';
 
-const styleSheet = createStyleSheet('FloatingActionButtons', (theme) => ({
+const styleSheet = createStyleSheet('FloatingActionButtons', theme => ({
   button: {
     margin: theme.spacing.unit,
   },
@@ -17,10 +17,10 @@ function FloatingActionButtons(props) {
   const classes = props.classes;
   return (
     <div>
-      <Button fab primary className={classes.button}>
+      <Button fab color="primary" className={classes.button}>
         <AddIcon />
       </Button>
-      <Button fab accent className={classes.button}>
+      <Button fab color="accent" className={classes.button}>
         <ModeEditIcon />
       </Button>
     </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import TouchRipple, { styleSheet } from './TouchRipple';
 
 describe('<TouchRipple />', () => {
@@ -26,9 +26,7 @@ describe('<TouchRipple />', () => {
   });
 
   it('should render the custom className', () => {
-    const wrapper = shallow(
-      <TouchRipple className="test-class-name" />,
-    );
+    const wrapper = shallow(<TouchRipple className="test-class-name" />);
     assert.strictEqual(wrapper.is('.test-class-name'), true, 'should contain the test className');
   });
 

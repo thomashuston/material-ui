@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Typography, { styleSheet } from './Typography';
 
 describe('<Typography />', () => {
@@ -20,16 +20,14 @@ describe('<Typography />', () => {
   });
 
   it('should spread props', () => {
-    const wrapper = shallow(
-      <Typography data-test="hello">Hello</Typography>,
-    );
+    const wrapper = shallow(<Typography data-test="hello">Hello</Typography>);
     assert.strictEqual(wrapper.prop('data-test'), 'hello', 'should be spread on the ButtonBase');
   });
 
-  it('should render body1 text by default', () => {
+  it('should render body1 root by default', () => {
     const wrapper = shallow(<Typography>Hello</Typography>);
     assert.strictEqual(wrapper.hasClass(classes.body1), true, 'should be body1 text');
-    assert.strictEqual(wrapper.hasClass(classes.text), true, 'should be text');
+    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should be root');
   });
 
   it('should merge user classes', () => {
@@ -40,9 +38,8 @@ describe('<Typography />', () => {
 
   it('should center text', () => {
     const wrapper = shallow(<Typography align="center" className="woof">Hello</Typography>);
-    assert.strictEqual(wrapper.hasClass(classes['align-center']), true, 'should be center text');
+    assert.strictEqual(wrapper.hasClass(classes.alignCenter), true, 'should be center text');
   });
-
   [
     'display4',
     'display3',
@@ -55,7 +52,7 @@ describe('<Typography />', () => {
     'body1',
     'caption',
     'button',
-  ].forEach((type) => {
+  ].forEach(type => {
     it(`should render ${type} text`, () => {
       const wrapper = shallow(<Typography type={type}>Hello</Typography>);
       assert.ok(classes[type] !== undefined);
@@ -63,9 +60,9 @@ describe('<Typography />', () => {
     });
   });
 
-  describe('prop: colorInherit', () => {
+  describe('prop: color', () => {
     it('should inherit the color', () => {
-      const wrapper = shallow(<Typography colorInherit>Hello</Typography>);
+      const wrapper = shallow(<Typography color="inherit">Hello</Typography>);
       assert.strictEqual(wrapper.hasClass(classes.colorInherit), true);
     });
   });

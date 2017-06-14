@@ -1,6 +1,7 @@
 // @flow weak
 
 import React, { Component, Children, cloneElement } from 'react';
+import warning from 'warning';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import classNames from 'classnames';
@@ -39,6 +40,9 @@ export const styleSheet = createStyleSheet('MuiTabs', {
   },
 });
 
+/**
+ * Notice that this Component is incompatible with server side rendering.
+ */
 class Tabs extends Component {
   static defaultProps = {
     centered: false,
@@ -92,11 +96,11 @@ class Tabs extends Component {
 
   handleLeftScrollClick = () => {
     this.moveTabsScroll(-this.tabs.clientWidth);
-  }
+  };
 
   handleRightScrollClick = () => {
     this.moveTabsScroll(this.tabs.clientWidth);
-  }
+  };
 
   handleScrollbarSizeChange = ({ scrollbarHeight }) => {
     this.setState({
@@ -104,122 +108,89 @@ class Tabs extends Component {
         marginBottom: -scrollbarHeight,
       },
     });
-  }
+  };
 
   handleTabsScroll = debounce(() => {
     this.updateScrollButtonState();
   }, 100);
 
-  getClassGroups = () => {
-    const {
-      centered,
-      classes,
-      className: classNameProp,
-      scrollable,
-    } = this.props;
-    const classGroups = {};
-
-    classGroups.flexContainer = classNames(
-      classes.flexContainer,
-    );
-
-    classGroups.root = classNames(
-      classes.root,
-      classNameProp,
-    );
-
-    classGroups.scroller = classNames(
-      classes.scrollingContainer,
-      {
-        [classes.fixed]: !scrollable,
-        [classes.scrollable]: scrollable,
-      },
-    );
-
-    classGroups.tabItemContainer = classNames(
-      classes.flexContainer,
-      { [classes.centered]: centered && !scrollable },
-    );
-
-    return classGroups;
-  }
-
   getConditionalElements = () => {
-    const {
-      buttonClassName,
-      scrollable,
-      scrollButtons,
-      width,
-    } = this.props;
+    const { buttonClassName, scrollable, scrollButtons, width } = this.props;
     const conditionalElements = {};
-    conditionalElements.scrollbarSizeListener = (
-      scrollable ? (
-        <ScrollbarSize
+    conditionalElements.scrollbarSizeListener = scrollable
+      ? <ScrollbarSize
           onLoad={this.handleScrollbarSizeChange}
           onChange={this.handleScrollbarSizeChange}
         />
-      ) : null
-    );
+      : null;
 
-    const showScrollButtons = scrollable && (
-      (isWidthUp('md', width) && scrollButtons === 'auto') ||
-      (scrollButtons === 'on')
-    );
+    const showScrollButtons =
+      scrollable &&
+      ((isWidthUp('md', width) && scrollButtons === 'auto') || scrollButtons === 'on');
 
-    conditionalElements.scrollButtonLeft = (
-      showScrollButtons ? (
-        <TabScrollButton
+    conditionalElements.scrollButtonLeft = showScrollButtons
+      ? <TabScrollButton
           direction="left"
           onClick={this.handleLeftScrollClick}
           visible={this.state.showLeftScroll}
           className={buttonClassName}
         />
-      ) : null
-    );
+      : null;
 
-    conditionalElements.scrollButtonRight = (
-      showScrollButtons ? (
-        <TabScrollButton
+    conditionalElements.scrollButtonRight = showScrollButtons
+      ? <TabScrollButton
           className={buttonClassName}
           direction="right"
           onClick={this.handleRightScrollClick}
           visible={this.state.showRightScroll}
         />
-      ) : null
-    );
+      : null;
 
     return conditionalElements;
-  }
+  };
 
-  getTabsMeta = (index) => {
-    const tabsMeta = this.tabs.getBoundingClientRect();
-    tabsMeta.scrollLeft = this.tabs.scrollLeft;
-    const tabMeta = this.tabs.children[0].children[index].getBoundingClientRect();
+  getTabsMeta = index => {
+    let tabsMeta;
+    if (this.tabs) {
+      tabsMeta = this.tabs.getBoundingClientRect();
+      tabsMeta.scrollLeft = this.tabs.scrollLeft;
+    }
+
+    let tabMeta;
+    if (this.tabs && index !== false) {
+      const tab = this.tabs.children[0].children[index];
+      warning(tab, `Material-UI: the index provided \`${index}\` is invalid`);
+      tabMeta = tab ? this.tabs.children[0].children[index].getBoundingClientRect() : null;
+    }
     return { tabsMeta, tabMeta };
-  }
+  };
 
-  moveTabsScroll = (delta) => {
+  moveTabsScroll = delta => {
     const nextScrollLeft = this.tabs.scrollLeft + delta;
     scroll.left(this.tabs, nextScrollLeft);
-  }
+  };
 
   updateIndicatorState(props) {
-    if (this.tabs) {
-      const { tabsMeta, tabMeta } = this.getTabsMeta(props.index);
+    const { tabsMeta, tabMeta } = this.getTabsMeta(props.index);
 
-      const indicatorStyle = {
-        left: tabMeta.left + (tabsMeta.scrollLeft - tabsMeta.left),
-        width: tabMeta.width, // May be wrong until the font is loaded.
-      };
+    const indicatorStyle = {
+      left: tabMeta && tabsMeta ? tabMeta.left + (tabsMeta.scrollLeft - tabsMeta.left) : 0,
+      // May be wrong until the font is loaded.
+      width: tabMeta ? tabMeta.width : 0,
+    };
 
-      if (!isEqual(indicatorStyle, this.state.indicatorStyle)) {
-        this.setState({ indicatorStyle });
-      }
+    if (!isEqual(indicatorStyle, this.state.indicatorStyle)) {
+      this.setState({ indicatorStyle });
     }
   }
 
   scrollSelectedIntoView = () => {
     const { tabsMeta, tabMeta } = this.getTabsMeta(this.props.index);
+
+    if (!tabMeta || !tabsMeta) {
+      return;
+    }
+
     if (tabMeta.left < tabsMeta.left) {
       // left side of button is out of view
       const nextScrollLeft = tabsMeta.scrollLeft + (tabMeta.left - tabsMeta.left);
@@ -229,7 +200,7 @@ class Tabs extends Component {
       const nextScrollLeft = tabsMeta.scrollLeft + (tabMeta.right - tabsMeta.right);
       scroll.left(this.tabs, nextScrollLeft);
     }
-  }
+  };
 
   updateScrollButtonState = () => {
     const { scrollable, scrollButtons } = this.props;
@@ -237,7 +208,7 @@ class Tabs extends Component {
     if (scrollable && scrollButtons !== 'off') {
       const { scrollLeft, scrollWidth, clientWidth } = this.tabs;
       const showLeftScroll = scrollLeft > 0;
-      const showRightScroll = scrollWidth > (clientWidth + scrollLeft);
+      const showRightScroll = scrollWidth > clientWidth + scrollLeft;
 
       if (
         showLeftScroll !== this.state.showLeftScroll ||
@@ -250,24 +221,31 @@ class Tabs extends Component {
 
   render() {
     const {
-      buttonClassName, // eslint-disable-line no-unused-vars
-      centered, // eslint-disable-line no-unused-vars
-      classes, // eslint-disable-line no-unused-vars
+      buttonClassName,
+      centered,
+      classes,
       children: childrenProp,
-      className: classNameProp, // eslint-disable-line no-unused-vars
+      className: classNameProp,
       fullWidth,
       index,
       indicatorClassName,
       indicatorColor,
       onChange,
-      scrollable, // eslint-disable-line no-unused-vars
-      scrollButtons, // eslint-disable-line no-unused-vars
+      scrollable,
+      scrollButtons,
       textColor,
-      width, // eslint-disable-line no-unused-vars
+      width,
       ...other
     } = this.props;
 
-    const classGroups = this.getClassGroups();
+    const className = classNames(classes.root, classNameProp);
+    const scrollerClassName = classNames(classes.scrollingContainer, {
+      [classes.fixed]: !scrollable,
+      [classes.scrollable]: scrollable,
+    });
+    const tabItemContainerClassName = classNames(classes.flexContainer, {
+      [classes.centered]: centered && !scrollable,
+    });
 
     const children = Children.map(childrenProp, (tab, childIndex) => {
       return cloneElement(tab, {
@@ -282,25 +260,27 @@ class Tabs extends Component {
     const conditionalElements = this.getConditionalElements();
 
     return (
-      <div className={classGroups.root} {...other}>
+      <div className={className} {...other}>
         <EventListener target="window" onResize={this.handleResize} />
         {conditionalElements.scrollbarSizeListener}
-        <div className={classGroups.flexContainer}>
+        <div className={classes.flexContainer}>
           {conditionalElements.scrollButtonLeft}
           <div
-            className={classGroups.scroller}
+            className={scrollerClassName}
             style={this.state.scrollerStyle}
-            ref={(node) => { this.tabs = node; }}
+            ref={node => {
+              this.tabs = node;
+            }}
             role="tablist"
             onScroll={this.handleTabsScroll}
           >
-            <div className={classGroups.tabItemContainer}>
+            <div className={tabItemContainerClassName}>
               {children}
             </div>
             <TabIndicator
               style={this.state.indicatorStyle}
               className={indicatorClassName}
-              indicatorColor={indicatorColor}
+              color={indicatorColor}
             />
           </div>
           {conditionalElements.scrollButtonRight}
@@ -339,8 +319,9 @@ Tabs.propTypes = {
   fullWidth: PropTypes.bool,
   /**
    * The index of the currently selected `Tab`.
+   * If you don't want any selected `Tab`, you can set this property to `false`.
    */
-  index: PropTypes.number,
+  index: PropTypes.oneOfType([PropTypes.oneOf([false]), PropTypes.number]).isRequired,
   /**
    * The CSS class name of the indicator element.
    */
@@ -348,12 +329,7 @@ Tabs.propTypes = {
   /**
    * Determines the color of the indicator.
    */
-  indicatorColor: PropTypes.oneOfType([
-    PropTypes.oneOf([
-      'accent',
-    ]),
-    PropTypes.string,
-  ]),
+  indicatorColor: PropTypes.oneOfType([PropTypes.oneOf(['accent']), PropTypes.string]),
   /**
    * Function called when the index change.
    */
@@ -369,21 +345,11 @@ Tabs.propTypes = {
    * `on` will always present them
    * `off` will never present them
    */
-  scrollButtons: PropTypes.oneOf([
-    'auto',
-    'on',
-    'off',
-  ]),
+  scrollButtons: PropTypes.oneOf(['auto', 'on', 'off']),
   /**
    * Determines the color of the `Tab`.
    */
-  textColor: PropTypes.oneOfType([
-    PropTypes.oneOf([
-      'accent',
-      'inherit',
-    ]),
-    PropTypes.string,
-  ]),
+  textColor: PropTypes.oneOfType([PropTypes.oneOf(['accent', 'inherit']), PropTypes.string]),
   /**
    * @ignore
    * width prop provided by withWidth decorator
@@ -391,7 +357,4 @@ Tabs.propTypes = {
   width: PropTypes.string,
 };
 
-export default compose(
-  withStyles(styleSheet),
-  withWidth(),
-)(Tabs);
+export default compose(withStyles(styleSheet), withWidth())(Tabs);

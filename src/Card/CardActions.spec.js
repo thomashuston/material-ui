@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import CardActions, { styleSheet } from './CardActions';
 
 describe('<CardActions />', () => {
@@ -14,13 +14,10 @@ describe('<CardActions />', () => {
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
-  it('should render a div with the cardActions class', () => {
-    const wrapper = shallow(
-      <CardActions />,
-    );
+  it('should render a div with the root class', () => {
+    const wrapper = shallow(<CardActions />);
     assert.strictEqual(wrapper.name(), 'div');
-    assert.strictEqual(wrapper.hasClass(classes.cardActions), true,
-      'should have the cardActions class');
+    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
   });
 
   it('should pass the actionSpacing class to children', () => {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import withTheme from './withTheme';
 
 const Empty = () => <div />;
@@ -25,6 +25,7 @@ describe('withTheme', () => {
     assert.strictEqual(
       wrapper.props().theme,
       context.styleManager.theme,
-      'Should use the theme provided by the context');
+      'Should use the theme provided by the context',
+    );
   });
 });

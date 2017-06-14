@@ -9,12 +9,8 @@ import Typography from 'material-ui/Typography';
 
 const styleSheet = createStyleSheet('SimpleAppBar', {
   root: {
-    position: 'relative',
     marginTop: 30,
     width: '100%',
-  },
-  appBar: {
-    position: 'relative',
   },
 });
 
@@ -22,9 +18,9 @@ function SimpleAppBar(props) {
   const classes = props.classes;
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar}>
+      <AppBar position="static">
         <Toolbar>
-          <Typography type="title" colorInherit>Title</Typography>
+          <Typography type="title" color="inherit">Title</Typography>
         </Toolbar>
       </AppBar>
     </div>

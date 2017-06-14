@@ -27,11 +27,6 @@ const options = [
 ];
 
 class ConfirmationDialog extends Component {
-  static propTypes = {
-    onRequestClose: PropTypes.func,
-    selectedValue: PropTypes.string,
-  };
-
   state = {
     selectedValue: undefined,
   };
@@ -66,42 +61,39 @@ class ConfirmationDialog extends Component {
   };
 
   render() {
-    const {
-      onRequestClose, // eslint-disable-line no-unused-vars
-      selectedValue, // eslint-disable-line no-unused-vars
-      ...other
-    } = this.props;
+    const { onRequestClose, selectedValue, ...other } = this.props;
 
     return (
       <Dialog onEntering={this.handleEntering} {...other}>
         <DialogTitle>Phone Ringtone</DialogTitle>
         <DialogContent>
           <RadioGroup
-            innerRef={(node) => { this.radioGroup = node; }}
+            innerRef={node => {
+              this.radioGroup = node;
+            }}
             aria-label="Gender"
             name="gender"
             selectedValue={this.state.selectedValue}
             onChange={this.handleChange}
           >
-            {options.map((option) => (
-              <Radio
-                label={option}
-                value={option}
-                key={option}
-              />
-            ))}
+            {options.map(option => <Radio label={option} value={option} key={option} />)}
           </RadioGroup>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleCancel} primary>Cancel</Button>
-          <Button onClick={this.handleOk} primary>Ok</Button>
+          <Button onClick={this.handleCancel} color="primary">Cancel</Button>
+          <Button onClick={this.handleOk} color="primary">Ok</Button>
         </DialogActions>
       </Dialog>
     );
   }
 }
 
-const styleSheet = createStyleSheet('ConfirmationDialogDemo', (theme) => ({
+ConfirmationDialog.propTypes = {
+  onRequestClose: PropTypes.func,
+  selectedValue: PropTypes.string,
+};
+
+const styleSheet = createStyleSheet('ConfirmationDialogDemo', theme => ({
   root: {
     width: '100%',
     maxWidth: 360,
@@ -122,11 +114,11 @@ class ConfirmationDialogDemo extends Component {
 
   button = undefined;
 
-  handleClickListItem = (event) => {
+  handleClickListItem = event => {
     this.setState({ open: true, anchorEl: event.currentTarget });
   };
 
-  handleRequestClose = (value) => {
+  handleRequestClose = value => {
     this.setState({ selectedValue: value, open: false });
   };
 
@@ -146,16 +138,10 @@ class ConfirmationDialogDemo extends Component {
             aria-label="Phone ringtone"
             onClick={this.handleClickListItem}
           >
-            <ListItemText
-              primary="Phone ringtone"
-              secondary={this.state.selectedValue}
-            />
+            <ListItemText primary="Phone ringtone" secondary={this.state.selectedValue} />
           </ListItem>
           <ListItem button divider disabled>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
+            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
           </ListItem>
           <ConfirmationDialog
             maxWidth="xs"

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiDialogActions', (theme) => ({
+export const styleSheet = createStyleSheet('MuiDialogActions', theme => ({
   root: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -18,32 +18,20 @@ export const styleSheet = createStyleSheet('MuiDialogActions', (theme) => ({
     margin: '0 4px',
   },
   button: {
-    minWidth: '64px',
+    minWidth: 64,
   },
 }));
 
 function DialogActions(props) {
-  const {
-    children,
-    classes,
-    className,
-    ...other
-  } = props;
+  const { children, classes, className, ...other } = props;
 
   return (
-    <div
-      data-mui-test="DialogActions"
-      className={classNames(classes.root, className)}
-      {...other}
-    >
-      {Children.map(children, (button) => (
+    <div data-mui-test="DialogActions" className={classNames(classes.root, className)} {...other}>
+      {Children.map(children, button =>
         <div className={classes.action}>
-          {cloneElement(
-            button,
-            { className: classNames(classes.button, button.props.className) },
-          )}
-        </div>
-      ))}
+          {cloneElement(button, { className: classNames(classes.button, button.props.className) })}
+        </div>,
+      )}
     </div>
   );
 }

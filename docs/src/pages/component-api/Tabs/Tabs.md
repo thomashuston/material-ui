@@ -1,6 +1,6 @@
 # Tabs
 
-
+Notice that this Component is incompatible with server side rendering.
 
 ## Props
 | Name | Type | Default | Description |
@@ -10,7 +10,7 @@
 | children | node |  | The content of the component. |
 | classes | object |  | Useful to extend the style applied to components. |
 | fullWidth | bool | false | If `true`, the tabs will grow to use all the available space. This property is intended for small views. |
-| index | number |  | The index of the currently selected `Tab`. |
+| <span style="color: #31a148">index *</span> | union:&nbsp;[object Object]<br>&nbsp;number<br> |  | The index of the currently selected `Tab`. If you don't want any selected `Tab`, you can set this property to `false`. |
 | indicatorClassName | string |  | The CSS class name of the indicator element. |
 | indicatorColor | union:&nbsp;[object Object]<br>&nbsp;string<br> | 'accent' | Determines the color of the indicator. |
 | <span style="color: #31a148">onChange *</span> | function |  | Function called when the index change. |
@@ -19,7 +19,8 @@
 | textColor | union:&nbsp;[object Object],[object Object]<br>&nbsp;string<br> | 'inherit' | Determines the color of the `Tab`. |
 
 Any other properties supplied will be spread to the root element.
-## Classes
+
+## CSS API
 
 You can overrides all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:

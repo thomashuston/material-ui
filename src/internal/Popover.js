@@ -41,7 +41,7 @@ function getOffsetLeft(rect, horizontal) {
 
 function getTransformOriginValue(transformOrigin) {
   return [transformOrigin.horizontal, transformOrigin.vertical]
-    .map((n) => {
+    .map(n => {
       return typeof n === 'number' ? `${n}px` : n;
     })
     .join(' ');
@@ -80,7 +80,7 @@ class Popover extends Component {
 
   autoTransitionDuration = undefined;
 
-  handleEnter = (element) => {
+  handleEnter = element => {
     element.style.opacity = 0;
     element.style.transform = Popover.getScale(0.75);
 
@@ -112,7 +112,7 @@ class Popover extends Component {
     ].join(',');
   };
 
-  handleEntering = (element) => {
+  handleEntering = element => {
     element.style.opacity = 1;
     element.style.transform = Popover.getScale(1);
 
@@ -121,7 +121,7 @@ class Popover extends Component {
     }
   };
 
-  handleExit = (element) => {
+  handleExit = element => {
     let { transitionDuration } = this.props;
     const { transitions } = this.context.styleManager.theme;
 
@@ -238,7 +238,7 @@ class Popover extends Component {
     if (this.props.getContentAnchorEl) {
       const contentAnchorEl = this.props.getContentAnchorEl(element);
       if (contentAnchorEl && contains(element, contentAnchorEl)) {
-        contentAnchorOffset = contentAnchorEl.offsetTop + (contentAnchorEl.clientHeight / 2) || 0;
+        contentAnchorOffset = contentAnchorEl.offsetTop + contentAnchorEl.clientHeight / 2 || 0;
       }
     }
 
@@ -262,23 +262,23 @@ class Popover extends Component {
       children,
       classes,
       className,
-      modal, // eslint-disable-line no-unused-vars
+      modal,
       onRequestClose,
       open,
-      getContentAnchorEl, // eslint-disable-line no-unused-vars
-      anchorEl, // eslint-disable-line no-unused-vars
-      anchorOrigin, // eslint-disable-line no-unused-vars
-      role, // eslint-disable-line no-unused-vars
-      transformOrigin, // eslint-disable-line no-unused-vars
-      transitionDuration, // eslint-disable-line no-unused-vars
+      getContentAnchorEl,
+      anchorEl,
+      anchorOrigin,
+      role,
+      transformOrigin,
+      transitionDuration,
       enteredClassName,
       enteringClassName,
       exitedClassName,
       exitingClassName,
-      onEnter, // eslint-disable-line no-unused-vars
-      onEntering, // eslint-disable-line no-unused-vars
+      onEnter,
+      onEntering,
       onEntered,
-      onExit, // eslint-disable-line no-unused-vars
+      onExit,
       onExiting,
       onExited,
       elevation,
@@ -286,11 +286,7 @@ class Popover extends Component {
     } = this.props;
 
     return (
-      <Modal
-        show={open}
-        backdropInvisible
-        onRequestClose={onRequestClose}
-      >
+      <Modal show={open} backdropInvisible onRequestClose={onRequestClose}>
         <Transition
           in={open}
           enteredClassName={enteredClassName}

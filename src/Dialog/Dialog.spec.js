@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Dialog, { styleSheet } from './Dialog';
 import Paper from '../Paper';
 
@@ -21,11 +21,12 @@ describe('<Dialog />', () => {
   });
 
   it('should render a Modal with transition', () => {
-    const wrapper = shallow(
-      <Dialog transition={<div className="cloned-element-class" />} />,
+    const wrapper = shallow(<Dialog transition={<div className="cloned-element-class" />} />);
+    assert.strictEqual(
+      wrapper.find('.cloned-element-class').length,
+      1,
+      'should include element given in transition',
     );
-    assert.strictEqual(wrapper.find('.cloned-element-class').length, 1,
-      'should include element given in transition');
   });
 
   it('should put Modal specific props on the root Modal node', () => {
@@ -83,13 +84,13 @@ describe('<Dialog />', () => {
   it('should not be open by default', () => {
     const wrapper = shallow(<Dialog />);
     assert.strictEqual(wrapper.props().show, false, 'should pass show=false to the Modal');
-    assert.strictEqual(wrapper.find('Fade').prop('in'), false, 'should pass in=false to the Fade');
+    assert.strictEqual(wrapper.find('Fade').props().in, false, 'should pass in=false to the Fade');
   });
 
   it('should be open by default', () => {
     const wrapper = shallow(<Dialog open />);
     assert.strictEqual(wrapper.props().show, true, 'should pass show=true to the Modal');
-    assert.strictEqual(wrapper.find('Fade').prop('in'), true, 'should pass in=true to the Fade');
+    assert.strictEqual(wrapper.find('Fade').props().in, true, 'should pass in=true to the Fade');
   });
 
   it('should fade down and make the transition appear on first mount', () => {
@@ -112,7 +113,7 @@ describe('<Dialog />', () => {
   describe('prop: maxWidth', () => {
     it('should use the right className', () => {
       const wrapper = shallow(<Dialog maxWidth="xs" />);
-      assert.strictEqual(wrapper.find(Paper).hasClass(classes['dialogWidth-xs']), true);
+      assert.strictEqual(wrapper.find(Paper).hasClass(classes.dialogWidthXs), true);
     });
   });
 

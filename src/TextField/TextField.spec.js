@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow, createMount } from 'src/test-utils';
+import { createShallow, createMount } from '../test-utils';
 import Input, { InputLabel } from '../Input';
+import FormHelperText from '../Form/FormHelperText';
 import TextField from './TextField';
 
 describe('<TextField />', () => {
@@ -46,8 +47,13 @@ describe('<TextField />', () => {
         assert.strictEqual(wrapper.childAt(0).props().multiline, true);
       });
 
-      it('should pass inputClassName to the Input as className', () => {
+      it('should pass inputClassName to the input as className', () => {
         wrapper.setProps({ inputClassName: 'foo' });
+        assert.strictEqual(wrapper.find(Input).props().inputProps.className, 'foo');
+      });
+
+      it('should pass InputClassName to the Input as className', () => {
+        wrapper.setProps({ InputClassName: 'foo' });
         assert.strictEqual(wrapper.find(Input).hasClass('foo'), true);
       });
     });
@@ -75,6 +81,29 @@ describe('<TextField />', () => {
       });
     });
 
+    describe('with a helper text', () => {
+      beforeEach(() => {
+        wrapper.setProps({ helperText: 'Foo bar' });
+      });
+
+      it('should have 2 children', () => {
+        assert.strictEqual(wrapper.children().length, 2);
+      });
+
+      it('should have an FormHelperText as the second child', () => {
+        assert.strictEqual(wrapper.childAt(1).is(FormHelperText), true);
+      });
+
+      it('should pass helperTextClassName to the FormHelperText as className', () => {
+        wrapper.setProps({ helperTextClassName: 'foo' });
+        assert.strictEqual(wrapper.find(FormHelperText).hasClass('foo'), true);
+      });
+
+      it('should have an Input as the first child', () => {
+        assert.strictEqual(wrapper.childAt(0).is(Input), true);
+      });
+    });
+
     describe('prop: InputProps', () => {
       it('should apply additional properties to the Input component', () => {
         wrapper.setProps({
@@ -89,13 +118,13 @@ describe('<TextField />', () => {
 
   describe('prop: inputProps', () => {
     it('should apply additional properties to the Input component', () => {
-      const wrapper = mount((
+      const wrapper = mount(
         <TextField
           inputProps={{
             readOnly: true,
           }}
-        />
-      ));
+        />,
+      );
       assert.strictEqual(wrapper.find('input').props().readOnly, true);
     });
   });

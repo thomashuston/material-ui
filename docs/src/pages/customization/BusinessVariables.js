@@ -6,17 +6,16 @@ import { MuiThemeProvider, createMuiTheme, withStyles, createStyleSheet } from '
 import { orange } from 'material-ui/styles/colors';
 import Checkbox from 'material-ui/Checkbox';
 
-const styleSheet = createStyleSheet('BusinessCheckbox', (theme) => ({
+const styleSheet = createStyleSheet('BusinessCheckbox', theme => ({
   danger: {
     color: theme.status.danger,
   },
 }));
 
-let BusinessCheckbox = (props) => (
+let BusinessCheckbox = props =>
   <Checkbox defaultChecked className={props.classes.danger}>
     {'Danger'}
-  </Checkbox>
-);
+  </Checkbox>;
 
 BusinessCheckbox.propTypes = {
   classes: PropTypes.object.isRequired,
@@ -25,7 +24,8 @@ BusinessCheckbox.propTypes = {
 BusinessCheckbox = withStyles(styleSheet)(BusinessCheckbox);
 
 const theme = createMuiTheme({
-  status: { // My business variables
+  status: {
+    // My business variables
     danger: orange[500],
   },
 });

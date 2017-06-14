@@ -8,8 +8,8 @@ import withStyles from '../styles/withStyles';
 import Typography from '../Typography';
 import CardContent from './CardContent';
 
-export const styleSheet = createStyleSheet('MuiCardHeader', (theme) => ({
-  cardHeader: {
+export const styleSheet = createStyleSheet('MuiCardHeader', theme => ({
+  root: {
     display: 'flex',
     alignItems: 'center',
   },
@@ -23,16 +23,9 @@ export const styleSheet = createStyleSheet('MuiCardHeader', (theme) => ({
 }));
 
 function CardHeader(props) {
-  const {
-    avatar,
-    classes,
-    className: classNameProp,
-    subheader,
-    title,
-    ...other
-  } = props;
+  const { avatar, classes, className: classNameProp, subheader, title, ...other } = props;
 
-  const className = classNames(classes.cardHeader, classNameProp);
+  const className = classNames(classes.root, classNameProp);
 
   // Adjustments that depend on the presence of an avatar
   const titleType = avatar ? 'body2' : 'headline';
@@ -43,13 +36,12 @@ function CardHeader(props) {
       {avatar &&
         <div className={classes.avatar}>
           {avatar}
-        </div>
-      }
+        </div>}
       <div className={classes.content}>
         <Typography type={titleType} component="span">
           {title}
         </Typography>
-        <Typography type={subheaderType} component="span" secondary>
+        <Typography type={subheaderType} component="span" color="secondary">
           {subheader}
         </Typography>
       </div>

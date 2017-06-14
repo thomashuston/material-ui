@@ -28,7 +28,7 @@ function getTitle(routes) {
   return null;
 }
 
-const styleSheet = createStyleSheet('AppFrame', (theme) => ({
+const styleSheet = createStyleSheet('AppFrame', theme => ({
   '@global': {
     html: {
       boxSizing: 'border-box',
@@ -65,8 +65,6 @@ const styleSheet = createStyleSheet('AppFrame', (theme) => ({
     flex: '0 1 auto',
   },
   appBar: {
-    left: 'auto',
-    right: 0,
     transition: theme.transitions.create('width'),
   },
   appBarHome: {
@@ -104,11 +102,7 @@ class AppFrame extends Component {
   };
 
   render() {
-    const {
-      children,
-      routes,
-      width,
-    } = this.props;
+    const { children, routes, width } = this.props;
 
     const classes = this.props.classes;
     const title = getTitle(routes);
@@ -117,7 +111,8 @@ class AppFrame extends Component {
     let navIconClassName = classes.icon;
     let appBarClassName = classes.appBar;
 
-    if (title === null) { // home route, don't shift app bar or dock drawer
+    if (title === null) {
+      // home route, don't shift app bar or dock drawer
       drawerDocked = false;
       appBarClassName += ` ${classes.appBarHome}`;
     } else {
@@ -129,26 +124,24 @@ class AppFrame extends Component {
       <div className={classes.appFrame}>
         <AppBar className={appBarClassName}>
           <Toolbar>
-            <IconButton contrast onClick={this.handleDrawerToggle} className={navIconClassName}>
+            <IconButton
+              color="contrast"
+              onClick={this.handleDrawerToggle}
+              className={navIconClassName}
+            >
               <MenuIcon />
             </IconButton>
-            {title !== null && (
-              <Typography
-                className={classes.title}
-                type="title"
-                colorInherit
-                noWrap
-              >
+            {title !== null &&
+              <Typography className={classes.title} type="title" color="inherit" noWrap>
                 {title}
-              </Typography>
-            )}
+              </Typography>}
             <div className={classes.grow} />
             <AppSearch />
             <DemoButton routes={routes} />
             <ApiMenu routes={routes} />
             <IconButton
               title="Toggle light/dark theme"
-              contrast
+              color="contrast"
               onClick={this.handleToggleShade}
             >
               <LightbulbOutline />
@@ -156,7 +149,7 @@ class AppFrame extends Component {
             <IconButton
               component="a"
               title="GitHub"
-              contrast
+              color="contrast"
               href="https://github.com/callemall/material-ui/tree/next"
             >
               <Github />
@@ -184,8 +177,4 @@ AppFrame.propTypes = {
   width: PropTypes.string.isRequired,
 };
 
-export default compose(
-  withStyles(styleSheet),
-  withWidth(),
-  connect(),
-)(AppFrame);
+export default compose(withStyles(styleSheet), withWidth(), connect())(AppFrame);

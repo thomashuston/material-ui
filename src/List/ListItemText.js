@@ -7,7 +7,7 @@ import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 import Typography from '../Typography';
 
-export const styleSheet = createStyleSheet('MuiListItemText', (theme) => ({
+export const styleSheet = createStyleSheet('MuiListItemText', theme => ({
   root: {
     flex: '1 1 auto',
     padding: '0 16px',
@@ -32,33 +32,40 @@ function ListItemText(props, context) {
   const {
     classes,
     className: classNameProp,
+    disableTypography,
     primary,
     secondary,
     inset,
     ...other
   } = props;
   const { dense } = context;
-  const className = classNames(classes.root, {
-    [classes.dense]: dense,
-    [classes.inset]: inset,
-  }, classNameProp);
+  const className = classNames(
+    classes.root,
+    {
+      [classes.dense]: dense,
+      [classes.inset]: inset,
+    },
+    classNameProp,
+  );
 
   return (
     <div className={className} {...other}>
-      {primary && (
-        typeof primary === 'string' ? (
-          <Typography type="subheading" className={classNames({ [classes.text]: dense })}>
-            {primary}
-          </Typography>
-        ) : primary
-      )}
-      {secondary && (
-        typeof secondary === 'string' ? (
-          <Typography secondary type="body1" className={classNames({ [classes.text]: dense })}>
-            {secondary}
-          </Typography>
-        ) : secondary
-      )}
+      {primary &&
+        (disableTypography
+          ? primary
+          : <Typography type="subheading" className={classNames({ [classes.text]: dense })}>
+              {primary}
+            </Typography>)}
+      {secondary &&
+        (disableTypography
+          ? secondary
+          : <Typography
+              color="secondary"
+              type="body1"
+              className={classNames({ [classes.text]: dense })}
+            >
+              {secondary}
+            </Typography>)}
     </div>
   );
 }
@@ -73,6 +80,11 @@ ListItemText.propTypes = {
    */
   className: PropTypes.string,
   /**
+   * If `true`, the children won't be wrapped by a typography component.
+   * For instance, that can be usefull to can render an h4 instead of a
+   */
+  disableTypography: PropTypes.bool,
+  /**
    * If `true`, the children will be indented.
    * This should be used if there is no left avatar or left icon.
    */
@@ -82,6 +94,7 @@ ListItemText.propTypes = {
 };
 
 ListItemText.defaultProps = {
+  disableTypography: false,
   primary: false,
   secondary: false,
   inset: false,

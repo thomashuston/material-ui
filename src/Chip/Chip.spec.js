@@ -4,7 +4,7 @@ import React from 'react';
 import keycode from 'keycode';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createShallow } from 'src/test-utils';
+import { createShallow, createMount } from '../test-utils';
 import Chip, { styleSheet } from './Chip';
 import Avatar from '../Avatar';
 
@@ -22,10 +22,7 @@ describe('<Chip />', () => {
 
     before(() => {
       wrapper = shallow(
-        <Chip
-          className="my-Chip"
-          data-my-prop="woof"
-        >
+        <Chip className="my-Chip" data-my-prop="woof">
           Text Chip
         </Chip>,
       );
@@ -54,11 +51,7 @@ describe('<Chip />', () => {
     before(() => {
       handleClick = () => {};
       wrapper = shallow(
-        <Chip
-          className="my-Chip"
-          data-my-prop="woof"
-          onClick={handleClick}
-        >
+        <Chip className="my-Chip" data-my-prop="woof" onClick={handleClick}>
           Text Chip
         </Chip>,
       );
@@ -116,8 +109,7 @@ describe('<Chip />', () => {
       assert.strictEqual(wrapper.name(), 'button');
       assert.strictEqual(wrapper.childAt(0).is(Avatar), true, 'should have an Avatar');
       assert.strictEqual(wrapper.childAt(1).is('span'), true, 'should have a span');
-      assert.strictEqual(wrapper.childAt(2).is('pure(Cancel)'), true,
-        'should be an svg icon');
+      assert.strictEqual(wrapper.childAt(2).is('pure(Cancel)'), true, 'should be an svg icon');
     });
 
     it('should merge user classes & spread custom props to the root node', () => {
@@ -141,8 +133,11 @@ describe('<Chip />', () => {
       wrapper.setProps({ onRequestDelete: onRequestDeleteSpy });
 
       wrapper.find('pure(Cancel)').simulate('click', { stopPropagation: () => {} });
-      assert.strictEqual(onRequestDeleteSpy.callCount, 1,
-        'should have called the onRequestDelete hanlder');
+      assert.strictEqual(
+        onRequestDeleteSpy.callCount,
+        1,
+        'should have called the onRequestDelete hanlder',
+      );
     });
 
     it('should stop propagation in onDeleteRequest', () => {
@@ -151,8 +146,11 @@ describe('<Chip />', () => {
       wrapper.setProps({ onRequestDelete: onRequestDeleteSpy });
 
       wrapper.find('pure(Cancel)').simulate('click', { stopPropagation: stopPropagationSpy });
-      assert.strictEqual(stopPropagationSpy.callCount, 1,
-        'should have called the stopPropagation hanlder');
+      assert.strictEqual(
+        stopPropagationSpy.callCount,
+        1,
+        'should have called the stopPropagation hanlder',
+      );
     });
   });
 
@@ -162,10 +160,7 @@ describe('<Chip />', () => {
 
     before(() => {
       wrapper = shallow(
-        <Chip
-          className="my-Chip"
-          data-my-prop="woof"
-        >
+        <Chip className="my-Chip" data-my-prop="woof">
           Text Chip
         </Chip>,
       );
@@ -176,12 +171,38 @@ describe('<Chip />', () => {
 
     it('should call onKeyDown when a key is pressed', () => {
       const anyKeydownEvent = {
-        preventDefault: () => {},
         keyCode: keycode('p'),
       };
       wrapper.find('button').simulate('keydown', anyKeydownEvent);
       assert.strictEqual(onKeyDownSpy.callCount, 1, 'should have called onKeyDown');
       assert(onKeyDownSpy.calledWith(anyKeydownEvent));
+    });
+
+    describe('escape', () => {
+      let mount;
+
+      before(() => {
+        mount = createMount();
+      });
+
+      after(() => {
+        mount.cleanUp();
+      });
+
+      it('should unfocus when a esc key is pressed', () => {
+        const wrapper2 = mount(
+          <Chip.Naked classes={{}}>
+            Text Chip
+          </Chip.Naked>,
+        );
+        const handleBlur = spy();
+        wrapper2.instance().chipRef.blur = handleBlur;
+        wrapper2.find('button').simulate('keydown', {
+          preventDefault: () => {},
+          keyCode: keycode('esc'),
+        });
+        assert.strictEqual(handleBlur.callCount, 1);
+      });
     });
 
     describe('onClick is defined', () => {
@@ -220,7 +241,7 @@ describe('<Chip />', () => {
       });
     });
 
-    describe('onRequestDelete is defined  and `backspace is pressed', () => {
+    describe('onRequestDelete is defined and `backspace` is pressed', () => {
       it('should call onRequestDelete', () => {
         const onRequestDeleteSpy = spy();
         wrapper.setProps({ onRequestDelete: onRequestDeleteSpy });
@@ -228,7 +249,7 @@ describe('<Chip />', () => {
         const preventDefaultSpy = spy();
         const backspaceKeydownEvent = {
           preventDefault: preventDefaultSpy,
-          keyCode: 8, // keycode `backspace`
+          keyCode: keycode('backspace'),
         };
         wrapper.find('button').simulate('keydown', backspaceKeydownEvent);
 

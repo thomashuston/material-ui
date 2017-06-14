@@ -1,4 +1,4 @@
-// @flow weak
+// @flow
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -61,13 +61,10 @@ vrtest.before(() => {
     document.body.appendChild(rootEl);
   }
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     webfontloader.load({
       google: {
-        families: [
-          'Roboto:300,400,500',
-          'Material+Icons',
-        ],
+        families: ['Roboto:300,400,500', 'Material+Icons'],
       },
       timeout: 20000,
       active: () => {
@@ -83,7 +80,7 @@ vrtest.before(() => {
 let suite;
 
 const tests = regressions.concat(demos);
-tests.forEach(((test) => {
+tests.forEach(test => {
   if (!suite || suite.name !== test.suite) {
     suite = vrtest.createSuite(test.suite);
   }
@@ -99,4 +96,4 @@ tests.forEach(((test) => {
       rootEl,
     );
   });
-}));
+});

@@ -6,7 +6,7 @@ import { createStyleSheet } from 'jss-theme-reactor';
 import createSwitch from '../internal/SwitchBase';
 import withSwitchLabel from '../internal/withSwitchLabel';
 
-export const styleSheet = createStyleSheet('MuiCheckbox', (theme) => ({
+export const styleSheet = createStyleSheet('MuiCheckbox', theme => ({
   default: {
     color: theme.palette.text.secondary,
   },
@@ -68,6 +68,10 @@ CheckboxDocs.propTypes = {
    * If a string is provided, it will be used as a font ligature.
    */
   icon: PropTypes.node,
+  /**
+   * Properties applied to the `input` element.
+   */
+  inputProps: PropTypes.object,
   /*
    * @ignore
    */

@@ -1,7 +1,7 @@
 # Themes
 
-Themes let you apply a consistent tone to an app.
-It allows to **customize all the design aspects** in order to meet the needs of UI diversity from business and brand.
+Themes let you apply a consistent tone to your app.
+It allows you to **customize all design aspects** of your project in order to meet the specific needs of your business or brand.
 
 The theme specifies the darkness of the surfaces, level of shadow, appropriate opacity of ink elements, etc.
 To promote greater consistency between apps, light and dark themes are available to choose from.
@@ -9,19 +9,19 @@ We are using [jss-theme-reactor](https://github.com/nathanmarks/jss-theme-reacto
 
 ## Configuration variables
 
-Changing the configurations variables is the most effective way to get Material-UI matching your needs. By default, your Material-UI application will use the default theme.
+Changing the configurations variables is the most effective way to match Material-UI to your needs. By default, your Material-UI application will use the light theme.
 
 ### Palette
 
 #### Intentions
 
-A color intention is a mapping of a palette for a given intention within your application.
+A color intention is a mapping of a palette to a given intention within your application.
 
 We expose the following color intentions:
 
-- primary - used to represent primary interface elements for a user
-- accent - used to represent secondary interface elements for a user
-- error - used to represent interface elements that the user should be careful of
+- primary - used to represent primary interface elements for a user.
+- accent - used to represent secondary interface elements for a user.
+- error - used to represent interface elements that the user should be careful of.
 
 #### Example
 
@@ -32,14 +32,14 @@ If you want to learn more about color, you can check out [this section](/style/c
 
 ### Dark/light theme
 
-You can make a theme as dark by setting `type` to `dark`.
+You can make a theme dark by setting `type` to `dark`.
 
 {{demo='pages/customization/DarkTheme.js'}}
 
 ### The other variables
 
-We have tried to normalized the implementation by adding much more variables: the typography, the breakpoints, the transitions, etc. You can see below what the theme object looks like with the default values.
-If you want to learn more about it, we suggesting having a look at [`material-ui/style/theme.js`](https://github.com/callemall/material-ui/blob/next/src/styles/theme.js).
+We have tried to normalize the implementation by adding many more variables: typography, breakpoints, transitions, etc. You can see below what the theme object looks like with the default values.
+If you want to learn more, we suggesting having a look at [`material-ui/style/theme.js`](https://github.com/callemall/material-ui/blob/next/src/styles/theme.js).
 
 {{demo='pages/customization/ThemeDefault.js'}}
 
@@ -47,7 +47,7 @@ If you want to learn more about it, we suggesting having a look at [`material-ui
 
 When using our [styling solution](/customization/css-in-js) with your own components,
 you can also take advantage of the theme.
-It can be convinient to add additional variables to the theme so you can use them everywhere.
+It can be convenient to add additional variables to the theme so you can use them everywhere.
 For instance:
 
 {{demo='pages/customization/BusinessVariables.js'}}
@@ -55,14 +55,14 @@ For instance:
 ## Customizing all instances of a component type
 
 When the configuration variables aren't powerful enough, you can take advantage of the
-`overrides` key to potentially change every single style injected by Material-UI in the DOM.
+`overrides` key to potentially change every single style injected by Material-UI into the DOM.
 That's a really powerful feature.
 
 {{demo='pages/customization/OverridesTheme.js'}}
 
-The list of those customization points are documented under the *Component API* section.
-For instance, you can have a look at the [Button](/component-api/button#classes).
-Alternatively you can have a look at the [implementation](https://github.com/callemall/material-ui/tree/next/src).
+The list of these customization points for each component is documented under the **Component API** section.
+For instance, you can have a look at the [Button](/component-api/button#css-api).
+Alternatively, you can always have a look at the [implementation](https://github.com/callemall/material-ui/blob/next/src/Button/Button.js).
 
 ## Accessing the theme in a component
 
@@ -76,7 +76,7 @@ Let's say you want to display the value of the primary color, you can use the `w
 ### `<MuiThemeProvider />`
 
 This component takes a `theme` and a `styleManager` as properties.
-He is making them available down the React tree thanks to the context.
+It makes the `styleManager` available down the React tree thanks to React context, with the theme object as its property: `styleManager.theme`.
 This component should preferably be used at **the root of your component tree**.
 
 #### Examples

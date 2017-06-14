@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Paper, { styleSheet } from './Paper';
 
 describe('<Paper />', () => {
@@ -17,9 +17,7 @@ describe('<Paper />', () => {
   });
 
   it('should render a div', () => {
-    const wrapper = shallow(
-      <Paper>Hello World</Paper>,
-    );
+    const wrapper = shallow(<Paper>Hello World</Paper>);
     assert.strictEqual(wrapper.name(), 'div');
   });
 
@@ -36,11 +34,11 @@ describe('<Paper />', () => {
 
   it('should set the elevation shadow class', () => {
     const wrapper = shallow(<Paper elevation={16}>Hello World</Paper>);
-    assert.strictEqual(wrapper.hasClass(classes.dp16), true, 'should have the dp16 shadow class');
+    assert.strictEqual(wrapper.hasClass(classes.shadow16), true, 'should have the 16 shadow class');
     wrapper.setProps({ elevation: 24 });
-    assert.strictEqual(wrapper.hasClass(classes.dp24), true, 'should have the dp24 shadow class');
+    assert.strictEqual(wrapper.hasClass(classes.shadow24), true, 'should have the 24 shadow class');
     wrapper.setProps({ elevation: 2 });
-    assert.strictEqual(wrapper.hasClass(classes.dp2), true, 'should have the dp2 shadow class');
+    assert.strictEqual(wrapper.hasClass(classes.shadow2), true, 'should have the 2 shadow class');
   });
 
   describe('prop: component', () => {

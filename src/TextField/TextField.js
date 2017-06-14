@@ -4,44 +4,56 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Input, { InputLabel } from '../Input';
 import FormControl from '../Form/FormControl';
+import FormHelperText from '../Form/FormHelperText';
 
 function TextField(props) {
   const {
+    autoFocus,
     className,
     defaultValue,
     disabled,
     error,
     id,
     inputClassName,
-    inputProps,
+    InputClassName,
+    inputProps: inputPropsProp,
     InputProps,
     inputRef,
     label,
     labelClassName,
+    InputLabelProps,
+    helperText,
+    helperTextClassName,
+    FormHelperTextProps,
     name,
     required,
     type,
     multiline,
+    rootRef,
     rows,
     rowsMax,
     value,
     ...other
   } = props;
 
+  let inputProps = inputPropsProp;
+
+  if (inputClassName) {
+    inputProps = {
+      className: inputClassName,
+      ...inputProps,
+    };
+  }
+
   return (
-    <FormControl
-      className={className}
-      error={error}
-      required={required}
-      {...other}
-    >
-      {label && (
-        <InputLabel className={labelClassName}>
+    <FormControl ref={rootRef} className={className} error={error} required={required} {...other}>
+      {label &&
+        <InputLabel className={labelClassName} {...InputLabelProps}>
           {label}
-        </InputLabel>
-      )}
+        </InputLabel>}
       <Input
-        className={inputClassName}
+        autoFocus={autoFocus}
+        className={InputClassName}
         defaultValue={defaultValue}
         disabled={disabled}
         multiline={multiline}
@@ -55,11 +67,19 @@ function TextField(props) {
         inputRef={inputRef}
         {...InputProps}
       />
+      {helperText &&
+        <FormHelperText className={helperTextClassName} {...FormHelperTextProps}>
+          {helperText}
+        </FormHelperText>}
     </FormControl>
   );
 }
 
 TextField.propTypes = {
+  /**
+   * @ignore
+   */
+  autoFocus: PropTypes.bool,
   /**
    * @ignore
    */
@@ -76,14 +96,34 @@ TextField.propTypes = {
    * If `true`, the label will be displayed in an error state.
    */
   error: PropTypes.bool,
+  /**
+   * Properties applied to the `FormHelperText` element.
+   */
+  FormHelperTextProps: PropTypes.object,
+  /**
+   * The helper text content.
+   */
+  helperText: PropTypes.node,
+  /**
+   * The CSS class name of the helper text element.
+   */
+  helperTextClassName: PropTypes.string,
   /*
    * @ignore
    */
   id: PropTypes.string,
   /**
-   * The CSS class name of the `Input` element.
+   * The CSS class name of the `input` element.
    */
   inputClassName: PropTypes.string,
+  /**
+   * The CSS class name of the `Input` element.
+   */
+  InputClassName: PropTypes.string,
+  /**
+   * Properties applied to the `InputLabel` element.
+   */
+  InputLabelProps: PropTypes.object,
   /**
    * Properties applied to the `input` element.
    */
@@ -116,6 +156,10 @@ TextField.propTypes = {
    * If `true`, the label is displayed as required.
    */
   required: PropTypes.bool,
+  /**
+   * Use that property to pass a ref callback to the root component.
+   */
+  rootRef: PropTypes.func,
   /**
    * Number of rows to display when multiline option is set to true.
    */

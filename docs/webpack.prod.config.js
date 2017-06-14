@@ -1,13 +1,13 @@
 // @flow weak
+/* eslint-disable import/no-unresolved */
+
 const webpack = require('webpack');
 const webpackBaseConfig = require('./webpackBaseConfig');
 const dllManifest = require('./build/dll.manifest.json');
 
 module.exports = Object.assign({}, webpackBaseConfig, {
   entry: {
-    main: [
-      './src/index',
-    ],
+    main: ['./src/index'],
   },
   module: Object.assign({}, webpackBaseConfig.module, {
     rules: webpackBaseConfig.module.rules.concat([

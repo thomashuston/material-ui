@@ -3,8 +3,9 @@
 import React from 'react';
 import { spy } from 'sinon';
 import { assert } from 'chai';
-import { createShallow, consoleErrorMock, createMount } from 'src/test-utils';
 import { createStyleSheet } from 'jss-theme-reactor';
+import { createShallow, createMount } from '../test-utils';
+import consoleErrorMock from '../../test/utils/consoleErrorMock';
 import withStyles from './withStyles';
 
 const Empty = () => <div />;

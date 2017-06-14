@@ -8,17 +8,16 @@ import SwipeableViews from 'react-swipeable-views';
 import Paper from 'material-ui/Paper';
 import Tabs, { Tab } from 'material-ui/Tabs';
 
-const TabContainer = (props) => (
+const TabContainer = props =>
   <div style={{ padding: 20 }}>
     {props.children}
-  </div>
-);
+  </div>;
 
 TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const styleSheet = createStyleSheet('FullWidthTabs', (theme) => ({
+const styleSheet = createStyleSheet('FullWidthTabs', theme => ({
   root: {
     flexGrow: 1,
     marginTop: 30,
@@ -37,7 +36,7 @@ class FullWidthTabs extends Component {
     this.setState({ index });
   };
 
-  handleChangeIndex = (index) => {
+  handleChangeIndex = index => {
     this.setState({ index });
   };
 
@@ -47,12 +46,7 @@ class FullWidthTabs extends Component {
     return (
       <Paper style={{ width: 500 }}>
         <div className={classes.appBar}>
-          <Tabs
-            index={this.state.index}
-            onChange={this.handleChange}
-            textColor="accent"
-            fullWidth
-          >
+          <Tabs index={this.state.index} onChange={this.handleChange} textColor="accent" fullWidth>
             <Tab label="Item One" />
             <Tab label="Item Two" />
             <Tab label="Item Three" />

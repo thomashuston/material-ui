@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
+import { findDOMNode } from 'react-dom';
 import { createStyleSheet } from 'jss-theme-reactor';
 import getScrollbarSize from 'dom-helpers/util/scrollbarSize';
 import Popover from '../internal/Popover';
@@ -11,7 +11,7 @@ import withStyles from '../styles/withStyles';
 import MenuList from './MenuList';
 
 export const styleSheet = createStyleSheet('MuiMenu', {
-  popover: {
+  root: {
     maxHeight: 250,
   },
 });
@@ -24,15 +24,14 @@ class Menu extends Component {
 
   menuList = undefined;
 
-  handleEnter = (element) => {
-    const list = ReactDOM.findDOMNode(this.menuList);
+  handleEnter = element => {
+    const list = findDOMNode(this.menuList);
 
     if (this.menuList && this.menuList.selectedItem) {
-       // $FlowFixMe
-      ReactDOM.findDOMNode(this.menuList.selectedItem)
-        .focus();
+      // $FlowFixMe
+      findDOMNode(this.menuList.selectedItem).focus();
     } else if (list) {
-       // $FlowFixMe
+      // $FlowFixMe
       list.firstChild.focus();
     }
 
@@ -53,7 +52,7 @@ class Menu extends Component {
   handleListKeyDown = (event, key) => {
     if (key === 'tab') {
       event.preventDefault();
-      return this.props.onRequestClose();
+      return this.props.onRequestClose(event);
     }
 
     return false;
@@ -62,10 +61,10 @@ class Menu extends Component {
   getContentAnchorEl = () => {
     if (!this.menuList || !this.menuList.selectedItem) {
       // $FlowFixMe
-      return ReactDOM.findDOMNode(this.menuList).firstChild;
+      return findDOMNode(this.menuList).firstChild;
     }
 
-    return ReactDOM.findDOMNode(this.menuList.selectedItem);
+    return findDOMNode(this.menuList.selectedItem);
   };
 
   render() {
@@ -76,7 +75,7 @@ class Menu extends Component {
       className,
       open,
       MenuListProps,
-      onEnter, // eslint-disable-line no-unused-vars
+      onEnter,
       onEntering,
       onEntered,
       onExit,
@@ -91,7 +90,7 @@ class Menu extends Component {
       <Popover
         anchorEl={anchorEl}
         getContentAnchorEl={this.getContentAnchorEl}
-        className={classNames(classes.popover, className)}
+        className={classNames(classes.root, className)}
         open={open}
         enteredClassName={classes.entered}
         onEnter={this.handleEnter}
@@ -107,7 +106,9 @@ class Menu extends Component {
         <MenuList
           data-mui-test="Menu"
           role="menu"
-          ref={(node) => { this.menuList = node; }}
+          ref={node => {
+            this.menuList = node;
+          }}
           onKeyDown={this.handleListKeyDown}
           {...MenuListProps}
         >

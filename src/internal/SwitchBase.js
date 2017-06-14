@@ -29,12 +29,14 @@ export const styleSheet = createStyleSheet('MuiSwitchBase', {
   },
 });
 
-export default function createSwitch({
-  defaultIcon = <CheckBoxOutlineBlankIcon aria-hidden="true" />,
-  defaultCheckedIcon = <CheckBoxIcon aria-hidden="true" />,
-  inputType = 'checkbox',
-  styleSheet: switchStyleSheet,
-} = {}) {
+export default function createSwitch(
+  {
+    defaultIcon = <CheckBoxOutlineBlankIcon aria-hidden="true" />,
+    defaultCheckedIcon = <CheckBoxIcon aria-hidden="true" />,
+    inputType = 'checkbox',
+    styleSheet: switchStyleSheet,
+  } = {},
+) {
   /**
    * @ignore - internal component.
    */
@@ -52,7 +54,8 @@ export default function createSwitch({
 
       this.isControlled = props.checked !== undefined;
 
-      if (!this.isControlled) { // not controlled, use internal state
+      if (!this.isControlled) {
+        // not controlled, use internal state
         this.setState({
           checked: props.defaultChecked !== undefined ? props.defaultChecked : false,
         });
@@ -63,7 +66,7 @@ export default function createSwitch({
     button = null;
     isControlled = null;
 
-    handleInputChange = (event) => {
+    handleInputChange = event => {
       let newChecked;
 
       if (this.isControlled) {
@@ -90,8 +93,9 @@ export default function createSwitch({
         disabled,
         disabledClassName,
         icon: iconProp,
+        inputProps,
         name,
-        onChange, // eslint-disable-line no-unused-vars
+        onChange,
         tabIndex,
         value,
         ...other
@@ -99,8 +103,9 @@ export default function createSwitch({
 
       const checked = this.isControlled ? checkedProp : this.state.checked;
       const classes = this.context.styleManager.render(styleSheet);
-      const switchClasses = switchStyleSheet ?
-        this.context.styleManager.render(switchStyleSheet) : {};
+      const switchClasses = switchStyleSheet
+        ? this.context.styleManager.render(switchStyleSheet)
+        : {};
 
       const className = classNames(classes.root, switchClasses.default, classNameProp, {
         [classNames(switchClasses.checked, checkedClassName)]: checked,
@@ -117,16 +122,20 @@ export default function createSwitch({
         <IconButton
           data-mui-test="SwitchBase"
           component="span"
-          buttonRef={(node) => { this.button = node; }}
           className={className}
           disabled={disabled}
           tabIndex={null}
           role={undefined}
+          rootRef={node => {
+            this.button = node;
+          }}
           {...other}
         >
           {icon}
           <input
-            ref={(node) => { this.input = node; }}
+            ref={node => {
+              this.input = node;
+            }}
             type={inputType}
             name={name}
             checked={this.isControlled ? checkedProp : undefined}
@@ -135,6 +144,7 @@ export default function createSwitch({
             disabled={disabled}
             tabIndex={tabIndex}
             value={value}
+            {...inputProps}
           />
         </IconButton>
       );
@@ -180,8 +190,13 @@ export default function createSwitch({
     disableRipple: PropTypes.bool,
     /**
      * The icon to display when the component is unchecked.
+     * If a string is provided, it will be used as a font ligature.
      */
     icon: PropTypes.node,
+    /**
+     * Properties applied to the `input` element.
+     */
+    inputProps: PropTypes.object,
     /*
      * @ignore
      */

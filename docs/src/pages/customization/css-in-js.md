@@ -8,7 +8,9 @@ You can use it, but you don't have to. This styling solution is interoperable wi
 
 In the previous versions, Material-UI was using LESS, then a custom inline-style solution to write the style of the components.
 These approaches have proven to be limited.
-Finally, we have [moved toward](https://github.com/oliviertassinari/a-journey-toward-better-style) a *CSS-in-JS* solution. We think that it's [the future](https://medium.freecodecamp.com/css-in-javascript-the-future-of-component-based-styling-70b161a79a32).
+Finally, we have [moved toward](https://github.com/oliviertassinari/a-journey-toward-better-style) a *CSS-in-JS* solution. We think that it's the future:
+- [A Unified Styling Language](https://medium.com/seek-blog/a-unified-styling-language-d0c208de2660)
+- [The future of component-based styling](https://medium.freecodecamp.com/css-in-javascript-the-future-of-component-based-styling-70b161a79a32)
 
 So, you may have noticed in the demos how that CSS in Javascript looks like.
 We use the `createStyleSheet` function and `withStyles` Higher-order Component.
@@ -35,6 +37,7 @@ Generate a new style sheet that represents the style you want to inject in the D
 
 1. `name` (*String*): The name of the style sheet. That useful for debugging.
 2. `styles` (*Function | Object*): A function generating the styles or an object.
+Use the function if you need to have access to the theme. It's provided as the first argument.
 
 #### Returns
 
@@ -61,7 +64,13 @@ const styleSheet = createStyleSheet('MyLink', (theme) => ({
 
 ### `withStyles(styleSheet) => Higher-order Component`
 
-Link a style sheet with a component. It does not modify the component passed to it; instead, it returns a new, with a `classes` property. This `classes` object contains the name of the class names injected in the DOM.
+Link a style sheet with a component.
+It does not modify the component passed to it; instead, it returns a new, with a `classes` property.
+This `classes` object contains the name of the class names injected in the DOM.
+Some implementation details that might be interested in being aware of:
+ - It's forwarding not react static properties so this HOC is more "transparent".
+ - It's adding a `innerRef` property so you can get a reference to the wrapped component.
+ - It's adding a `classes` property so you can override the injected class names from the outside.
 
 #### Arguments
 
@@ -76,5 +85,22 @@ Link a style sheet with a component. It does not modify the component passed to 
 ```js
 import { withStyles } from 'material-ui/styles';
 
+class MyComponent extends Component {
+  render () {}
+}
+
 export default withStyles(styleSheet)(MyComponent);
+```
+
+You can use as [decorators](https://babeljs.io/docs/plugins/transform-decorators/) like so:
+
+```js
+import { withStyles } from 'material-ui/styles';
+
+@withStyles(styleSheet)
+class MyComponent extends Component {
+  render () {}
+}
+
+export default MyComponent
 ```

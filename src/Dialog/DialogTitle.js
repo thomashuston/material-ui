@@ -7,37 +7,25 @@ import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 import Typography from '../Typography';
 
-export const styleSheet = createStyleSheet('MuiDialogTitle', (theme) => {
-  const gutter = theme.spacing.unit * 3;
-  return {
-    root: {
-      margin: 0,
-      padding: `${gutter}px ${gutter}px 20px ${gutter}px`,
-      flex: '0 0 auto',
-    },
-  };
-});
+export const styleSheet = createStyleSheet('MuiDialogTitle', theme => ({
+  root: {
+    margin: 0,
+    padding: `${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px \
+      20px ${theme.spacing.unit * 3}px`,
+    flex: '0 0 auto',
+  },
+}));
 
 function DialogTitle(props) {
-  const {
-    children,
-    classes,
-    className,
-    disableTypography,
-    ...other
-  } = props;
+  const { children, classes, className, disableTypography, ...other } = props;
 
   return (
-    <div
-      data-mui-test="DialogTitle"
-      className={classNames(classes.root, className)}
-      {...other}
-    >
-      {disableTypography ? children : (
-        <Typography type="title">
-          {children}
-        </Typography>
-      )}
+    <div data-mui-test="DialogTitle" className={classNames(classes.root, className)} {...other}>
+      {disableTypography
+        ? children
+        : <Typography type="title">
+            {children}
+          </Typography>}
     </div>
   );
 }

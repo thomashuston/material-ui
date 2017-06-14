@@ -8,11 +8,16 @@ import { createStyleSheet } from 'jss-theme-reactor';
 import wrapDisplayName from 'recompose/wrapDisplayName';
 import withStyles from '../styles/withStyles';
 
-export const styleSheet = createStyleSheet('MuiSwitchLabel', (theme) => ({
+export const styleSheet = createStyleSheet('MuiSwitchLabel', theme => ({
   root: {
     display: 'inline-flex',
     alignItems: 'center',
     cursor: 'pointer',
+    WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+  },
+  disabled: {
+    color: theme.palette.text.disabled,
+    cursor: 'default',
   },
   hasLabel: {
     marginLeft: -12,
@@ -21,10 +26,6 @@ export const styleSheet = createStyleSheet('MuiSwitchLabel', (theme) => ({
   labelText: {
     fontFamily: theme.typography.fontFamily,
     userSelect: 'none',
-  },
-  disabled: {
-    color: theme.palette.text.disabled,
-    cursor: 'not-allowed',
   },
 }));
 
@@ -39,25 +40,22 @@ function withSwitchLabel(SwitchComponent) {
     }
 
     render() {
-      const {
-        classes,
-        disabled,
-        label,
-        labelClassName: labelClassNameProp,
-        ...other
-      } = this.props;
+      const { classes, disabled, label, labelClassName: labelClassNameProp, ...other } = this.props;
 
-      const labelClassName = classNames(classes.root, {
-        [classes.hasLabel]: label && label.length,
-      }, labelClassNameProp);
-
-      const labelTextClassName = classNames(classes.labelText, {
-        [classes.disabled]: disabled,
-      });
+      const labelClassName = classNames(
+        classes.root,
+        {
+          [classes.hasLabel]: label && label.length,
+          [classes.disabled]: disabled,
+        },
+        labelClassNameProp,
+      );
 
       const switchElement = (
         <SwitchComponent
-          ref={(node) => { this.switch = node; }}
+          ref={node => {
+            this.switch = node;
+          }}
           disabled={disabled}
           {...other}
         />
@@ -70,7 +68,7 @@ function withSwitchLabel(SwitchComponent) {
       return (
         <label className={labelClassName}>
           {switchElement}
-          <span className={labelTextClassName}>
+          <span className={classes.labelText}>
             {label}
           </span>
         </label>

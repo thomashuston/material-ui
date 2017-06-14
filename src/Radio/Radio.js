@@ -8,7 +8,7 @@ import withSwitchLabel from '../internal/withSwitchLabel';
 import RadioButtonCheckedIcon from '../svg-icons/radio-button-checked';
 import RadioButtonUncheckedIcon from '../svg-icons/radio-button-unchecked';
 
-export const styleSheet = createStyleSheet('MuiRadio', (theme) => ({
+export const styleSheet = createStyleSheet('MuiRadio', theme => ({
   default: {
     color: theme.palette.text.secondary,
   },
@@ -72,8 +72,13 @@ RadioDocs.propTypes = {
   disabledClassName: PropTypes.string,
   /**
    * The icon to display when the component is unselected.
+   * If a string is provided, it will be used as a font ligature.
    */
   icon: PropTypes.node,
+  /**
+   * Properties applied to the `input` element.
+   */
+  inputProps: PropTypes.object,
   /*
    * @ignore
    */

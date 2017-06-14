@@ -3,7 +3,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import withSwitchLabel, { styleSheet } from './withSwitchLabel';
 
 describe('withSwitchLabel', () => {
@@ -38,9 +38,7 @@ describe('withSwitchLabel', () => {
     beforeEach(() => {
       class Foo {}
       SwitchLabelFoo = withSwitchLabel(Foo);
-      wrapper = shallow(
-        <SwitchLabelFoo label="Pizza" labelClassName="foo" />,
-      );
+      wrapper = shallow(<SwitchLabelFoo label="Pizza" labelClassName="foo" />);
     });
 
     it('should have the correct displayName', () => {
@@ -85,7 +83,7 @@ describe('withSwitchLabel', () => {
         });
 
         assert.strictEqual(
-          wrapper.childAt(1).hasClass(classes.disabled),
+          wrapper.hasClass(classes.disabled),
           true,
           'should have the disabled class',
         );

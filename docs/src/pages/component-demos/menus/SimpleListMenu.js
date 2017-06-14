@@ -6,7 +6,7 @@ import { withStyles, createStyleSheet } from 'material-ui/styles';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import Menu, { MenuItem } from 'material-ui/Menu';
 
-const styleSheet = createStyleSheet('SimpleListMenu', (theme) => ({
+const styleSheet = createStyleSheet('SimpleListMenu', theme => ({
   root: {
     width: '100%',
     maxWidth: '360px',
@@ -29,7 +29,7 @@ class SimpleListMenu extends Component {
 
   button = undefined;
 
-  handleClickListItem = (event) => {
+  handleClickListItem = event => {
     this.setState({ open: true, anchorEl: event.currentTarget });
   };
 
@@ -65,15 +65,15 @@ class SimpleListMenu extends Component {
           open={this.state.open}
           onRequestClose={this.handleRequestClose}
         >
-          {options.map((option, index) => (
+          {options.map((option, index) =>
             <MenuItem
               key={option}
               selected={index === this.state.selectedIndex}
-              onClick={(event) => this.handleMenuItemClick(event, index)}
+              onClick={event => this.handleMenuItemClick(event, index)}
             >
               {option}
-            </MenuItem>
-          ))}
+            </MenuItem>,
+          )}
         </Menu>
       </div>
     );

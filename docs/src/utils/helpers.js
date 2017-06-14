@@ -1,12 +1,13 @@
-// @flow weak
+// @flow
 
-export function kebabCase(string) {
-  return string.split(/ |_|-/)
+export function kebabCase(string: String) {
+  return string
+    .split(/ |_|-/)
     .join('-')
     .split('')
-    .map((a, i) => {
+    .map((a, index) => {
       if (a.toUpperCase() === a && a !== '-') {
-        return (i !== 0 ? '-' : '') + a.toLowerCase();
+        return (index !== 0 ? '-' : '') + a.toLowerCase();
       }
       return a;
     })
@@ -14,10 +15,11 @@ export function kebabCase(string) {
     .toLowerCase();
 }
 
-export function titleize(string) {
-  return string.split('-')
-    .map((word) => word.split(''))
-    .map((letters) => {
+export function titleize(string: String) {
+  return string
+    .split('-')
+    .map(word => word.split(''))
+    .map(letters => {
       const first = letters.shift();
       return [first.toUpperCase(), ...letters].join('');
     })

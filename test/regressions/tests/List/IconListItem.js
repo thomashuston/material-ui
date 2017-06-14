@@ -1,12 +1,8 @@
-// @flow weak
+// @flow
 
 import React from 'react';
 import Icon from 'material-ui/Icon';
-import {
-  ListItem,
-  ListItemText,
-  ListItemIcon,
-} from 'material-ui/List';
+import { ListItem, ListItemText, ListItemIcon } from 'material-ui/List';
 
 export default function IconListItem() {
   return (

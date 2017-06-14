@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Paper from '../Paper';
 import Dialog, { styleSheet } from './Dialog';
 import withResponsiveFullScreen from './withResponsiveFullScreen';
@@ -20,11 +20,8 @@ describe('withResponsiveFullScreen', () => {
     classes = shallow.context.styleManager.render(styleSheet);
   });
 
-  function isFullScreen(
-    breakpoints: Array<Breakpoint>,
-    width: Breakpoint,
-  ) {
-    breakpoints.forEach((breakpoint) => {
+  function isFullScreen(breakpoints: Array<Breakpoint>, width: Breakpoint) {
+    breakpoints.forEach(breakpoint => {
       it(`is for width: ${width} <= ${breakpoint}`, () => {
         const ResponsiveDialog = withResponsiveFullScreen({ breakpoint })(Dialog);
         const wrapper = shallowWithWidth(<ResponsiveDialog width={width} />);
@@ -34,11 +31,8 @@ describe('withResponsiveFullScreen', () => {
     });
   }
 
-  function isNotFullScreen(
-    breakpoints: Array<Breakpoint>,
-    width: Breakpoint,
-  ) {
-    breakpoints.forEach((breakpoint) => {
+  function isNotFullScreen(breakpoints: Array<Breakpoint>, width: Breakpoint) {
+    breakpoints.forEach(breakpoint => {
       it(`is not for width: ${width} > ${breakpoint}`, () => {
         const ResponsiveDialog = withResponsiveFullScreen({ breakpoint })(Dialog);
         const wrapper = shallowWithWidth(<ResponsiveDialog width={width} />);

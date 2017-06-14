@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import ListSubheader, { styleSheet } from './ListSubheader';
 
 describe('<ListSubheader />', () => {
@@ -15,9 +15,7 @@ describe('<ListSubheader />', () => {
   });
 
   it('should render a div', () => {
-    const wrapper = shallow(
-      <ListSubheader />,
-    );
+    const wrapper = shallow(<ListSubheader />);
     assert.strictEqual(wrapper.name(), 'div');
   });
 
@@ -27,9 +25,13 @@ describe('<ListSubheader />', () => {
     assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
   });
 
-  it('should display primary class', () => {
-    const wrapper = shallow(<ListSubheader primary />);
-    assert.strictEqual(wrapper.hasClass(classes.primary), true, 'should have the primary class');
+  it('should display primary color', () => {
+    const wrapper = shallow(<ListSubheader color="primary" />);
+    assert.strictEqual(
+      wrapper.hasClass(classes.colorPrimary),
+      true,
+      'should have the primary class',
+    );
     assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
   });
 

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import HiddenJs from './HiddenJs';
 import type { Breakpoint } from '../styles/breakpoints';
 import Typography from '../Typography';
@@ -29,7 +29,7 @@ describe('<HiddenJs />', () => {
     upDownOnly: 'Up' | 'Down' | 'only',
     width: Breakpoint,
   ) {
-    hiddenBreakpoints.forEach((breakpoint) => {
+    hiddenBreakpoints.forEach(breakpoint => {
       const prop = resolvePropName(upDownOnly, breakpoint);
       const descriptions = {
         Up: `${prop} is hidden for width: ${width} >= ${breakpoint}`,
@@ -58,7 +58,7 @@ describe('<HiddenJs />', () => {
     upDownOnly: 'Up' | 'Down' | 'only',
     width: Breakpoint,
   ) {
-    visibleBreakpoints.forEach((breakpoint) => {
+    visibleBreakpoints.forEach(breakpoint => {
       const prop = resolvePropName(upDownOnly, breakpoint);
       const descriptions = {
         Up: `${prop} is visible for width: ${width} < ${breakpoint}`,
@@ -70,9 +70,11 @@ describe('<HiddenJs />', () => {
         const props = { width, [prop]: breakpoint };
 
         // children
-        let wrapper = shallowWithWidth(<HiddenJs {...props}>
-          <div>foo</div>
-        </HiddenJs>);
+        let wrapper = shallowWithWidth(
+          <HiddenJs {...props}>
+            <div>foo</div>
+          </HiddenJs>,
+        );
         assert.isNotNull(wrapper.type(), 'should render');
         assert.strictEqual(wrapper.name(), 'div');
         assert.strictEqual(wrapper.first().text(), 'foo', 'should render children');

@@ -16,8 +16,8 @@ function DemoButton(props) {
     return null;
   }
 
-  const item = find(demoComponentsTree, (item2) => {
-    return find(item2.components, (component) => component === currentRoute.componentAPI.name);
+  const item = find(demoComponentsTree, item2 => {
+    return find(item2.components, component => component === currentRoute.componentAPI.name);
   });
 
   if (!item) {
@@ -26,7 +26,7 @@ function DemoButton(props) {
 
   return (
     <IconButton
-      contrast
+      color="contrast"
       component={Link}
       to={`/component-demos/${kebabCase(item.demo.name)}`}
     >

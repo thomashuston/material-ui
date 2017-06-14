@@ -7,7 +7,7 @@ import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 import createSwitch from '../internal/SwitchBase';
 
-export const styleSheet = createStyleSheet('MuiSwitch', (theme) => ({
+export const styleSheet = createStyleSheet('MuiSwitch', theme => ({
   root: {
     display: 'inline-flex',
     width: 62,
@@ -62,11 +62,7 @@ export const styleSheet = createStyleSheet('MuiSwitch', (theme) => ({
 const SwitchBase = createSwitch({ styleSheet });
 
 function Switch(props) {
-  const {
-    classes,
-    className,
-    ...other
-  } = props;
+  const { classes, className, ...other } = props;
 
   const icon = <div className={classes.icon} />;
 
@@ -113,8 +109,13 @@ Switch.propTypes = {
   disabledClassName: PropTypes.string,
   /**
    * The icon to display when the component is unchecked.
+   * If a string is provided, it will be used as a font ligature.
    */
   icon: PropTypes.node,
+  /**
+   * Properties applied to the `input` element.
+   */
+  inputProps: PropTypes.object,
   /*
    * @ignore
    */

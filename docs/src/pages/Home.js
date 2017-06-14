@@ -8,7 +8,7 @@ import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
 import muiLogo from 'docs/src/assets/images/material-ui-logo.svg';
 
-const styleSheet = createStyleSheet('Home', (theme) => {
+const styleSheet = createStyleSheet('Home', theme => {
   return {
     root: {
       flex: '1 0 100%',
@@ -48,11 +48,11 @@ function Home(props) {
     <div className={classes.root}>
       <div className={classes.hero}>
         <div className={classes.content}>
-          <img src={muiLogo} alt="Material UI Logo" className={classes.logo} />
-          <Typography type="display2" component="h1" colorInherit>
+          <img src={muiLogo} alt="Material-UI Logo" className={classes.logo} />
+          <Typography type="display2" component="h1" color="inherit">
             {'Material-UI'}
           </Typography>
-          <Typography type="subheading" component="h2" colorInherit>
+          <Typography type="subheading" component="h2" color="inherit">
             {"A React component library implementing Google's Material Design"}
           </Typography>
           <Button

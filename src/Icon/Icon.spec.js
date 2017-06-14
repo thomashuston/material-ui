@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from 'src/test-utils';
+import { createShallow } from '../test-utils';
 import Icon, { styleSheet } from './Icon';
 
 describe('<Icon />', () => {
@@ -36,31 +36,49 @@ describe('<Icon />', () => {
       assert.strictEqual(wrapper.hasClass('meow'), true, 'should have the "meow" class');
     });
 
-    it('should render with the accent class', () => {
-      const wrapper = shallow(<Icon accent>account_circle</Icon>);
-      assert.strictEqual(wrapper.hasClass(classes.accent), true, 'should have the "accent" class');
+    it('should render with the accent color', () => {
+      const wrapper = shallow(<Icon color="accent">account_circle</Icon>);
+      assert.strictEqual(
+        wrapper.hasClass(classes.colorAccent),
+        true,
+        'should have the "accent" color',
+      );
     });
 
-    it('should render with the action class', () => {
-      const wrapper = shallow(<Icon action>account_circle</Icon>);
-      assert.strictEqual(wrapper.hasClass(classes.action), true, 'should have the "action" class');
+    it('should render with the action color', () => {
+      const wrapper = shallow(<Icon color="action">account_circle</Icon>);
+      assert.strictEqual(
+        wrapper.hasClass(classes.colorAction),
+        true,
+        'should have the "action" color',
+      );
     });
 
-    it('should render with the contrast class', () => {
-      const wrapper = shallow(<Icon contrast>account_circle</Icon>);
-      assert.strictEqual(wrapper.hasClass(classes.contrast), true,
-        'should have the "contrast" class');
+    it('should render with the contrast color', () => {
+      const wrapper = shallow(<Icon color="contrast">account_circle</Icon>);
+      assert.strictEqual(
+        wrapper.hasClass(classes.colorContrast),
+        true,
+        'should have the "contrast" color',
+      );
     });
 
-    it('should render with the error class', () => {
-      const wrapper = shallow(<Icon error>account_circle</Icon>);
-      assert.strictEqual(wrapper.hasClass(classes.error), true, 'should have the "error" class');
+    it('should render with the error color', () => {
+      const wrapper = shallow(<Icon color="error">account_circle</Icon>);
+      assert.strictEqual(
+        wrapper.hasClass(classes.colorError),
+        true,
+        'should have the "error" color',
+      );
     });
 
     it('should render with the primary class', () => {
-      const wrapper = shallow(<Icon primary>account_circle</Icon>);
-      assert.strictEqual(wrapper.hasClass(classes.primary), true,
-        'should have the "primary" class');
+      const wrapper = shallow(<Icon color="primary">account_circle</Icon>);
+      assert.strictEqual(
+        wrapper.hasClass(classes.colorPrimary),
+        true,
+        'should have the "primary" color',
+      );
     });
   });
 });

@@ -6,33 +6,15 @@ import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
 import customPropTypes from '../utils/customPropTypes';
 
-export const styleSheet = createStyleSheet('MuiRipple', (theme) => ({
-  ripple: {
-    width: 50,
-    height: 50,
-    left: 0,
-    top: 0,
-    opacity: 0,
-    position: 'absolute',
-    borderRadius: '50%',
-    background: 'currentColor',
-  },
-  rippleVisible: {
-    opacity: 0.3,
-    transform: 'scale(1)',
-    animation: `mui-ripple-enter 550ms ${theme.transitions.easing.easeInOut}`,
-  },
-  rippleFast: {
-    animationDuration: '200ms',
-  },
-  container: {
+export const styleSheet = createStyleSheet('MuiRipple', theme => ({
+  root: {
     opacity: 1,
   },
-  containerLeaving: {
+  rootLeaving: {
     opacity: 0,
     animation: `mui-ripple-exit 550ms ${theme.transitions.easing.easeInOut}`,
   },
-  containerPulsating: {
+  rootPulsating: {
     position: 'absolute',
     left: 0,
     top: 0,
@@ -71,6 +53,24 @@ export const styleSheet = createStyleSheet('MuiRipple', (theme) => ({
       transform: 'scale(1)',
     },
   },
+  ripple: {
+    width: 50,
+    height: 50,
+    left: 0,
+    top: 0,
+    opacity: 0,
+    position: 'absolute',
+    borderRadius: '50%',
+    background: 'currentColor',
+  },
+  rippleVisible: {
+    opacity: 0.3,
+    transform: 'scale(1)',
+    animation: `mui-ripple-enter 550ms ${theme.transitions.easing.easeInOut}`,
+  },
+  rippleFast: {
+    animationDuration: '200ms',
+  },
 }));
 
 /**
@@ -104,16 +104,22 @@ class Ripple extends Component {
   ripple = null;
   leaveTimer = null;
 
-  start = (callback) => {
-    this.setState({
-      rippleVisible: true,
-    }, callback);
+  start = callback => {
+    this.setState(
+      {
+        rippleVisible: true,
+      },
+      callback,
+    );
   };
 
-  stop = (callback) => {
-    this.setState({
-      rippleLeaving: true,
-    }, callback);
+  stop = callback => {
+    this.setState(
+      {
+        rippleLeaving: true,
+      },
+      callback,
+    );
   };
 
   getRippleStyles() {
@@ -128,24 +134,28 @@ class Ripple extends Component {
   }
 
   render() {
-    const { className, pulsate } = this.props;
+    const { className: classNameProp, pulsate } = this.props;
     const { rippleVisible, rippleLeaving } = this.state;
     const classes = this.context.styleManager.render(styleSheet);
+
+    const className = classNames(
+      classes.root,
+      {
+        [classes.rootLeaving]: rippleLeaving,
+        [classes.rootPulsating]: pulsate,
+      },
+      classNameProp,
+    );
 
     const rippleClassName = classNames(classes.ripple, {
       [classes.rippleVisible]: rippleVisible,
       [classes.rippleFast]: pulsate,
-    }, className);
-
-    const containerClasses = classNames(classes.container, {
-      [classes.containerLeaving]: rippleLeaving,
-      [classes.containerPulsating]: pulsate,
     });
 
     const rippleStyles = this.getRippleStyles();
 
     return (
-      <span className={containerClasses}>
+      <span className={className}>
         <span className={rippleClassName} style={rippleStyles} />
       </span>
     );

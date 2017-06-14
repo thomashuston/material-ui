@@ -35,6 +35,23 @@ type DefaultProps = {
   onExited: TransitionCallback,
 };
 
+// A helper function that calls back when any pending animations have started
+// This is needed as the callback hooks might be setting some style properties
+// that needs a frame to take effect.
+function requestAnimationStart(callback) {
+  // Feature detect rAF, fallback to setTimeout
+  if (window.requestAnimationFrame) {
+    // Chrome and Safari have a bug where calling rAF once returns the current
+    // frame instead of the next frame, so we need to call a double rAF here.
+    // See https://crbug.com/675795 for more.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(callback);
+    });
+  } else {
+    setTimeout(callback, 0);
+  }
+}
+
 type Props = DefaultProps & {
   /**
    * The content of the component.
@@ -178,11 +195,7 @@ class Transition extends Component<DefaultProps, Props, State> {
   }
 
   shouldComponentUpdate(nextProps: Props, nextState: State) {
-    if (
-      this.props.in &&
-      this.state.status === EXITED &&
-      this.state.status === nextState.status
-    ) {
+    if (this.props.in && this.state.status === EXITED && this.state.status === nextState.status) {
       return false;
     }
 
@@ -287,12 +300,14 @@ class Transition extends Component<DefaultProps, Props, State> {
     // FIXME: These next two blocks are a real enigma for flow typing outside of weak mode.
     // FIXME: I suggest we refactor - rosskevin
     this.nextCallback = (event?: Event) => {
-      if (active) {
-        active = false;
-        this.nextCallback = null;
+      requestAnimationStart(() => {
+        if (active) {
+          active = false;
+          this.nextCallback = null;
 
-        callback(event);
-      }
+          callback(event);
+        }
+      });
     };
 
     this.nextCallback.cancel = () => {
@@ -306,7 +321,7 @@ class Transition extends Component<DefaultProps, Props, State> {
     this.setNextCallback(handler);
 
     if (node) {
-      addEventListener(node, transitionEndEvent, (event) => {
+      addEventListener(node, transitionEndEvent, event => {
         if (event.target === node && this.nextCallback) {
           this.nextCallback();
         }
@@ -340,21 +355,21 @@ class Transition extends Component<DefaultProps, Props, State> {
     const {
       children,
       className,
-      in: inProp,         // eslint-disable-line no-unused-vars
-      enteredClassName,   // eslint-disable-line no-unused-vars
-      enteringClassName,  // eslint-disable-line no-unused-vars
-      exitedClassName,    // eslint-disable-line no-unused-vars
-      exitingClassName,   // eslint-disable-line no-unused-vars
-      onEnter,            // eslint-disable-line no-unused-vars
-      onEntering,         // eslint-disable-line no-unused-vars
-      onEntered,          // eslint-disable-line no-unused-vars
-      onExit,             // eslint-disable-line no-unused-vars
-      onExiting,          // eslint-disable-line no-unused-vars
-      onExited,           // eslint-disable-line no-unused-vars
-      onRequestTimeout,   // eslint-disable-line no-unused-vars
-      timeout,            // eslint-disable-line no-unused-vars
-      transitionAppear,   // eslint-disable-line no-unused-vars
-      unmountOnExit,      // eslint-disable-line no-unused-vars
+      in: inProp,
+      enteredClassName,
+      enteringClassName,
+      exitedClassName,
+      exitingClassName,
+      onEnter,
+      onEntering,
+      onEntered,
+      onExit,
+      onExiting,
+      onExited,
+      onRequestTimeout,
+      timeout,
+      transitionAppear,
+      unmountOnExit,
       ...other
     } = this.props;
 
@@ -370,13 +385,10 @@ class Transition extends Component<DefaultProps, Props, State> {
     }
 
     const child = React.Children.only(children);
-    return React.cloneElement(
-      child,
-      {
-        className: classNames(child.props.className, className, transitionClassName),
-        ...other,
-      },
-    );
+    return React.cloneElement(child, {
+      className: classNames(child.props.className, className, transitionClassName),
+      ...other,
+    });
   }
 }
 

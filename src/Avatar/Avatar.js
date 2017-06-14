@@ -7,7 +7,7 @@ import { createStyleSheet } from 'jss-theme-reactor';
 import withStyles from '../styles/withStyles';
 import { emphasize } from '../styles/colorManipulator';
 
-export const styleSheet = createStyleSheet('MuiAvatar', (theme) => ({
+export const styleSheet = createStyleSheet('MuiAvatar', theme => ({
   root: {
     position: 'relative',
     display: 'flex',
@@ -21,7 +21,7 @@ export const styleSheet = createStyleSheet('MuiAvatar', (theme) => ({
     overflow: 'hidden',
     userSelect: 'none',
   },
-  defaultColor: {
+  colorDefault: {
     color: theme.palette.background.default,
     backgroundColor: emphasize(theme.palette.background.default, 0.26),
   },
@@ -40,20 +40,20 @@ function Avatar(props) {
     children: childrenProp,
     childrenClassName: childrenClassNameProp,
     component: ComponentProp,
+    imgProps,
     sizes,
     src,
     srcSet,
     ...other
   } = props;
 
-  const className = classNames(classes.root, {
-    [classes.defaultColor]: childrenProp && !src && !srcSet,
-  }, classNameProp);
-  const containerProps = {
-    className,
-    ...other,
-  };
-
+  const className = classNames(
+    classes.root,
+    {
+      [classes.colorDefault]: childrenProp && !src && !srcSet,
+    },
+    classNameProp,
+  );
   let children = null;
 
   if (childrenProp) {
@@ -64,17 +64,20 @@ function Avatar(props) {
       children = childrenProp;
     }
   } else if (src || srcSet) {
-    children = React.createElement('img', {
-      alt,
-      src,
-      srcSet,
-      sizes,
-      className: classes.img,
-    });
+    children = (
+      <img
+        alt={alt}
+        src={src}
+        srcSet={srcSet}
+        sizes={sizes}
+        className={classes.img}
+        {...imgProps}
+      />
+    );
   }
 
   return (
-    <ComponentProp {...containerProps}>
+    <ComponentProp className={className} {...other}>
       {children}
     </ComponentProp>
   );
@@ -112,10 +115,12 @@ Avatar.propTypes = {
    * The component used for the root node.
    * Either a string to use a DOM element or a component.
    */
-  component: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.func,
-  ]),
+  component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+  /**
+   * Properties applied to the `img` element when the component
+   * is used to display an image.
+   */
+  imgProps: PropTypes.object,
   /**
    * The `sizes` attribute for the `img` element.
    */

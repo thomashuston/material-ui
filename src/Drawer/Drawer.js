@@ -8,6 +8,7 @@ import Modal from '../internal/Modal';
 import withStyles from '../styles/withStyles';
 import Slide from '../transitions/Slide';
 import Paper from '../Paper';
+import { capitalizeFirstLetter } from '../utils/helpers';
 import customPropTypes from '../utils/customPropTypes';
 import { duration } from '../styles/transitions';
 
@@ -19,11 +20,12 @@ function getSlideDirection(anchor) {
   } else if (anchor === 'top') {
     return 'down';
   }
+
   // (anchor === 'bottom')
   return 'up';
 }
 
-export const styleSheet = createStyleSheet('MuiDrawer', (theme) => ({
+export const styleSheet = createStyleSheet('MuiDrawer', theme => ({
   paper: {
     overflowY: 'auto',
     display: 'flex',
@@ -39,15 +41,15 @@ export const styleSheet = createStyleSheet('MuiDrawer', (theme) => ({
     },
     WebkitOverflowScrolling: 'touch', // Add iOS momentum scrolling.
   },
-  left: {
+  anchorLeft: {
     left: 0,
     right: 'auto',
   },
-  right: {
+  anchorRight: {
     left: 'auto',
     right: 0,
   },
-  top: {
+  anchorTop: {
     top: 0,
     left: 0,
     bottom: 'auto',
@@ -55,7 +57,7 @@ export const styleSheet = createStyleSheet('MuiDrawer', (theme) => ({
     height: 'auto',
     maxHeight: '100vh',
   },
-  bottom: {
+  anchorBottom: {
     top: 'auto',
     left: 0,
     bottom: 0,
@@ -69,8 +71,7 @@ export const styleSheet = createStyleSheet('MuiDrawer', (theme) => ({
       borderRight: `1px solid ${theme.palette.text.divider}`,
     },
   },
-  modal: {
-  },
+  modal: {},
 }));
 
 function Drawer(props, context) {
@@ -83,7 +84,6 @@ function Drawer(props, context) {
     enterTransitionDuration,
     leaveTransitionDuration,
     open,
-    paperClassName,
     elevation,
     ...other
   } = props;
@@ -91,15 +91,13 @@ function Drawer(props, context) {
   const rtl = context.styleManager.theme.dir === 'rtl';
   let anchor = anchorProp;
   if (rtl && ['left', 'right'].includes(anchor)) {
-    anchor = (anchor === 'left') ? 'right' : 'left';
+    anchor = anchor === 'left' ? 'right' : 'left';
   }
-
-  const slideDirection = getSlideDirection(anchor);
 
   const drawer = (
     <Slide
       in={open}
-      direction={slideDirection}
+      direction={getSlideDirection(anchor)}
       enterTransitionDuration={enterTransitionDuration}
       leaveTransitionDuration={leaveTransitionDuration}
       transitionAppear
@@ -107,7 +105,7 @@ function Drawer(props, context) {
       <Paper
         elevation={docked ? 0 : elevation}
         square
-        className={classNames(classes.paper, classes[anchor], paperClassName)}
+        className={classNames(classes.paper, classes[`anchor${capitalizeFirstLetter(anchor)}`])}
       >
         {children}
       </Paper>
@@ -176,10 +174,6 @@ Drawer.propTypes = {
    * If `true`, the drawer is open.
    */
   open: PropTypes.bool,
-  /**
-   * The CSS class name of the paper element.
-   */
-  paperClassName: PropTypes.string,
 };
 
 Drawer.defaultProps = {

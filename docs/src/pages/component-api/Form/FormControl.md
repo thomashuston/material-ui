@@ -7,11 +7,13 @@ Provides context such as dirty/focused/error/required for form inputs.
 |:-----|:-----|:--------|:------------|
 | children | node |  | The contents of the form control. |
 | classes | object |  | Useful to extend the style applied to components. |
+| disabled | bool | false | If `true`, the label, input and helper text should be displayed in a disabled state. |
 | error | bool | false | If `true`, the label should be displayed in an error state. |
 | required | bool | false | If `true`, the label will indicate that the input is required. |
 
 Any other properties supplied will be spread to the root element.
-## Classes
+
+## CSS API
 
 You can overrides all the class names injected by Material-UI thanks to the `classes` property.
 This property accepts the following keys:

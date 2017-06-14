@@ -1,16 +1,17 @@
 // @flow
 
-import React, { Element } from 'react';
+import React, { Element, createElement, cloneElement } from 'react';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
+import { capitalizeFirstLetter } from '../utils/helpers';
 import withStyles from '../styles/withStyles';
 import Modal from '../internal/Modal';
 import Fade from '../transitions/Fade';
 import { duration } from '../styles/transitions';
 import Paper from '../Paper';
 
-export const styleSheet = createStyleSheet('MuiDialog', (theme) => ({
-  modal: {
+export const styleSheet = createStyleSheet('MuiDialog', theme => ({
+  root: {
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -25,13 +26,13 @@ export const styleSheet = createStyleSheet('MuiDialog', (theme) => ({
       outline: 'none',
     },
   },
-  'dialogWidth-xs': {
+  dialogWidthXs: {
     maxWidth: theme.breakpoints.getWidth('xs'),
   },
-  'dialogWidth-sm': {
+  dialogWidthSm: {
     maxWidth: theme.breakpoints.getWidth('sm'),
   },
-  'dialogWidth-md': {
+  dialogWidthMd: {
     maxWidth: theme.breakpoints.getWidth('md'),
   },
   fullScreen: {
@@ -164,31 +165,11 @@ function Dialog(props: Props) {
 
   // workaround: see #2 test case from https://github.com/facebook/flow/issues/1660#issuecomment-302468866
   const maxWidth = maxWidthProp || Dialog.defaultProps.maxWidth;
-
-  const transitionProps = {
-    in: open,
-    transitionAppear: true,
-    enterTransitionDuration,
-    leaveTransitionDuration,
-    onEnter,
-    onEntering,
-    onEntered,
-    onExit,
-    onExiting,
-    onExited,
-  };
-
-  let createTransitionFn;
-
-  if (typeof transition === 'function') {
-    createTransitionFn = React.createElement;
-  } else {
-    createTransitionFn = React.cloneElement;
-  }
+  const createTransitionFn = typeof transition === 'function' ? createElement : cloneElement;
 
   return (
     <Modal
-      className={classNames(classes.modal, className)}
+      className={classNames(classes.root, className)}
       backdropTransitionDuration={open ? enterTransitionDuration : leaveTransitionDuration}
       ignoreBackdropClick={ignoreBackdropClick}
       ignoreEscapeKeyUp={ignoreEscapeKeyUp}
@@ -198,17 +179,34 @@ function Dialog(props: Props) {
       show={open}
       {...other}
     >
-      {/* $FlowFixMe */}
-      {createTransitionFn(transition, transitionProps, (
+      {createTransitionFn(
+        /* $FlowFixMe */
+        transition,
+        {
+          in: open,
+          transitionAppear: true,
+          enterTransitionDuration,
+          leaveTransitionDuration,
+          onEnter,
+          onEntering,
+          onEntered,
+          onExit,
+          onExiting,
+          onExited,
+        },
         <Paper
           data-mui-test="Dialog"
           elevation={24}
-          className={classNames(classes.dialog, classes[`dialogWidth-${maxWidth}`],
-            paperClassName, { [classes.fullScreen]: fullScreen })}
+          className={classNames(
+            classes.dialog,
+            classes[`dialogWidth${capitalizeFirstLetter(maxWidth)}`],
+            paperClassName,
+            { [classes.fullScreen]: fullScreen },
+          )}
         >
           {children}
-        </Paper>
-      ))}
+        </Paper>,
+      )}
     </Modal>
   );
 }
