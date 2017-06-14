@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Element, createElement, cloneElement } from 'react';
+import React, { createElement, cloneElement } from 'react';
+import type { Element } from 'react';
 import classNames from 'classnames';
 import { createStyleSheet } from 'jss-theme-reactor';
 import { capitalizeFirstLetter } from '../utils/helpers';
@@ -15,24 +16,23 @@ export const styleSheet = createStyleSheet('MuiDialog', theme => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  dialog: {
+  paper: {
     display: 'flex',
     flexDirection: 'column',
     flex: '0 1 auto',
     position: 'relative',
-    width: '75%',
     maxHeight: '90vh',
     '&:focus': {
       outline: 'none',
     },
   },
-  dialogWidthXs: {
+  paperWidthXs: {
     maxWidth: theme.breakpoints.getWidth('xs'),
   },
-  dialogWidthSm: {
+  paperWidthSm: {
     maxWidth: theme.breakpoints.getWidth('sm'),
   },
-  dialogWidthMd: {
+  paperWidthMd: {
     maxWidth: theme.breakpoints.getWidth('md'),
   },
   fullScreen: {
@@ -125,10 +125,6 @@ type Props = {
    */
   open?: boolean,
   /**
-   * The CSS class name of the paper inner element.
-   */
-  paperClassName?: string,
-  /**
    * Transition component.
    */
   transition?: Function | Element<*>,
@@ -158,7 +154,6 @@ function Dialog(props: Props) {
     onExiting,
     onExited,
     onRequestClose,
-    paperClassName,
     transition,
     ...other
   } = props;
@@ -198,9 +193,8 @@ function Dialog(props: Props) {
           data-mui-test="Dialog"
           elevation={24}
           className={classNames(
-            classes.dialog,
-            classes[`dialogWidth${capitalizeFirstLetter(maxWidth)}`],
-            paperClassName,
+            classes.paper,
+            classes[`paperWidth${capitalizeFirstLetter(maxWidth)}`],
             { [classes.fullScreen]: fullScreen },
           )}
         >

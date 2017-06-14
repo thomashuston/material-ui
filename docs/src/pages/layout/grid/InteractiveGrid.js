@@ -52,10 +52,10 @@ class InteractiveGrid extends Component {
             direction={direction}
             justify={justify}
           >
-            {Array.from({ length: 3 }, (v, k) => k).map(index =>
-              <Grid key={index} item>
+            {[0, 1, 2].map(value =>
+              <Grid key={value} item>
                 <Paper className={classes.paper}>
-                  {`Cell ${index + 1}`}
+                  {`Cell ${value + 1}`}
                 </Paper>
               </Grid>,
             )}

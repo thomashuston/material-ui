@@ -86,7 +86,7 @@ function MobileStepper(props) {
       </Button>
       {type === 'dots' &&
         <div className={classes.dots}>
-          {Array.from(Array(steps)).map((_, step) => {
+          {[...new Array(steps)].map((_, step) => {
             const dotClassName = classNames(
               {
                 [classes.dotActive]: step === activeStep,

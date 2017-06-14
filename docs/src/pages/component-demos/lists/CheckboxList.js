@@ -43,14 +43,14 @@ class CheckboxList extends Component {
     return (
       <div className={classes.root}>
         <List>
-          {Array.from({ length: 4 }, (v, k) => k).map(index =>
-            <ListItem dense button key={index} onClick={event => this.handleToggle(event, index)}>
+          {[0, 1, 2, 3].map(value =>
+            <ListItem dense button key={value} onClick={event => this.handleToggle(event, value)}>
               <Checkbox
-                checked={this.state.checked.indexOf(index) !== -1}
+                checked={this.state.checked.indexOf(value) !== -1}
                 tabIndex="-1"
                 ripple={false}
               />
-              <ListItemText primary={`Line item ${index + 1}`} />
+              <ListItemText primary={`Line item ${value + 1}`} />
               <ListItemSecondaryAction>
                 <IconButton aria-label="Comments">
                   <CommentIcon />
