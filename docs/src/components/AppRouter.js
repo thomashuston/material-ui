@@ -44,6 +44,13 @@ export default function AppRouter() {
             component={MarkdownDocs}
             nav
           />
+          <Route
+            title="Supported Platforms"
+            path="/getting-started/supported-platforms"
+            content={requireMarkdown('./getting-started/supported-platforms.md')}
+            component={MarkdownDocs}
+            nav
+          />
         </Route>
         <Route title="Customization" path="/customization" nav component={AppContent}>
           <Route
@@ -147,6 +154,13 @@ export default function AppRouter() {
             title="Hidden"
             path="/layout/hidden"
             content={requireMarkdown('./layout/hidden.md')}
+            component={MarkdownDocs}
+            nav
+          />
+          <Route
+            title="CSS in JS"
+            path="/layout/css-in-js"
+            content={requireMarkdown('./layout/css-in-js.md')}
             component={MarkdownDocs}
             nav
           />

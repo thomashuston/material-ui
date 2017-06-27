@@ -10,144 +10,148 @@ import Textarea from './Textarea';
 export function isDirty(obj, SSR = false) {
   return (
     obj &&
-    ((obj.value && obj.value.length) || (SSR && obj.defaultValue && obj.defaultValue.length)) > 0
+    ((obj.value && obj.value.toString().length) ||
+      (SSR && obj.defaultValue && obj.defaultValue.toString().length)) > 0
   );
 }
 
-export const styleSheet = createStyleSheet('MuiInput', theme => ({
-  root: {
-    // Mimics the default input display property used by browsers for an input.
-    display: 'inline-block',
-    position: 'relative',
-    fontFamily: theme.typography.fontFamily,
-  },
-  formControl: {
-    marginBottom: 1,
-    'label + &': {
-      marginTop: theme.spacing.unit * 2,
-    },
-  },
-  inkbar: {
-    '&:after': {
-      backgroundColor: theme.palette.primary[theme.palette.type === 'light' ? 'A700' : 'A200'],
-      left: 0,
-      bottom: -2,
-      // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
-      content: '""',
-      height: 2,
-      position: 'absolute',
-      right: 0,
-      transform: 'scaleX(0)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shorter,
-        easing: theme.transitions.easing.easeOut,
-      }),
-    },
-    '&$focused:after': {
-      transform: 'scaleX(1)',
-    },
-  },
-  focused: {},
-  error: {
-    '&:after': {
-      backgroundColor: theme.palette.error.A400,
-      transform: 'scaleX(1)', // error is always underlined in red
-    },
-  },
-  input: {
-    font: 'inherit',
-    padding: `${theme.spacing.unit}px 0`,
-    border: 0,
-    display: 'block',
-    boxSizing: 'content-box',
-    verticalAlign: 'middle',
-    whiteSpace: 'normal',
-    background: 'none',
-    margin: 0, // Reset for Safari
-    color: theme.palette.input.inputText,
-    width: '100%',
-    '&:focus': {
-      outline: 0,
-    },
-    '&::-webkit-search-decoration': {
-      // Remove the padding when type=search.
-      appearance: 'none',
-    },
-    'label + $formControl > &': {
-      '&::-webkit-input-placeholder': {
-        opacity: 0,
-        transition: theme.transitions.create('opacity', {
-          duration: theme.transitions.duration.shorter,
-          easing: theme.transitions.easing.ease,
-        }),
-      },
-      '&::-moz-placeholder': {
-        opacity: 0,
-        transition: theme.transitions.create('opacity', {
-          duration: theme.transitions.duration.shorter,
-          easing: theme.transitions.easing.ease,
-        }),
-      },
-      '&:-ms-input-placeholder': {
-        opacity: 0,
-        transition: theme.transitions.create('opacity', {
-          duration: theme.transitions.duration.shorter,
-          easing: theme.transitions.easing.ease,
-        }),
-      },
-      '&:-moz-placeholder': {
-        opacity: 0,
-        transition: theme.transitions.create('opacity', {
-          duration: theme.transitions.duration.shorter,
-          easing: theme.transitions.easing.ease,
-        }),
-      },
-      '&:focus::-webkit-input-placeholder': {
-        opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
-      },
-      '&:focus::-moz-placeholder': {
-        opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
-      },
-      '&:focus:-ms-input-placeholder': {
-        opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
-      },
-      '&:focus:-moz-placeholder': {
-        opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
-      },
-    },
-  },
-  singleline: {
-    height: '1em',
-    appearance: 'textfield', // Improve type search style.
-  },
-  multiline: {
-    resize: 'none',
-    padding: 0,
-  },
-  multilineWrapper: {
-    padding: `${theme.spacing.unit - 2}px 0`,
-  },
-  disabled: {
-    color: theme.palette.text.disabled,
-    opacity: 1, // Reset iOS opacity
-  },
-  underline: {
-    borderBottom: `1px solid ${theme.palette.input.bottomLine}`,
-    transition: theme.transitions.create('border-color', {
+export const styleSheet = createStyleSheet('MuiInput', theme => {
+  const placeholder = {
+    color: 'currentColor',
+    opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
+  };
+  const placeholderForm = {
+    opacity: 0,
+    transition: theme.transitions.create('opacity', {
       duration: theme.transitions.duration.shorter,
       easing: theme.transitions.easing.ease,
     }),
-    '&:hover:not($disabled)': {
-      borderBottom: `2px solid ${theme.palette.text.primary}`,
-      marginBottom: 0,
+  };
+  const placeholderFormFocus = {
+    opacity: theme.palette.type === 'light' ? 0.42 : 0.5,
+  };
+
+  return {
+    root: {
+      // Mimics the default input display property used by browsers for an input.
+      display: 'inline-block',
+      position: 'relative',
+      fontFamily: theme.typography.fontFamily,
+      color: theme.palette.input.inputText,
     },
-    '&$disabled': {
-      borderBottomStyle: 'dotted',
-      borderImage: `linear-gradient(to right, ${theme.palette.input.bottomLine} 33%, transparent 0%)
-        100 0 / 0 0 1px / 0 0 0 0 repeat`,
+    formControl: {
+      'label + &': {
+        marginTop: theme.spacing.unit * 2,
+      },
     },
-  },
-}));
+    inkbar: {
+      '&:after': {
+        backgroundColor: theme.palette.primary[theme.palette.type === 'light' ? 'A700' : 'A200'],
+        left: 0,
+        bottom: 0,
+        // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
+        content: '""',
+        height: 2,
+        position: 'absolute',
+        right: 0,
+        transform: 'scaleX(0)',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shorter,
+          easing: theme.transitions.easing.easeOut,
+        }),
+      },
+      '&$focused:after': {
+        transform: 'scaleX(1)',
+      },
+    },
+    error: {
+      '&:after': {
+        backgroundColor: theme.palette.error.A400,
+        transform: 'scaleX(1)', // error is always underlined in red
+      },
+    },
+    input: {
+      font: 'inherit',
+      color: 'currentColor',
+      padding: `${theme.spacing.unit}px 0`,
+      border: 0,
+      display: 'block',
+      boxSizing: 'content-box',
+      verticalAlign: 'middle',
+      background: 'none',
+      margin: 0, // Reset for Safari
+      width: '100%',
+      '&::-webkit-input-placeholder': placeholder,
+      '&::-moz-placeholder': placeholder, // Firefox 19+
+      '&:-ms-input-placeholder': placeholder, // IE 11
+      '&::-ms-input-placeholder': placeholder, // Edge
+      '&:focus': {
+        outline: 0,
+      },
+      '&::-webkit-search-decoration': {
+        // Remove the padding when type=search.
+        appearance: 'none',
+      },
+      'label + $formControl > &': {
+        '&::-webkit-input-placeholder': placeholderForm,
+        '&::-moz-placeholder': placeholderForm, // Firefox 19+
+        '&:-ms-input-placeholder': placeholderForm, // IE 11
+        '&::-ms-input-placeholder': placeholderForm, // Edge
+        '&:focus::-webkit-input-placeholder': placeholderFormFocus,
+        '&:focus::-moz-placeholder': placeholderFormFocus, // Firefox 19+
+        '&:focus:-ms-input-placeholder': placeholderFormFocus, // IE 11
+        '&:focus::-ms-input-placeholder': placeholderFormFocus, // Edge
+      },
+    },
+    disabled: {
+      color: theme.palette.text.disabled,
+    },
+    focused: {},
+    underline: {
+      paddingBottom: 2,
+      '&:before': {
+        backgroundColor: theme.palette.input.bottomLine,
+        left: 0,
+        bottom: 0,
+        // Doing the other way around crash on IE11 "''" https://github.com/cssinjs/jss/issues/242
+        content: '""',
+        height: 1,
+        position: 'absolute',
+        right: 0,
+        transition: theme.transitions.create('backgroundColor', {
+          duration: theme.transitions.duration.shorter,
+          easing: theme.transitions.easing.ease,
+        }),
+      },
+      '&:hover:not($disabled):before': {
+        backgroundColor: theme.palette.text.primary,
+        height: 2,
+      },
+      '&$disabled:before': {
+        background: 'transparent',
+        backgroundImage: `linear-gradient(to right, ${theme.palette.input
+          .bottomLine} 33%, transparent 0%)`,
+        backgroundPosition: 'left top',
+        backgroundRepeat: 'repeat-x',
+        backgroundSize: '5px 1px',
+      },
+    },
+    multiline: {
+      padding: `${theme.spacing.unit - 2}px 0 ${theme.spacing.unit + 1}px`,
+    },
+    inputDisabled: {
+      opacity: 1, // Reset iOS opacity
+    },
+    inputSingleline: {
+      height: '1em',
+      appearance: 'textfield', // Improve type search style.
+    },
+    inputMultiline: {
+      resize: 'none',
+      padding: 0,
+    },
+  };
+});
 
 class Input extends Component {
   static muiName = 'Input';
@@ -295,16 +299,16 @@ class Input extends Component {
         [classes.focused]: this.state.focused,
         [classes.formControl]: muiFormControl,
         [classes.inkbar]: !disableUnderline,
-        [classes.multilineWrapper]: multiline,
+        [classes.multiline]: multiline,
         [classes.underline]: !disableUnderline,
       },
       classNameProp,
     );
 
     const inputClassName = classNames(classes.input, {
-      [classes.disabled]: disabled,
-      [classes.singleline]: !multiline,
-      [classes.multiline]: multiline,
+      [classes.inputDisabled]: disabled,
+      [classes.inputSingleline]: !multiline,
+      [classes.inputMultiline]: multiline,
     });
 
     const required = muiFormControl && muiFormControl.required === true;
@@ -368,7 +372,7 @@ Input.propTypes = {
   /**
    * @ignore
    */
-  autoFocus: PropTypes.object,
+  autoFocus: PropTypes.bool,
   /**
    * Useful to extend the style applied to components.
    */
@@ -384,9 +388,9 @@ Input.propTypes = {
    */
   component: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
   /**
-   * The default value of the `Input` element.
+   * The default input value, useful when not controlling the component.
    */
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   /**
    * If `true`, the input will be disabled.
    */

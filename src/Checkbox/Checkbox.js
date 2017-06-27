@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createStyleSheet } from 'jss-theme-reactor';
 import createSwitch from '../internal/SwitchBase';
-import withSwitchLabel from '../internal/withSwitchLabel';
 
 export const styleSheet = createStyleSheet('MuiCheckbox', theme => ({
   default: {
@@ -23,10 +22,6 @@ const Checkbox = createSwitch({ styleSheet });
 Checkbox.displayName = 'Checkbox';
 
 export default Checkbox;
-
-const LabelCheckbox = withSwitchLabel(Checkbox);
-
-export { LabelCheckbox };
 
 export const CheckboxDocs = () => <span />;
 
@@ -64,6 +59,10 @@ CheckboxDocs.propTypes = {
    */
   disabledClassName: PropTypes.string,
   /**
+   * If `true`, the ripple effect will be disabled.
+   */
+  disableRipple: PropTypes.bool,
+  /**
    * The icon to display when the component is unchecked.
    * If a string is provided, it will be used as a font ligature.
    */
@@ -83,10 +82,6 @@ CheckboxDocs.propTypes = {
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,
-  /**
-   * If `false`, the ripple effect will be disabled.
-   */
-  ripple: PropTypes.bool,
   /**
    * @ignore
    */

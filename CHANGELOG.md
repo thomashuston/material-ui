@@ -2,27 +2,110 @@
 
 Changes. Changes everywhere!
 
-##### General
-- [docs] New documentation site!
-- [docs] Markdown API doc generation from components
-- [docs] Docs literature markdown files re-organized
-- [core] Theming revamped
-- [core] Internal components refactored
-- [core] Replaced inline styling with [`jss`](https://github.com/cssinjs/jss)
-  - CSS-in-JS
-  - `className` based approach
-  - around 30% performance improvement
-- [test] Add a visual regression test suite
-- [test] Greatly increase the test coverage
+## 1.0.0-alpha.20
+###### _Jun 25, 2017_
 
-##### Components
+Do you like play with bleeding edge tech?
+We do, we have extended the support of React to the 16.0.0-alpha.13 release (aka Fiber).
 
-All components have had API changes ranging from a couple of properties to complete makeovers, please review the documentation for more information.
-Below is a summary of major changes.
+##### Breaking changes
 
-- [Dialog] Rewritten from the ground up. Multiple major issues addressed such as accessibility and proper tab scoping. More composable.
-- [Ripple/TouchRipple] Refactored and now works properly inside a button in firefox!
-- [Button] Raised/flat/fab are now combined into a single component.
+- [Paper] Use normalized root over paper className (#7198) @oliviertassinari
+- [core] Follow the same convention as React for the umd build (#7217) @oliviertassinari
+
+##### Component Fixes / Enhancements
+
+- [material-ui-icons] v1.0.0-alpha.19 (21b67cec3b200517c9dfdf4d28c0bfc2d1dceeaa) @oliviertassinari
+- [Input] Fix incorrect type of autoFocus prop (#7189) @gnapse
+- [Icons] Modernize icons package (#7203) @kvet
+- [Input] Fix various styling issue #7209 @oliviertassinari
+- [Tabs] Add a primary color and update the docs (#7242) @oliviertassinari
+- [ListItem] Use the .shortest duration (#7246) @oliviertassinari
+- [Dialog] Also take fixed element into account (#7239) @oliviertassinari
+- [Drawer] Fix first mount transition issue (#7236) @oliviertassinari
+
+##### Docs
+
+- [docs] Fix typo in class name (#7192) @ossan-engineer
+- [docs] Add supported server section (#7231) @oliviertassinari
+- [docs] Detail the browser support (#7188) @oliviertassinari
+- [docs] Upgrade to webpack v3 (#7210) @oliviertassinari
+- [docs] More documentation on the typography (#7248) @oliviertassinari
+
+##### Core
+
+- [test] Even faster CI build (#7230) @oliviertassinari
+- [styles] Export more functions (#7241) @oliviertassinari
+- [react] Support 16.0.0-alpha.13 (#7218) @oliviertassinari
+- [core] x2 speed up on the build (#7220) @oliviertassinari
+- [babel] Use transform-object-assign over a custom one (#7219) @oliviertassinari
+- [core] Some fixes (#7216) @oliviertassinari
+
+## 1.0.0-alpha.19
+###### _Jun 19, 2017_
+
+The previous v1.0.0-alpha.18 release is corrupted.
+
+##### Component Fixes / Enhancements
+
+- [Typography] Expose a headlineMapping property (#7183) @oliviertassinari
+- [Typography] Add a accent color variation (#7183) @oliviertassinari
+- [FormControl] Fix wording (#7183) @oliviertassinari
+- [Toolbar] Simplify breakpoint logic (#7183) @oliviertassinari
+- [Button] Fix upload button demo (#7183) @oliviertassinari
+- [TextField] Forward the placeholder (#7183) @oliviertassinari
+- [MobileStepper] Improvements (#7179) @alexhayes
+- [MobileStepper] Fix the wordings (#7183) @oliviertassinari
+- [AppBar] Use a header instead of a div DOM element (#7183) @oliviertassinari
+
+##### Docs
+
+- [docs] Update minimizing-bundle-size.md (#7169) @kazazor
+- [docs] Info on how to use the breakpoints attribute in the theme (#7172) @alexhayes
+- [docs] Add a supported browsers section (#7174) @oliviertassinari
+- [docs] We don't require any polyfill (#7183) @oliviertassinari
+- [docs] Exposes the 3 Babel plugins available for minimising the bundle size (#) @oliviertassinari
+- [docs] Fix MATERIAL_UI_PORT not fully supported
+
+##### Core
+
+- [core] Add missing flow import (#7180) @oliviertassinari
+
+## 1.0.0-alpha.18
+###### _Jun 19, 2017_
+
+##### Breaking changes
+
+- [TextField] Add a marginForm property (#7113) @oliviertassinari
+This change makes the extra margin of the component optional.
+It's making us following less closely the specification but provides more flexibility out of the box.
+- [core] Remove some no longer needed properties (#7132) @oliviertassinari
+Use the `classes` property over the removed `xxxClassName`.
+- [Button] Implement the dense option over the compact one (#7147) @oliviertassinari
+
+##### Component Fixes / Enhancements
+
+- [SvgIcon] set focusable=false to fix IE tab navigation (#7106) @petermikitsh
+- [Dialog] Remove css width as it is too prescriptive for simple dialogs (#7115) @oliviertassinari
+- [BottomNavigation] Fix type error when onChange is not defined (#7139) @seasick
+- [TextField] Better support number value type (#7162) @oliviertassinari
+- [ButtonBase] Normalize ripple to disableRipple (#7159) @oliviertassinari
+
+##### Docs
+
+- [docs] Document the Label wrappers (#7161) @oliviertassinari
+
+##### Core
+
+- [MuiThemeProvider] Small eslint fix (#7128) @Airblader
+- [core] Simplify the array logic (#7112) @oliviertassinari
+- [core] Fix type use of Element (#7111) @rosskevin
+- [core] Use the beta of circleci (#7133) @oliviertassinari
+- [core] Update dependencies (#7137) @oliviertassinari
+- [core] Update dependencies, able to remove react-addons-test-utils (#7146) @rosskevin
+- [core] As usual after using the lib in a real project I find issues (#7147) @oliviertassinari
+- [core] Disable linebreak-style rule (#7163) @oliviertassinari
+- [test] Four nines (#7173) @oliviertassinari
 
 ## 1.0.0-alpha.17
 ###### _Jun 12, 2017_

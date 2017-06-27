@@ -2,7 +2,7 @@
 
 
 
-## Props
+## Properties
 | Name | Type | Default | Description |
 |:-----|:-----|:--------|:------------|
 | anchor | enum:&nbsp;'left'<br>&nbsp;'top'<br>&nbsp;'right'<br>&nbsp;'bottom'<br> | 'left' | Side which will the drawer will appear from. |
@@ -14,6 +14,7 @@
 | leaveTransitionDuration | number | duration.leavingScreen | Customizes duration of leave animation (ms) |
 | onRequestClose | function |  | Callback fired when the internal modal requests to be closed. |
 | open | bool | false | If `true`, the drawer is open. |
+| SlideProps | object |  | Properties applied to the `Slide` element. |
 
 Any other properties supplied will be spread to the root element.
 

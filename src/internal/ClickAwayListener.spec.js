@@ -27,18 +27,17 @@ describe('<ClickAwayListener />', () => {
   describe('prop: onClickAway', () => {
     it('should be call when clicking away', () => {
       const handleClickAway = spy();
-      mount(
+      const wrapper = mount(
         <ClickAwayListener onClickAway={handleClickAway}><span>Hello</span></ClickAwayListener>,
       );
 
       const event = document.createEvent('MouseEvents');
       event.initEvent('mouseup', true, true);
-      if (document.body) {
-        document.body.dispatchEvent(event);
-      }
+      window.document.body.dispatchEvent(event);
 
       assert.strictEqual(handleClickAway.callCount, 1);
       assert.deepEqual(handleClickAway.args[0], [event]);
+      wrapper.unmount();
     });
 
     it('should not be call when clicking inside', () => {
@@ -47,30 +46,34 @@ describe('<ClickAwayListener />', () => {
         <ClickAwayListener onClickAway={handleClickAway}><span>Hello</span></ClickAwayListener>,
       );
 
-      const event = document.createEvent('MouseEvents');
-      // TODO: replace the deprecated initEvent API. But do the work for now.
-      event.initEvent('mouseup', true, true);
+      const event = new window.Event('mouseup', { view: window, bubbles: true, cancelable: true });
       const el = findDOMNode(wrapper.instance());
       if (el) {
         el.dispatchEvent(event);
       }
 
       assert.strictEqual(handleClickAway.callCount, 0);
+      wrapper.unmount();
     });
 
     it('should not be call when defaultPrevented', () => {
       const handleClickAway = spy();
-      mount(
-        <ClickAwayListener onClickAway={handleClickAway}><span>Hello</span></ClickAwayListener>,
+      const wrapper = mount(
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <ClickAwayListener onClickAway={event => event.preventDefault()}>
+            <span>Hello</span>
+          </ClickAwayListener>
+        </ClickAwayListener>,
       );
 
-      const event = document.createEvent('MouseEvents');
-      event.initEvent('mouseup', true, true);
-      event.preventDefault();
-      if (document.body) {
-        document.body.dispatchEvent(event);
-      }
+      const event = new window.Event('mouseup', {
+        view: window,
+        bubbles: true,
+        cancelable: true,
+      });
+      window.document.body.dispatchEvent(event);
       assert.strictEqual(handleClickAway.callCount, 0);
+      wrapper.unmount();
     });
   });
 });

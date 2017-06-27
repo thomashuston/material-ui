@@ -15,6 +15,9 @@ const styleSheet = createStyleSheet('AppDrawerNavItem', theme => ({
     justifyContent: 'flex-start',
     textTransform: 'none',
     width: '100%',
+    transition: theme.transitions.create('background-color', {
+      duration: theme.transitions.duration.shortest,
+    }),
     '&:hover': {
       textDecoration: 'none',
     },
@@ -71,7 +74,7 @@ class AppDrawerNavItem extends Component {
             to={to}
             className={classNames(classes.button, classes.navLinkButton)}
             activeClassName={classes.activeButton}
-            ripple={false}
+            disableRipple
             onClick={this.props.onClick}
           >
             {title}

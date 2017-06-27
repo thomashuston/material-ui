@@ -48,12 +48,12 @@ class SimpleSnackbar extends Component {
           open={this.state.open}
           autoHideDuration={6e3}
           onRequestClose={this.handleRequestClose}
-          contentProps={{
+          SnackbarContentProps={{
             'aria-describedby': 'message-id',
           }}
           message={<span id="message-id">Note archived</span>}
           action={[
-            <Button key="undo" color="accent" compact onClick={this.handleRequestClose}>
+            <Button key="undo" color="accent" dense onClick={this.handleRequestClose}>
               UNDO
             </Button>,
             <IconButton

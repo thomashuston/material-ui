@@ -5,6 +5,8 @@ const webpack = require('webpack');
 const webpackBaseConfig = require('./webpackBaseConfig');
 const dllManifest = require('./build/dll.manifest.json');
 
+const PORT = process.env.MATERIAL_UI_PORT || 3000;
+
 module.exports = Object.assign({}, webpackBaseConfig, {
   cache: true,
   devtool: 'inline-source-map',
@@ -12,7 +14,7 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     main: [
       'eventsource-polyfill', // hot reloading in IE
       'react-hot-loader/patch',
-      'webpack-dev-server/client?http://0.0.0.0:3000',
+      `webpack-dev-server/client?http://0.0.0.0:${PORT}`,
       'webpack/hot/only-dev-server',
       './src/index',
     ],
@@ -21,7 +23,7 @@ module.exports = Object.assign({}, webpackBaseConfig, {
     rules: webpackBaseConfig.module.rules.concat([
       {
         test: /\.(jpg|gif|png)$/,
-        loader: 'file-loader!img-loader',
+        loader: 'file-loader',
       },
     ]),
   }),

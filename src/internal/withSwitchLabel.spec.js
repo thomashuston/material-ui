@@ -3,16 +3,22 @@
 import React from 'react';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createShallow } from '../test-utils';
+import { createShallow, createMount } from '../test-utils';
 import withSwitchLabel, { styleSheet } from './withSwitchLabel';
 
 describe('withSwitchLabel', () => {
   let shallow;
+  let mount;
   let classes;
 
   before(() => {
     shallow = createShallow({ dive: true });
+    mount = createMount();
     classes = shallow.context.styleManager.render(styleSheet);
+  });
+
+  after(() => {
+    mount.cleanUp();
   });
 
   describe('exports.withSwitchLabel', () => {
@@ -22,12 +28,12 @@ describe('withSwitchLabel', () => {
 
     it('should return a SwitchLabel component with a wrapped displayName', () => {
       const SwitchLabel = withSwitchLabel({ displayName: 'Foo' });
-      assert.strictEqual(SwitchLabel.displayName, 'withStyles(withSwitchLabel(Foo))');
+      assert.strictEqual(SwitchLabel.displayName, 'withStyles(LabelFoo)');
 
       /* eslint-disable prefer-arrow-callback */
       const SwitchLabelFn = withSwitchLabel(function Foo() {});
       /* eslint-enable prefer-arrow-callback */
-      assert.strictEqual(SwitchLabelFn.displayName, 'withStyles(withSwitchLabel(Foo))');
+      assert.strictEqual(SwitchLabelFn.displayName, 'withStyles(LabelFoo)');
     });
   });
 
@@ -41,11 +47,8 @@ describe('withSwitchLabel', () => {
       wrapper = shallow(<SwitchLabelFoo label="Pizza" labelClassName="foo" />);
     });
 
-    it('should have the correct displayName', () => {
-      assert.strictEqual(SwitchLabelFoo.displayName, 'withStyles(withSwitchLabel(Foo))');
-    });
-
     it('should render a label', () => {
+      assert.strictEqual(SwitchLabelFoo.displayName, 'withStyles(LabelFoo)');
       assert.strictEqual(wrapper.name(), 'label');
     });
 
@@ -89,5 +92,12 @@ describe('withSwitchLabel', () => {
         );
       });
     });
+  });
+
+  it('should mount without issue', () => {
+    const Foo = () => <div />;
+    const SwitchLabelFoo = withSwitchLabel(Foo);
+    const wrapper = mount(<SwitchLabelFoo label="Pizza" labelClassName="foo" />);
+    assert.strictEqual(wrapper.name(), 'withStyles(LabelFoo)');
   });
 });

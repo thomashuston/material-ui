@@ -13,7 +13,7 @@ module.exports = function setKarmaConfig(config) {
     basePath: '../',
     browsers: ['PhantomJS_Sized'],
     // to avoid DISCONNECTED messages on travis
-    browserDisconnectTimeout: 60000, // default 2000
+    browserDisconnectTimeout: 120000, // default 2000
     browserDisconnectTolerance: 1, // default 0
     browserNoActivityTimeout: 300000, // default 10000
     colors: true,
@@ -112,7 +112,7 @@ module.exports = function setKarmaConfig(config) {
         'BrowserStack_Chrome',
         'BrowserStack_Firefox',
         'BrowserStack_Safari',
-        // 'BrowserStack_IE',
+        'BrowserStack_Edge',
       ]),
       plugins: baseConfig.plugins.concat(['karma-browserstack-launcher']),
       customLaunchers: Object.assign({}, baseConfig.customLaunchers, {
@@ -120,30 +120,30 @@ module.exports = function setKarmaConfig(config) {
           base: 'BrowserStack',
           os: 'OS X',
           os_version: 'Sierra',
-          browser: 'chrome',
-          browser_version: 'latest',
+          browser: 'Chrome',
+          browser_version: '49.0',
         },
         BrowserStack_Firefox: {
           base: 'BrowserStack',
           os: 'Windows',
           os_version: '10',
-          browser: 'firefox',
-          browser_version: 'latest',
+          browser: 'Firefox',
+          browser_version: '45.0',
         },
         BrowserStack_Safari: {
           base: 'BrowserStack',
           os: 'OS X',
           os_version: 'Sierra',
-          browser: 'safari',
-          browser_version: 'latest',
+          browser: 'Safari',
+          browser_version: '10.1',
         },
-        // BrowserStack_IE: {
-        //   base: 'BrowserStack',
-        //   os: 'Windows',
-        //   os_version: '10',
-        //   browser: 'edge',
-        //   browser_version: 'latest',
-        // },
+        BrowserStack_Edge: {
+          base: 'BrowserStack',
+          os: 'Windows',
+          os_version: '10',
+          browser: 'Edge',
+          browser_version: '14.0',
+        },
       }),
     });
   }
