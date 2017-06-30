@@ -57,7 +57,7 @@ describe('<Snackbar />', () => {
       clock.restore();
     });
 
-    it('should be call onRequestClose when the timer is done', () => {
+    it('should call onRequestClose when the timer is done', () => {
       const handleRequestClose = spy();
       const autoHideDuration = 2e3;
       const wrapper = mount(
@@ -159,6 +159,18 @@ describe('<Snackbar />', () => {
         open: true,
       });
       assert.strictEqual(wrapper.find(Slide).length, 1, 'should use a Slide by default');
+    });
+  });
+
+  describe('prop: children', () => {
+    it('should render the children', () => {
+      const children = <div />;
+      const wrapper = shallow(
+        <Snackbar open>
+          {children}
+        </Snackbar>,
+      );
+      assert.strictEqual(wrapper.contains(children), true);
     });
   });
 });
