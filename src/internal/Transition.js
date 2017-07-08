@@ -40,6 +40,8 @@ type State = {
 
 export type TransitionCallback = (element: HTMLElement) => void;
 
+export type TransitionRequestTimeout = (element: HTMLElement) => number;
+
 type DefaultProps = {
   in: boolean,
   unmountOnExit: boolean,
@@ -109,7 +111,7 @@ type Props = DefaultProps & {
   /**
    * @ignore
    */
-  onRequestTimeout?: TransitionCallback,
+  onRequestTimeout?: TransitionRequestTimeout,
   /**
    * A Timeout for the animation, in milliseconds, to ensure that a node doesn't
    * transition indefinitely if the browser transitionEnd events are
