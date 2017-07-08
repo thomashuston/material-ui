@@ -5,13 +5,15 @@ import { spy, stub } from 'sinon';
 import { assert } from 'chai';
 import ReactDOM from 'react-dom';
 import { createShallow, createMount } from '../test-utils';
-import Menu from './Menu';
+import Menu, { styleSheet } from './Menu';
 
 describe('<Menu />', () => {
   let shallow;
+  let classes;
 
   before(() => {
     shallow = createShallow({ dive: true });
+    classes = shallow.context.styleManager.render(styleSheet);
   });
 
   it('should render a Popover', () => {
@@ -34,6 +36,11 @@ describe('<Menu />', () => {
       wrapper.simulate(event, { style: {} });
       assert.strictEqual(handlers[n].callCount, 1, `should have called the ${n} handler`);
     });
+  });
+
+  it('should pass `classes.root` to the Popover for the className', () => {
+    const wrapper = shallow(<Menu />);
+    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should be classes.root');
   });
 
   it('should pass the instance function `getContentAnchorEl` to Popover', () => {
