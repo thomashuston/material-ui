@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from '../test-utils';
-import List, { styleSheet } from './List';
+import { createShallow, getClasses } from '../test-utils';
 import ListSubheader from './ListSubheader';
+import List, { styleSheet } from './List';
 
 describe('<List />', () => {
   let shallow;
@@ -12,29 +12,29 @@ describe('<List />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = shallow.context.styleManager.render(styleSheet);
+    classes = getClasses(styleSheet);
   });
 
   it('should render a div', () => {
-    const wrapper = shallow(<List />);
+    const wrapper = shallow(<List component="div" />);
     assert.strictEqual(wrapper.name(), 'div');
   });
 
   it('should render a ul', () => {
-    const wrapper = shallow(<List component="ul" />);
+    const wrapper = shallow(<List />);
     assert.strictEqual(wrapper.name(), 'ul');
   });
 
   it('should render with the user, root and padding classes', () => {
     const wrapper = shallow(<List className="woof" />);
-    assert.strictEqual(wrapper.hasClass('woof'), true, 'should have the "woof" class');
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass('woof'), true);
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
     assert.strictEqual(wrapper.hasClass(classes.padding), true, 'should have the padding class');
   });
 
   it('should disable the padding', () => {
     const wrapper = shallow(<List disablePadding />);
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
     assert.strictEqual(
       wrapper.hasClass(classes.padding),
       false,
@@ -45,7 +45,7 @@ describe('<List />', () => {
   describe('prop: subheader', () => {
     it('should render with subheader class', () => {
       const wrapper = shallow(<List subheader={<ListSubheader>Title</ListSubheader>} />);
-      assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+      assert.strictEqual(wrapper.hasClass(classes.root), true);
       assert.strictEqual(
         wrapper.hasClass(classes.subheader),
         true,

@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import type { Element } from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
 import warning from 'warning';
 import keycode from 'keycode';
 import canUseDom from 'dom-helpers/util/inDOM';
@@ -14,6 +13,7 @@ import ownerDocument from 'dom-helpers/ownerDocument';
 import addEventListener from '../utils/addEventListener';
 import { createChainedFunction } from '../utils/helpers';
 import Fade from '../transitions/Fade';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import createModalManager from './modalManager';
 import Backdrop from './Backdrop';
@@ -136,7 +136,9 @@ type Props = DefaultProps & {
    */
   onExited?: TransitionCallback, // eslint-disable-line react/sort-prop-types
   /**
-   * Callback fired when the modal requests to be closed.
+   * Callback fired when the component requests to be closed.
+   *
+   * @param {object} event The event source of the callback
    */
   onRequestClose?: Function,
   /**
@@ -149,6 +151,9 @@ type State = {
   exited: boolean,
 };
 
+/**
+ * @ignore - internal component.
+ */
 class Modal extends Component<DefaultProps, Props, State> {
   props: Props;
 

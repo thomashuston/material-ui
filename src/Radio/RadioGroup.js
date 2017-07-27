@@ -3,7 +3,7 @@
 import React, { Component, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import FormGroup from '../Form/FormGroup';
 import { find } from '../utils/helpers';
@@ -24,13 +24,13 @@ class RadioGroup extends Component {
       return;
     }
 
-    const focusRadios = this.radios.filter(n => !n.props.disabled);
+    const focusRadios = this.radios.filter(n => !n.disabled);
 
     if (!focusRadios.length) {
       return;
     }
 
-    const selectedRadio = find(focusRadios, n => n.props.checked);
+    const selectedRadio = find(focusRadios, n => n.checked);
 
     if (selectedRadio) {
       selectedRadio.focus();
@@ -71,7 +71,7 @@ class RadioGroup extends Component {
           return cloneElement(child, {
             key: index,
             name,
-            innerRef: node => {
+            inputRef: node => {
               this.radios.push(node);
             },
             checked: selected,
@@ -107,7 +107,7 @@ RadioGroup.propTypes = {
   /**
    * Callback fired when a radio button is selected.
    *
-   * @param {object} event `change` event
+   * @param {object} event The event source of the callback
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,

@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { createShallow } from '../test-utils';
-import ListItem, { styleSheet } from './ListItem';
+import { createShallow, getClasses } from '../test-utils';
 import ListItemText from './ListItemText';
 import ListItemSecondaryAction from './ListItemSecondaryAction';
+import ListItem, { styleSheet } from './ListItem';
 
 describe('<ListItem />', () => {
   let shallow;
@@ -13,29 +13,29 @@ describe('<ListItem />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = shallow.context.styleManager.render(styleSheet);
+    classes = getClasses(styleSheet);
   });
 
   it('should render a div', () => {
-    const wrapper = shallow(<ListItem />);
+    const wrapper = shallow(<ListItem component="div" />);
     assert.strictEqual(wrapper.name(), 'div');
   });
 
   it('should render a li', () => {
-    const wrapper = shallow(<ListItem component="li" />);
+    const wrapper = shallow(<ListItem />);
     assert.strictEqual(wrapper.name(), 'li');
   });
 
   it('should render with the user, root and gutters classes', () => {
     const wrapper = shallow(<ListItem className="woof" />);
-    assert.strictEqual(wrapper.hasClass('woof'), true, 'should have the "woof" class');
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass('woof'), true);
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
     assert.strictEqual(wrapper.hasClass(classes.gutters), true, 'should have the gutters class');
   });
 
   it('should disable the gutters', () => {
     const wrapper = shallow(<ListItem disableGutters />);
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
     assert.strictEqual(
       wrapper.hasClass(classes.gutters),
       false,
@@ -44,9 +44,9 @@ describe('<ListItem />', () => {
   });
 
   describe('prop: button', () => {
-    it('should render a div', () => {
+    it('should render a li', () => {
       const wrapper = shallow(<ListItem button />);
-      assert.strictEqual(wrapper.props().component, 'div');
+      assert.strictEqual(wrapper.props().component, 'li');
     });
   });
 

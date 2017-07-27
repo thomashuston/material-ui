@@ -3,8 +3,8 @@
 import React, { Component, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
 import keycode from 'keycode';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import DeleteIcon from '../svg-icons/cancel';
 import { emphasize, fade } from '../styles/colorManipulator';
@@ -202,7 +202,8 @@ Chip.propTypes = {
   /**
    * Callback function fired when the delete icon is clicked.
    * If set, the delete icon will be shown.
-   * @param {object} event `onClick` event targeting the delete icon element.
+   *
+   * @param {object} event The event source of the callback
    */
   onRequestDelete: PropTypes.func,
   /**

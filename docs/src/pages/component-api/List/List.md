@@ -9,7 +9,7 @@
 |:-----|:-----|:--------|:------------|
 | children | Element |  | The content of the component. |
 | classes | Object |  | Useful to extend the style applied to components. |
-| component | union:&nbsp;string<br>&nbsp;Function<br> | 'div' | The component used for the root node. Either a string to use a DOM element or a component. |
+| component | union:&nbsp;string<br>&nbsp;Function<br> | 'ul' | The component used for the root node. Either a string to use a DOM element or a component. |
 | dense | boolean | false | If `true`, compact vertical padding designed for keyboard and mouse input will be used for the list and list items. The property is available to descendant components as the `dense` context. |
 | disablePadding | boolean | false | If `true`, vertical padding will be removed from the list. |
 | rootRef | Function |  | Use that property to pass a ref callback to the root component. |
@@ -26,7 +26,7 @@ This property accepts the following keys:
 - `dense`
 - `subheader`
 
-Have a look at [overriding with class names](/customization/overrides#overriding-with-class-names)
+Have a look at [overriding with classes](/customization/overrides#overriding-with-classes)
 section for more detail.
 
 If using the `overrides` key of the theme as documented

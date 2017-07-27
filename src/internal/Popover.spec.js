@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { spy, stub } from 'sinon';
+import { spy, stub, useFakeTimers } from 'sinon';
 import css from 'dom-helpers/style';
-import { createShallow, createMount } from '../test-utils';
+import { createShallow, createMount, getClasses } from '../test-utils';
 import Popover, { styleSheet } from './Popover';
 
 describe('<Popover />', () => {
@@ -14,8 +14,10 @@ describe('<Popover />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = shallow.context.styleManager.render(styleSheet);
     mount = createMount();
+    classes = getClasses(styleSheet, {
+      withTheme: true,
+    });
   });
 
   after(() => {
@@ -26,11 +28,7 @@ describe('<Popover />', () => {
     it('should render a Modal with an invisible backdrop as the root node', () => {
       const wrapper = shallow(<Popover />);
       assert.strictEqual(wrapper.name(), 'withStyles(Modal)');
-      assert.strictEqual(
-        wrapper.props().backdropInvisible,
-        true,
-        'should have an invisible backdrop',
-      );
+      assert.strictEqual(wrapper.props().backdropInvisible, true);
     });
 
     it('should pass onRequestClose prop to Modal', () => {
@@ -139,11 +137,11 @@ describe('<Popover />', () => {
 
     it('should set the transition in/out based on the open prop', () => {
       const wrapper = shallow(<Popover />);
-      assert.strictEqual(wrapper.childAt(0).prop('in'), false, 'should not be in');
+      assert.strictEqual(wrapper.childAt(0).props().in, false, 'should not be in');
       wrapper.setProps({ open: true });
-      assert.strictEqual(wrapper.childAt(0).prop('in'), true, 'should be in');
+      assert.strictEqual(wrapper.childAt(0).props().in, true, 'should be in');
       wrapper.setProps({ open: false });
-      assert.strictEqual(wrapper.childAt(0).prop('in'), false, 'should not be in');
+      assert.strictEqual(wrapper.childAt(0).props().in, false, 'should not be in');
     });
 
     it('should fire transition event callbacks', () => {
@@ -413,6 +411,33 @@ describe('<Popover />', () => {
         const expectedLeft = anchorRect.right <= 16 ? 16 : anchorRect.right;
         expectPopover(expectedTop, expectedLeft);
       });
+    });
+  });
+
+  describe('on window resize', () => {
+    let clock;
+
+    before(() => {
+      clock = useFakeTimers();
+    });
+
+    after(() => {
+      clock.restore();
+    });
+
+    it('should recalculate position if the popover is open', () => {
+      const wrapper = shallow(<Popover open transitionDuration={0} />);
+      const instance = wrapper.instance();
+
+      stub(instance, 'setPositioningStyles');
+      wrapper.find('EventListener').at(0).simulate('resize');
+      clock.tick(166);
+      assert.isTrue(instance.setPositioningStyles.called, 'position styles recalculated');
+    });
+
+    it('should not recalculate position if the popover is closed', () => {
+      const wrapper = mount(<Popover transitionDuration={0} />);
+      assert.isNotTrue(wrapper.contains('EventListener'), 'no component listening on resize');
     });
   });
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import createSwitch from '../internal/SwitchBase';
 import RadioButtonCheckedIcon from '../svg-icons/radio-button-checked';
 import RadioButtonUncheckedIcon from '../svg-icons/radio-button-unchecked';
@@ -79,6 +79,10 @@ RadioDocs.propTypes = {
    * Properties applied to the `input` element.
    */
   inputProps: PropTypes.object,
+  /**
+   * Use that property to pass a ref callback to the native input component.
+   */
+  inputRef: PropTypes.func,
   /*
    * @ignore
    */
@@ -86,7 +90,7 @@ RadioDocs.propTypes = {
   /**
    * Callback fired when the state is changed.
    *
-   * @param {object} event `change` event
+   * @param {object} event The event source of the callback
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,

@@ -4,7 +4,6 @@
 
 FormGroup wraps controls such as Checkbox and Switch.
 It provides compact row layout and FormLabel awareness.
-Upon focusing on one of the child controls, it will propagate `focused` to the label.
 
 ## Props
 | Name | Type | Default | Description |
@@ -22,7 +21,7 @@ This property accepts the following keys:
 - `root`
 - `row`
 
-Have a look at [overriding with class names](/customization/overrides#overriding-with-class-names)
+Have a look at [overriding with classes](/customization/overrides#overriding-with-classes)
 section for more detail.
 
 If using the `overrides` key of the theme as documented

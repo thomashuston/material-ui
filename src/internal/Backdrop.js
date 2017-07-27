@@ -3,7 +3,7 @@
 import React from 'react';
 import type { Element } from 'react';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiBackdrop', theme => ({
@@ -43,6 +43,9 @@ type Props = {
   invisible?: boolean,
 };
 
+/**
+ * @ignore - internal component.
+ */
 function Backdrop(props: Props) {
   const { children, classes, className, invisible, ...other } = props;
 

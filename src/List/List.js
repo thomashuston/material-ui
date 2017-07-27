@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import type { Element } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiList', theme => ({
@@ -75,7 +75,7 @@ type Props = DefaultProps & {
 class List extends Component<DefaultProps, Props, void> {
   props: Props;
   static defaultProps: DefaultProps = {
-    component: 'div',
+    component: 'ul',
     dense: false,
     disablePadding: false,
   };
@@ -101,7 +101,7 @@ class List extends Component<DefaultProps, Props, void> {
     const className = classNames(
       classes.root,
       {
-        [classes.dense]: dense,
+        [classes.dense]: dense && !disablePadding,
         [classes.padding]: !disablePadding,
         [classes.subheader]: subheader,
       },

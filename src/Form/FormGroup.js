@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 
 export const styleSheet = createStyleSheet('MuiFormGroup', {
@@ -20,7 +20,6 @@ export const styleSheet = createStyleSheet('MuiFormGroup', {
 /**
  * FormGroup wraps controls such as Checkbox and Switch.
  * It provides compact row layout and FormLabel awareness.
- * Upon focusing on one of the child controls, it will propagate `focused` to the label.
  */
 function FormGroup(props) {
   const { classes, className, children, row, ...other } = props;

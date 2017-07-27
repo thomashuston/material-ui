@@ -15,7 +15,7 @@
 | elevation | number | 16 | The elevation of the drawer. |
 | enterTransitionDuration | number | duration.enteringScreen | Customizes duration of enter animation (ms) |
 | leaveTransitionDuration | number | duration.leavingScreen | Customizes duration of leave animation (ms) |
-| onRequestClose | Function |  | Callback fired when the internal modal requests to be closed. |
+| onRequestClose | Function |  | Callback fired when the component requests to be closed.<br><br>**Signature:**<br>`function(event: object) => void`<br>*event:* The event source of the callback |
 | open | boolean | false | If `true`, the drawer is open. |
 
 Any other properties supplied will be spread to the root element.
@@ -32,7 +32,7 @@ This property accepts the following keys:
 - `docked`
 - `modal`
 
-Have a look at [overriding with class names](/customization/overrides#overriding-with-class-names)
+Have a look at [overriding with classes](/customization/overrides#overriding-with-classes)
 section for more detail.
 
 If using the `overrides` key of the theme as documented

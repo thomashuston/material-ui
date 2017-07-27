@@ -9,9 +9,9 @@
 |:-----|:-----|:--------|:------------|
 | <span style="color: #31a148">children *</span> | node |  | The content of the component. |
 | classes | object |  | Useful to extend the style applied to components. |
-| index | number |  | The index of the currently selected `BottomNavigationButton`. |
-| onChange | function |  | Function called when the index changes. |
+| onChange | function |  | Callback fired when the value changes.<br><br>**Signature:**<br>`function(event: object, value: any) => void`<br>*event:* The event source of the callback<br>*value:* We default to the index of the child |
 | showLabels | bool | false | If `true`, all `BottomNavigationButton`s will show their labels. By default only the selected `BottomNavigationButton` will show its label. |
+| value | any |  | The value of the currently selected `BottomNavigationButton`. |
 
 Any other properties supplied will be spread to the root element.
 
@@ -21,7 +21,7 @@ You can overrides all the class names injected by Material-UI thanks to the `cla
 This property accepts the following keys:
 - `root`
 
-Have a look at [overriding with class names](/customization/overrides#overriding-with-class-names)
+Have a look at [overriding with classes](/customization/overrides#overriding-with-classes)
 section for more detail.
 
 If using the `overrides` key of the theme as documented

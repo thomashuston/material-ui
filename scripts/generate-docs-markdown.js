@@ -26,7 +26,7 @@ function getDeprecatedInfo(type) {
   return false;
 }
 
-function generatePropDescription(required, description, type) {
+function generatePropDescription(description, type) {
   let deprecated = '';
 
   if (type.name === 'custom') {
@@ -46,10 +46,18 @@ function generatePropDescription(required, description, type) {
     .replace(/\n/g, ' ')
     .replace(/\r/g, '');
 
-  if (parsed.tags.some(tag => tag.title === 'ignore')) return null;
+  if (parsed.tags.some(tag => tag.title === 'ignore')) {
+    return null;
+  }
+
   let signature = '';
 
-  if (type.name === 'func' && parsed.tags.length > 0) {
+  if (
+    (type.name === 'func' ||
+      type.name === 'Function' ||
+      (type.name === 'signature' && type.type === 'function')) &&
+    parsed.tags.length > 0
+  ) {
     // Remove new lines from tag descriptions to avoid markdown errors.
     parsed.tags.forEach(tag => {
       if (tag.description) {
@@ -146,11 +154,7 @@ function generateProps(props) {
 
   text = Object.keys(props).sort().reduce((textProps, propRaw) => {
     const prop = getProp(props, propRaw);
-    const description = generatePropDescription(
-      prop.required,
-      prop.description,
-      prop.flowType || prop.type,
-    );
+    const description = generatePropDescription(prop.description, prop.flowType || prop.type);
 
     if (description === null) {
       return textProps;
@@ -190,7 +194,7 @@ You can overrides all the class names injected by Material-UI thanks to the \`cl
 This property accepts the following keys:
 ${styles.classes.map(className => `- \`${className}\``).join('\n')}
 
-Have a look at [overriding with class names](/customization/overrides#overriding-with-class-names)
+Have a look at [overriding with classes](/customization/overrides#overriding-with-classes)
 section for more detail.
 
 If using the \`overrides\` key of the theme as documented

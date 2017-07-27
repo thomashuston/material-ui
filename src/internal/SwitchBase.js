@@ -3,8 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
-import customPropTypes from '../utils/customPropTypes';
+import createStyleSheet from '../styles/createStyleSheet';
+import withStyles from '../styles/withStyles';
 import IconButton from '../IconButton';
 import CheckBoxOutlineBlankIcon from '../svg-icons/check-box-outline-blank';
 import CheckBoxIcon from '../svg-icons/check-box';
@@ -87,6 +87,7 @@ export default function createSwitch(
     render() {
       const {
         checked: checkedProp,
+        classes,
         className: classNameProp,
         checkedClassName,
         checkedIcon,
@@ -94,6 +95,7 @@ export default function createSwitch(
         disabledClassName,
         icon: iconProp,
         inputProps,
+        inputRef,
         name,
         onChange,
         tabIndex,
@@ -102,14 +104,9 @@ export default function createSwitch(
       } = this.props;
 
       const checked = this.isControlled ? checkedProp : this.state.checked;
-      const classes = this.context.styleManager.render(styleSheet);
-      const switchClasses = switchStyleSheet
-        ? this.context.styleManager.render(switchStyleSheet)
-        : {};
-
-      const className = classNames(classes.root, switchClasses.default, classNameProp, {
-        [classNames(switchClasses.checked, checkedClassName)]: checked,
-        [classNames(switchClasses.disabled, disabledClassName)]: disabled,
+      const className = classNames(classes.root, classes.default, classNameProp, {
+        [classNames(classes.checked, checkedClassName)]: checked,
+        [classNames(classes.disabled, disabledClassName)]: disabled,
       });
 
       let icon = checked ? checkedIcon : iconProp;
@@ -139,6 +136,9 @@ export default function createSwitch(
           <input
             ref={node => {
               this.input = node;
+              if (inputRef) {
+                inputRef(node);
+              }
             }}
             type={inputType}
             name={name}
@@ -155,10 +155,8 @@ export default function createSwitch(
     }
   }
 
-  /**
-   ** NB: If changed, please update Checkbox, Switch and Radio
-   ** so that the API documentation is updated.
-   **/
+  // NB: If changed, please update Checkbox, Switch and Radio
+  // so that the API documentation is updated.
   SwitchBase.propTypes = {
     /**
      * If `true`, the component appears selected.
@@ -173,6 +171,10 @@ export default function createSwitch(
      * If a string is provided, it will be used as a font ligature.
      */
     checkedIcon: PropTypes.node,
+    /**
+     * Useful to extend the style applied to components.
+     */
+    classes: PropTypes.object.isRequired,
     /**
      * @ignore
      */
@@ -202,6 +204,10 @@ export default function createSwitch(
      * Properties applied to the `input` element.
      */
     inputProps: PropTypes.object,
+    /**
+     * Use that property to pass a ref callback to the native input component.
+     */
+    inputRef: PropTypes.func,
     /*
      * @ignore
      */
@@ -209,7 +215,7 @@ export default function createSwitch(
     /**
      * Callback fired when the  is changed.
      *
-     * @param {object} event `change` event
+     * @param {object} event The event source of the callback
      * @param {boolean} checked The `checked` value of the switch
      */
     onChange: PropTypes.func,
@@ -223,9 +229,5 @@ export default function createSwitch(
     value: PropTypes.string,
   };
 
-  SwitchBase.contextTypes = {
-    styleManager: customPropTypes.muiRequired,
-  };
-
-  return SwitchBase;
+  return withStyles([switchStyleSheet, styleSheet])(SwitchBase);
 }

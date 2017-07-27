@@ -3,7 +3,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { spy, useFakeTimers } from 'sinon';
-import { createShallow, createMount } from '../test-utils';
+import { createShallow, createMount, getClasses } from '../test-utils';
 import Snackbar, { styleSheet } from './Snackbar';
 import Slide from '../transitions/Slide';
 
@@ -14,7 +14,7 @@ describe('<Snackbar />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = shallow.context.styleManager.render(styleSheet);
+    classes = getClasses(styleSheet);
     mount = createMount();
   });
 
@@ -22,11 +22,11 @@ describe('<Snackbar />', () => {
     mount.cleanUp();
   });
 
-  it('should render a ClickAwayListener with classes', () => {
+  it('should render a EventListener with classes', () => {
     const wrapper = shallow(<Snackbar open message="message" />);
-    assert.strictEqual(wrapper.name(), 'ClickAwayListener');
+    assert.strictEqual(wrapper.name(), 'EventListener');
     assert.strictEqual(
-      wrapper.childAt(0).hasClass(classes.root),
+      wrapper.childAt(0).childAt(0).hasClass(classes.root),
       true,
       'should have the root class',
     );
@@ -76,6 +76,30 @@ describe('<Snackbar />', () => {
       clock.tick(autoHideDuration);
       assert.strictEqual(handleRequestClose.callCount, 1);
       assert.deepEqual(handleRequestClose.args[0], [null, 'timeout']);
+    });
+
+    it('should not call onRequestClose when the autoHideDuration is reseted', () => {
+      const handleRequestClose = spy();
+      const autoHideDuration = 2e3;
+      const wrapper = mount(
+        <Snackbar
+          open={false}
+          onRequestClose={handleRequestClose}
+          message="message"
+          autoHideDuration={autoHideDuration}
+        />,
+      );
+
+      wrapper.setProps({
+        open: true,
+      });
+      assert.strictEqual(handleRequestClose.callCount, 0);
+      clock.tick(autoHideDuration / 2);
+      wrapper.setProps({
+        autoHideDuration: null,
+      });
+      clock.tick(autoHideDuration / 2);
+      assert.strictEqual(handleRequestClose.callCount, 0);
     });
 
     it('should be able to interrupt the timer', () => {

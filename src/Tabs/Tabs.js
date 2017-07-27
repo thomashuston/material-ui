@@ -5,11 +5,11 @@ import warning from 'warning';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
 import EventListener from 'react-event-listener';
 import debounce from 'lodash/debounce';
 import ScrollbarSize from 'react-scrollbar-size';
 import scroll from 'scroll';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import withWidth, { isWidthUp } from '../utils/withWidth';
 import TabIndicator from './TabIndicator';
@@ -91,7 +91,7 @@ class Tabs extends Component {
   handleResize = debounce(() => {
     this.updateIndicatorState(this.props);
     this.updateScrollButtonState();
-  }, 100);
+  }, 166);
 
   handleLeftScrollClick = () => {
     this.moveTabsScroll(-this.tabs.clientWidth);
@@ -111,7 +111,7 @@ class Tabs extends Component {
 
   handleTabsScroll = debounce(() => {
     this.updateScrollButtonState();
-  }, 100);
+  }, 166);
 
   getConditionalElements = () => {
     const { buttonClassName, scrollable, scrollButtons, width } = this.props;
@@ -332,7 +332,10 @@ Tabs.propTypes = {
    */
   indicatorColor: PropTypes.oneOfType([PropTypes.oneOf(['accent', 'primary']), PropTypes.string]),
   /**
-   * Function called when the index change.
+   * Callback fired when the index changes.
+   *
+   * @param {object} event The event source of the callback
+   * @param {number} index We default to the index of the child
    */
   onChange: PropTypes.func.isRequired,
   /**

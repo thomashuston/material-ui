@@ -17,11 +17,7 @@ describe('<RadioGroup />', () => {
   it('should render a FormGroup with the radiogroup role', () => {
     const wrapper = shallow(<RadioGroup />);
     assert.strictEqual(wrapper.name(), 'withStyles(FormGroup)');
-    assert.strictEqual(
-      wrapper.props().role,
-      'radiogroup',
-      'should be a FormGroup with the correct role',
-    );
+    assert.strictEqual(wrapper.props().role, 'radiogroup');
   });
 
   it('should fire the onBlur callback', () => {
@@ -51,9 +47,9 @@ describe('<RadioGroup />', () => {
 
     it('should focus the first non-disabled radio', () => {
       const radios = [
-        { props: { disabled: true }, focus: spy() },
-        { props: { disabled: false }, focus: spy() },
-        { props: { disabled: false }, focus: spy() },
+        { disabled: true, focus: spy() },
+        { disabled: false, focus: spy() },
+        { disabled: false, focus: spy() },
       ];
       wrapper.instance().radios = radios;
       wrapper.instance().focus();
@@ -63,9 +59,9 @@ describe('<RadioGroup />', () => {
 
     it('should not focus any radios if all are disabled', () => {
       const radios = [
-        { props: { disabled: true }, focus: spy() },
-        { props: { disabled: true }, focus: spy() },
-        { props: { disabled: true }, focus: spy() },
+        { disabled: true, focus: spy() },
+        { disabled: true, focus: spy() },
+        { disabled: true, focus: spy() },
       ];
       wrapper.instance().radios = radios;
       wrapper.instance().focus();
@@ -77,10 +73,10 @@ describe('<RadioGroup />', () => {
 
     it('should focus the selected radio', () => {
       const radios = [
-        { props: { disabled: true }, focus: spy() },
-        { props: { disabled: false }, focus: spy() },
-        { props: { disabled: false, checked: true }, focus: spy() },
-        { props: { disabled: false }, focus: spy() },
+        { disabled: true, focus: spy() },
+        { disabled: false, focus: spy() },
+        { disabled: false, checked: true, focus: spy() },
+        { disabled: false, focus: spy() },
       ];
       wrapper.instance().radios = radios;
       wrapper.instance().focus();
@@ -93,10 +89,10 @@ describe('<RadioGroup />', () => {
 
     it('should focus the non-disabled radio rather than the disabled selected radio', () => {
       const radios = [
-        { props: { disabled: true }, focus: spy() },
-        { props: { disabled: true }, focus: spy() },
-        { props: { disabled: true, checked: true }, focus: spy() },
-        { props: { disabled: false }, focus: spy() },
+        { disabled: true, focus: spy() },
+        { disabled: true, focus: spy() },
+        { disabled: true, checked: true, focus: spy() },
+        { disabled: false, focus: spy() },
       ];
       wrapper.instance().radios = radios;
       wrapper.instance().focus();

@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import createSwitch from '../internal/SwitchBase';
 
@@ -38,6 +38,7 @@ export const styleSheet = createStyleSheet('MuiSwitch', theme => ({
   },
   // For SwitchBase
   default: {
+    zIndex: 1,
     color: theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[400],
     transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest,
@@ -63,13 +64,13 @@ export const styleSheet = createStyleSheet('MuiSwitch', theme => ({
 const SwitchBase = createSwitch({ styleSheet });
 
 function Switch(props) {
-  const { classes, className, ...other } = props;
+  const { classes: { root, ...classes }, className, ...other } = props;
 
   const icon = <div className={classes.icon} />;
 
   return (
-    <div className={classNames(classes.root, className)}>
-      <SwitchBase icon={icon} checkedIcon={icon} {...other} />
+    <div className={classNames(root, className)}>
+      <SwitchBase icon={icon} classes={classes} checkedIcon={icon} {...other} />
       <div className={classes.bar} />
     </div>
   );
@@ -129,7 +130,7 @@ Switch.propTypes = {
   /**
    * Callback fired when the  is changed.
    *
-   * @param {object} event `change` event
+   * @param {object} event The event source of the callback
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,

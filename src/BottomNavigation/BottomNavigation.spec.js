@@ -3,10 +3,10 @@
 import React from 'react';
 import { assert } from 'chai';
 import { spy } from 'sinon';
-import { createShallow, createMount } from '../test-utils';
-import BottomNavigation, { styleSheet } from './BottomNavigation';
+import { createShallow, createMount, getClasses } from '../test-utils';
 import BottomNavigationButton from './BottomNavigationButton';
 import Icon from '../Icon';
+import BottomNavigation, { styleSheet } from './BottomNavigation';
 
 describe('<BottomNavigation />', () => {
   let shallow;
@@ -16,7 +16,7 @@ describe('<BottomNavigation />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = shallow.context.styleManager.render(styleSheet);
+    classes = getClasses(styleSheet);
     mount = createMount();
   });
 
@@ -31,7 +31,7 @@ describe('<BottomNavigation />', () => {
       </BottomNavigation>,
     );
     assert.strictEqual(wrapper.name(), 'div');
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
   });
 
   it('should render with the user and root classes', () => {
@@ -40,13 +40,13 @@ describe('<BottomNavigation />', () => {
         <BottomNavigationButton icon={icon} />
       </BottomNavigation>,
     );
-    assert.strictEqual(wrapper.hasClass('woof'), true, 'should have the "woof" class');
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass('woof'), true);
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
   });
 
   it('should pass selected prop to children', () => {
     const wrapper = shallow(
-      <BottomNavigation showLabels index={1}>
+      <BottomNavigation showLabels value={1}>
         <BottomNavigationButton icon={icon} />
         <BottomNavigationButton icon={icon} />
       </BottomNavigation>,
@@ -57,7 +57,7 @@ describe('<BottomNavigation />', () => {
 
   it('should overwrite parent showLabel prop', () => {
     const wrapper = shallow(
-      <BottomNavigation showLabels index={1}>
+      <BottomNavigation showLabels value={1}>
         <BottomNavigationButton icon={icon} />
         <BottomNavigationButton icon={icon} showLabel={false} />
       </BottomNavigation>,
@@ -69,13 +69,13 @@ describe('<BottomNavigation />', () => {
   it('should pass selected prop to children', () => {
     const handleChange = spy();
     const wrapper = mount(
-      <BottomNavigation showLabels index={0} onChange={handleChange}>
+      <BottomNavigation showLabels value={0} onChange={handleChange}>
         <BottomNavigationButton icon={icon} />
         <BottomNavigationButton icon={icon} />
       </BottomNavigation>,
     );
     wrapper.find(BottomNavigationButton).at(1).simulate('click');
     assert.strictEqual(handleChange.callCount, 1, 'should have been called once');
-    assert.strictEqual(handleChange.args[0][1], 1, 'should have been called with index 1');
+    assert.strictEqual(handleChange.args[0][1], 1, 'should have been called with value 1');
   });
 });

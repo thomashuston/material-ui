@@ -3,7 +3,7 @@
 import React, { Component, cloneElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { createStyleSheet } from 'jss-theme-reactor';
+import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import ButtonBase from '../internal/ButtonBase';
 import Icon from '../Icon';
@@ -52,10 +52,10 @@ export const styleSheet = createStyleSheet('MuiBottomNavigationButton', theme =>
 
 class BottomNavigationButton extends Component {
   handleChange = event => {
-    const { onChange, index, onClick } = this.props;
+    const { onChange, value, onClick } = this.props;
 
     if (onChange) {
-      onChange(event, index);
+      onChange(event, value);
     }
 
     if (onClick) {
@@ -72,7 +72,7 @@ class BottomNavigationButton extends Component {
       className: classNameProp,
       showLabel: showLabelProp,
       onChange,
-      index,
+      value,
       ...other
     } = this.props;
 
@@ -126,10 +126,6 @@ BottomNavigationButton.propTypes = {
    */
   icon: PropTypes.node,
   /**
-   * @ignore
-   */
-  index: PropTypes.number,
-  /**
    * The label element.
    */
   label: PropTypes.node,
@@ -149,6 +145,10 @@ BottomNavigationButton.propTypes = {
    * If `true`, the BottomNavigationButton will show its label.
    */
   showLabel: PropTypes.bool,
+  /**
+   * @ignore
+   */
+  value: PropTypes.number,
 };
 
 export default withStyles(styleSheet)(BottomNavigationButton);

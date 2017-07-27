@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { assert } from 'chai';
-import { spy, stub } from 'sinon';
+import { spy, stub, useFakeTimers } from 'sinon';
 import scroll from 'scroll';
-import { createShallow, createMount } from '../test-utils';
+import { createShallow, createMount, getClasses } from '../test-utils';
 import consoleErrorMock from '../../test/utils/consoleErrorMock';
 import Tabs, { styleSheet } from './Tabs';
 import TabScrollButton from './TabScrollButton';
@@ -14,14 +14,13 @@ import Tab from './Tab';
 const noop = () => {};
 
 describe('<Tabs />', () => {
-  let shallowWithWidth;
   let mount;
+  let shallow;
   let classes;
 
   before(() => {
-    const shallow = createShallow({ dive: true });
-    shallowWithWidth = (node, options = {}) => shallow(node, options).dive().dive();
-    classes = shallow.context.styleManager.render(styleSheet);
+    shallow = createShallow({ untilSelector: 'Tabs' });
+    classes = getClasses(styleSheet);
     mount = createMount();
   });
 
@@ -30,30 +29,30 @@ describe('<Tabs />', () => {
   });
 
   it('should render with the root class', () => {
-    const wrapper = shallowWithWidth(
+    const wrapper = shallow(
       <Tabs width="md" onChange={noop} index={0}>
         <Tab />
       </Tabs>,
     );
     assert.strictEqual(wrapper.name(), 'div');
-    assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
   });
 
   describe('prop: className', () => {
     it('should render with the user and root classes', () => {
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} className="woof">
           <Tab />
         </Tabs>,
       );
-      assert.strictEqual(wrapper.hasClass('woof'), true, 'should have the "woof" class');
-      assert.strictEqual(wrapper.hasClass(classes.root), true, 'should have the root class');
+      assert.strictEqual(wrapper.hasClass('woof'), true);
+      assert.strictEqual(wrapper.hasClass(classes.root), true);
     });
   });
 
   describe('prop: centered', () => {
     it('should render with the centered class', () => {
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} centered>
           <Tab />
         </Tabs>,
@@ -67,7 +66,7 @@ describe('<Tabs />', () => {
   describe('prop: index', () => {
     let wrapper;
     before(() => {
-      wrapper = shallowWithWidth(
+      wrapper = shallow(
         <Tabs width="md" onChange={noop} index={1}>
           <Tab />
           <Tab />
@@ -147,34 +146,40 @@ describe('<Tabs />', () => {
   });
 
   describe('prop: scrollable', () => {
+    let clock;
     let wrapper;
+
     before(() => {
-      wrapper = shallowWithWidth(
+      clock = useFakeTimers();
+      wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} scrollable>
           <Tab />
         </Tabs>,
       );
     });
+
+    after(() => {
+      clock.restore();
+    });
+
     it('should render with the scrollable class', () => {
       const selector = `.${classes.scrollingContainer}.${classes.scrollable}`;
       assert.strictEqual(wrapper.find(selector).is('div'), true, 'should be a div');
       assert.lengthOf(wrapper.find(selector), 1, 'should only be one');
     });
 
-    it('should response to scroll events', done => {
+    it('should response to scroll events', () => {
       const instance = wrapper.instance();
       instance.tabs = { scrollLeft: 100 };
       spy(instance, 'updateScrollButtonState');
       const selector = `.${classes.scrollingContainer}.${classes.scrollable}`;
       wrapper.find(selector).simulate('scroll');
-      setTimeout(() => {
-        assert.strictEqual(
-          instance.updateScrollButtonState.called,
-          true,
-          'should have called updateScrollButtonState',
-        );
-        done();
-      }, 150);
+      clock.tick(166);
+      assert.strictEqual(
+        instance.updateScrollButtonState.called,
+        true,
+        'should have called updateScrollButtonState',
+      );
     });
 
     it('should get a scrollbar size listener', () => {
@@ -191,7 +196,7 @@ describe('<Tabs />', () => {
 
   describe('prop: !scrollable', () => {
     it('should not render with the scrollable class', () => {
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0}>
           <Tab />
         </Tabs>,
@@ -204,8 +209,18 @@ describe('<Tabs />', () => {
   });
 
   describe('prop: scrollButtons', () => {
+    let clock;
+
+    before(() => {
+      clock = useFakeTimers();
+    });
+
+    after(() => {
+      clock.restore();
+    });
+
     it('should render scroll buttons', () => {
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} scrollable scrollButtons="on">
           <Tab />
         </Tabs>,
@@ -214,7 +229,7 @@ describe('<Tabs />', () => {
     });
 
     it('should render scroll buttons automatically', () => {
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} scrollable scrollButtons="auto">
           <Tab />
         </Tabs>,
@@ -223,7 +238,7 @@ describe('<Tabs />', () => {
     });
 
     it('should should not render scroll buttons automatically', () => {
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="sm" onChange={noop} index={0} scrollable scrollButtons="auto">
           <Tab />
         </Tabs>,
@@ -231,8 +246,8 @@ describe('<Tabs />', () => {
       assert.lengthOf(wrapper.find(TabScrollButton), 0, 'should be zero');
     });
 
-    it('should handle window resize event', done => {
-      const wrapper = shallowWithWidth(
+    it('should handle window resize event', () => {
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} scrollable scrollButtons="on">
           <Tab />
         </Tabs>,
@@ -241,26 +256,24 @@ describe('<Tabs />', () => {
       stub(instance, 'updateScrollButtonState');
       stub(instance, 'updateIndicatorState');
       wrapper.find('EventListener').at(0).simulate('resize');
-      setTimeout(() => {
-        assert.strictEqual(
-          instance.updateScrollButtonState.called,
-          true,
-          'should have called updateScrollButtonState',
-        );
-        assert.strictEqual(
-          instance.updateIndicatorState.called,
-          true,
-          'should have called updateIndicatorState',
-        );
-        done();
-      }, 150);
+      clock.tick(166);
+      assert.strictEqual(
+        instance.updateScrollButtonState.called,
+        true,
+        'should have called updateScrollButtonState',
+      );
+      assert.strictEqual(
+        instance.updateIndicatorState.called,
+        true,
+        'should have called updateIndicatorState',
+      );
     });
 
     describe('scroll button visibility states', () => {
       let wrapper;
       let instance;
       before(() => {
-        wrapper = shallowWithWidth(
+        wrapper = shallow(
           <Tabs width="md" onChange={noop} index={0} scrollable scrollButtons="on">
             <Tab />
           </Tabs>,
@@ -322,7 +335,7 @@ describe('<Tabs />', () => {
       scrollWidth: 1000,
     };
     before(() => {
-      wrapper = shallowWithWidth(
+      wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} scrollable scrollButtons={'on'}>
           <Tab />
         </Tabs>,
@@ -355,7 +368,7 @@ describe('<Tabs />', () => {
 
     before(() => {
       scrollStub = stub(scroll, 'left');
-      const wrapper = shallowWithWidth(
+      const wrapper = shallow(
         <Tabs width="md" onChange={noop} index={0} scrollable>
           <Tab />
         </Tabs>,
