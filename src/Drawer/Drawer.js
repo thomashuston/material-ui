@@ -82,7 +82,7 @@ type DefaultProps = {
   elevation: number,
 };
 
-type Props = {
+export type Props = {
   /**
    * Side which will the drawer will appear from.
    */
@@ -206,8 +206,10 @@ class Drawer extends Component<DefaultProps, Props, State> {
     );
 
     if (docked) {
+      const { onRequestClose, ...otherDocked } = other;
+
       return (
-        <div className={classNames(classes.docked, className)} {...other}>
+        <div className={classNames(classes.docked, className)} {...otherDocked}>
           {drawer}
         </div>
       );
