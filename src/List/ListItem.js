@@ -62,7 +62,7 @@ type DefaultProps = {
   divider: false,
 };
 
-type Props = DefaultProps & {
+export type Props = DefaultProps & {
   /**
    * If `true`, the ListItem will be a button.
    */
