@@ -55,6 +55,7 @@ export const styleSheet = createStyleSheet('MuiListItem', theme => ({
 
 type DefaultProps = {
   button: boolean,
+  classes: Object,
   component: string,
   dense: boolean,
   disabled: false,
@@ -74,7 +75,7 @@ export type Props = DefaultProps & {
   /**
    * Useful to extend the style applied to components.
    */
-  classes: Object,
+  classes?: Object,
   /**
    * @ignore
    */
@@ -106,6 +107,7 @@ class ListItem extends Component<DefaultProps, Props, void> {
   props: Props;
   static defaultProps: DefaultProps = {
     button: false,
+    classes: {},
     component: 'li',
     dense: false,
     disabled: false,
