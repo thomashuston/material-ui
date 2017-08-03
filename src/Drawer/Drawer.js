@@ -158,7 +158,7 @@ class Drawer extends Component<DefaultProps, AllProps, State> {
   state: State = {
     // Let's assume that the Drawer will always be rendered on user space.
     // We use that state is order to skip the appear transition during the
-    // inital mount of the component.
+    // initial mount of the component.
     firstMount: true,
   };
 

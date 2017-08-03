@@ -1,7 +1,9 @@
 // @flow weak
+
 import React, { Component } from 'react';
 import type { Element } from 'react';
 import { findDOMNode } from 'react-dom';
+import warning from 'warning';
 import classNames from 'classnames';
 import keycode from 'keycode';
 import createStyleSheet from '../styles/createStyleSheet';
@@ -13,7 +15,7 @@ import createRippleHandler from './createRippleHandler';
 export const styleSheet = createStyleSheet('MuiButtonBase', theme => ({
   root: {
     position: 'relative',
-    // Remove Gray Highlight
+    // Remove grey highlight
     WebkitTapHighlightColor: theme.palette.common.transparent,
     outline: 'none',
     border: 0,
@@ -114,6 +116,12 @@ class ButtonBase extends Component<DefaultProps, AllProps, State> {
 
   componentDidMount() {
     listenForFocusKeys();
+
+    warning(
+      this.button,
+      `Material-UI: please provide a class to the component property.
+      The keyboard focus logic needs a reference to work correctly.`,
+    );
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -213,10 +221,12 @@ class ButtonBase extends Component<DefaultProps, AllProps, State> {
       return;
     }
 
-    event.persist();
+    if (this.button) {
+      event.persist();
 
-    const keyboardFocusCallback = this.onKeyboardFocusHandler.bind(this, event);
-    detectKeyboardFocus(this, findDOMNode(this.button), keyboardFocusCallback);
+      const keyboardFocusCallback = this.onKeyboardFocusHandler.bind(this, event);
+      detectKeyboardFocus(this, findDOMNode(this.button), keyboardFocusCallback);
+    }
 
     if (this.props.onFocus) {
       this.props.onFocus(event);

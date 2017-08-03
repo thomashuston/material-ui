@@ -67,7 +67,7 @@ export type Props = {
    */
   backdropInvisible?: boolean,
   /**
-   * Duration in ms for the backgrop transition.
+   * Duration in ms for the backdrop transition.
    */
   backdropTransitionDuration?: number,
   /**
@@ -240,7 +240,7 @@ class Modal extends Component<DefaultProps, AllProps, State> {
         modalContent.setAttribute('tabIndex', -1);
         warning(
           false,
-          'Material-UI: The modal content node does not accept focus. ' +
+          'Material-UI: the modal content node does not accept focus. ' +
             'For the benefit of assistive technologies, ' +
             'the tabIndex of the node is being set to "-1".',
         );

@@ -77,14 +77,7 @@ export type Props = {
 type AllProps = DefaultProps & Props;
 
 function AppBar(props: AllProps) {
-  const {
-    children,
-    classes,
-    className: classNameProp,
-    color,
-    position, // eslint-disable-line no-unsed-vars
-    ...other
-  } = props;
+  const { children, classes, className: classNameProp, color, position, ...other } = props;
 
   const className = classNames(
     classes.root,

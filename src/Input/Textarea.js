@@ -70,7 +70,7 @@ export type Props = {
    */
   rows?: string | number,
   /**
-   * Maxium number of rows to display when multiline option is set to true.
+   * Maximum number of rows to display when multiline option is set to true.
    */
   rowsMax?: string | number,
   /**
