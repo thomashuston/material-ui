@@ -77,6 +77,8 @@
     "warning": "^3.0.0"
   },
   "devDependencies": {
+    "@types/enzyme": "^2.8.4",
+    "@types/react": "^16.0.0",
     "app-module-path": "^2.2.0",
     "argos-cli": "^0.0.9",
     "babel-cli": "^6.24.1",
@@ -136,10 +138,10 @@
     "prettier": "^1.5.3",
     "random-words": "0.0.1",
     "raw-loader": "^0.5.1",
-    "react": "^15.6.1",
+    "react": "latest",
     "react-a11y": "^0.3.4",
     "react-docgen": "^3.0.0-beta4",
-    "react-dom": "^15.6.1",
+    "react-dom": "latest",
     "react-test-renderer": "^15.6.1",
     "recast": "^0.12.6",
     "recursive-readdir-sync": "^1.0.6",
