@@ -123,6 +123,10 @@ describe('<Collapse />', () => {
           theme.transitions.getAutoHeightDuration = restore;
         });
 
+        after(() => {
+          theme.transitions.getAutoHeightDuration = restore;
+        });
+
         it('no wrapper', () => {
           instance.wrapper = false;
           instance.handleEntering(element);
@@ -250,6 +254,10 @@ describe('<Collapse />', () => {
           wrapper.setProps({ transitionDuration: 'auto' });
           instance = wrapper.instance();
         });
+        after(() => {
+          theme.transitions.getAutoHeightDuration = restore;
+        });
+
         after(() => {
           theme.transitions.getAutoHeightDuration = restore;
         });
