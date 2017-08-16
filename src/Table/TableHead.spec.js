@@ -3,7 +3,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { createShallow, getClasses } from '../test-utils';
-import TableHead, { styleSheet } from './TableHead';
+import TableHead from './TableHead';
 
 describe('<TableHead />', () => {
   let shallow;
@@ -11,12 +11,17 @@ describe('<TableHead />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = getClasses(styleSheet);
+    classes = getClasses(<TableHead />);
   });
 
   it('should render a thead', () => {
     const wrapper = shallow(<TableHead />);
     assert.strictEqual(wrapper.name(), 'thead');
+  });
+
+  it('should render a div', () => {
+    const wrapper = shallow(<TableHead component="div" />);
+    assert.strictEqual(wrapper.name(), 'div');
   });
 
   it('should render with the user and root classes', () => {

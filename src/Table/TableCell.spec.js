@@ -3,7 +3,7 @@
 import React from 'react';
 import { assert } from 'chai';
 import { createShallow, getClasses } from '../test-utils';
-import TableCell, { styleSheet } from './TableCell';
+import TableCell from './TableCell';
 
 describe('<TableCell />', () => {
   let shallow;
@@ -11,7 +11,7 @@ describe('<TableCell />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = getClasses(styleSheet);
+    classes = getClasses(<TableCell />);
   });
 
   it('should render a td', () => {
@@ -62,6 +62,12 @@ describe('<TableCell />', () => {
     assert.strictEqual(wrapper.name(), 'th');
     assert.strictEqual(wrapper.hasClass(classes.root), true);
     assert.strictEqual(wrapper.hasClass(classes.head), true, 'should have the head class');
+  });
+
+  it('should render a div when custom component prop is used', () => {
+    const wrapper = shallow(<TableCell component="div" />);
+    assert.strictEqual(wrapper.name(), 'div', 'should be a div element');
+    assert.strictEqual(wrapper.hasClass(classes.root), true);
   });
 
   it('should render with the footer class when in the context of a table footer', () => {

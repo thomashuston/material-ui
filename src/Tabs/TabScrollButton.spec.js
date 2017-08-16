@@ -3,8 +3,8 @@
 import React from 'react';
 import { assert } from 'chai';
 import { createShallow, createMount, getClasses } from '../test-utils';
-import TabScrollButton, { styleSheet } from './TabScrollButton';
-import ButtonBase from '../internal/ButtonBase';
+import TabScrollButton from './TabScrollButton';
+import ButtonBase from '../ButtonBase';
 import KeyboardArrowLeft from '../svg-icons/keyboard-arrow-left';
 import KeyboardArrowRight from '../svg-icons/keyboard-arrow-right';
 
@@ -15,7 +15,7 @@ describe('<TabScrollButton />', () => {
 
   before(() => {
     shallow = createShallow({ dive: true });
-    classes = getClasses(styleSheet);
+    classes = getClasses(<TabScrollButton />);
     mount = createMount();
   });
 

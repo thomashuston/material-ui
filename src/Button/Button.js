@@ -3,12 +3,11 @@
 import React from 'react';
 import type { Element } from 'react';
 import classNames from 'classnames';
-import createStyleSheet from '../styles/createStyleSheet';
 import withStyles from '../styles/withStyles';
 import { fade } from '../styles/colorManipulator';
-import ButtonBase from '../internal/ButtonBase';
+import ButtonBase from '../ButtonBase';
 
-export const styleSheet = createStyleSheet('MuiButton', theme => ({
+export const styles = (theme: Object) => ({
   root: {
     ...theme.typography.button,
     lineHeight: '1em',
@@ -151,7 +150,7 @@ export const styleSheet = createStyleSheet('MuiButton', theme => ({
       boxShadow: theme.shadows[12],
     },
   },
-}));
+});
 
 type DefaultProps = {
   classes: Object,
@@ -285,4 +284,4 @@ Button.defaultProps = {
   type: 'button',
 };
 
-export default withStyles(styleSheet)(Button);
+export default withStyles(styles, { name: 'MuiButton' })(Button);
