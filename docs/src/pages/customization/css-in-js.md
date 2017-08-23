@@ -62,7 +62,7 @@ They are easy to debug in development and as short as possible in production:
 
 ## API
 
-### `withStyles(styleSheet, [options]) => Higher-order Component`
+### `withStyles(styles, [options]) => Higher-order Component`
 
 Link a style sheet with a component.
 It does not modify the component passed to it; instead, it returns a new component, with a `classes` property.
@@ -83,6 +83,7 @@ Use the function signature if you need to have access to the theme. It's provide
   - `options.withTheme` (Boolean [optional]): Provide the `theme` object to the component as a property. It's `false` by default.
   - `options.name` (*String* [optional]): The name of the style sheet. Useful for debugging.
   If the value isn't provided, we will try to fallback to the name of the component.
+  - The other keys are forwarded to the options argument of [jss.createStyleSheet()](http://cssinjs.org/js-api/#create-style-sheet).
 
 #### Returns
 
@@ -99,9 +100,9 @@ const styles = {
   },
 };
 
-class MyComponent extends Component {
+class MyComponent extends React.Component {
   render () {
-    return <div className={this.classes.root} />;
+    return <div className={this.props.classes.root} />;
   }
 }
 
@@ -120,9 +121,9 @@ const styles = {
 };
 
 @withStyles(styles)
-class MyComponent extends Component {
+class MyComponent extends React.Component {
   render () {
-    return <div className={this.classes.root} />;
+    return <div className={this.props.classes.root} />;
   }
 }
 

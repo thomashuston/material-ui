@@ -1,7 +1,7 @@
 // @flow
+// @inheritedComponent FormControl
 
-import React from 'react';
-import type { Element } from 'react';
+import * as React from 'react';
 import Input, { InputLabel } from '../Input';
 import FormControl from '../Form/FormControl';
 import FormHelperText from '../Form/FormHelperText';
@@ -45,7 +45,7 @@ export type Props = {
   /**
    * The helper text content.
    */
-  helperText?: string | Element<*>,
+  helperText?: React.Node,
   /**
    * The CSS class name of the helper text element.
    */
@@ -81,7 +81,7 @@ export type Props = {
   /**
    * The label content.
    */
-  label?: string | Element<*>,
+  label?: React.Node,
   /**
    * The CSS class name of the label element.
    */

@@ -1,6 +1,6 @@
 // @flow weak
 
-import React, { Component, Children, cloneElement } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import EventListener from 'react-event-listener';
@@ -10,6 +10,7 @@ import withStyles from '../styles/withStyles';
 export const styles = {
   root: {
     boxSizing: 'border-box',
+    flexShrink: 0,
   },
   tile: {
     position: 'relative',
@@ -31,7 +32,7 @@ export const styles = {
   },
 };
 
-class GridListTile extends Component {
+class GridListTile extends React.Component<$FlowFixMeProps> {
   static defaultProps = {
     cols: 1,
     rows: 1,
@@ -108,9 +109,9 @@ class GridListTile extends Component {
       <ComponentProp className={classNames(classes.root, className)} {...other}>
         <EventListener target="window" onResize={this.handleResize} />
         <div className={classes.tile}>
-          {Children.map(children, child => {
+          {React.Children.map(children, child => {
             if (child.type === 'img') {
-              return cloneElement(child, {
+              return React.cloneElement(child, {
                 key: 'img',
                 ref: node => {
                   this.imgElement = node;

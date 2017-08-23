@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import { JssProvider } from 'react-jss';
 import { withStyles, MuiThemeProvider } from 'material-ui/styles';
-import { getContext, setContext } from '../styles/context';
+import wrapDisplayName from 'recompose/wrapDisplayName';
+import { getContext } from '../styles/context';
 
 // Apply some reset
 const styles = (theme: Object) => ({
@@ -24,11 +25,8 @@ let AppWrapper = props => props.children;
 AppWrapper = withStyles(styles)(AppWrapper);
 
 function withRoot(BaseComponent) {
-  class WithRoot extends Component {
+  class WithRoot extends Component<$FlowFixMeProps> {
     static getInitialProps(ctx) {
-      // Reset the context for handling a new request.
-      setContext();
-
       if (BaseComponent.getInitialProps) {
         return BaseComponent.getInitialProps(ctx);
       }
@@ -69,7 +67,9 @@ function withRoot(BaseComponent) {
     }
   }
 
-  WithRoot.displayName = `withRoot(${BaseComponent.displayName})`;
+  if (process.env.NODE_ENV !== 'production') {
+    WithRoot.displayName = wrapDisplayName(BaseComponent, 'withRoot');
+  }
 
   return WithRoot;
 }

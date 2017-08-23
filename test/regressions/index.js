@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import vrtest from 'vrtest/client';
@@ -22,15 +22,16 @@ const regressions = requireRegression.keys().reduce((res, path) => {
 
 const blacklistSuite = [
   // Flaky
-  'docs-component-demos-progress',
+  'docs-demos-progress',
+  'docs-discover-more', // GitHub images
 
   // Needs interaction
-  'docs-component-demos-dialogs',
-  'docs-component-demos-drawers',
-  'docs-component-demos-menus',
+  'docs-demos-dialogs',
+  'docs-demos-drawers',
+  'docs-demos-menus',
 
   // Useless
-  'docs-',
+  'docs-', // Home
   'docs-style',
   'docs-guides',
 ];
