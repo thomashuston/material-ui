@@ -1,6 +1,7 @@
 // @flow weak
 
-import * as React from 'react';
+import React from 'react';
+import type { ComponentType, Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import warning from 'warning';
 import classNames from 'classnames';
@@ -43,7 +44,7 @@ export type Props = {
   /**
    * The content of the component.
    */
-  children?: React.Node,
+  children?: Node,
   /**
    * Useful to extend the style applied to components.
    */
@@ -57,7 +58,7 @@ export type Props = {
    * Either a string to use a DOM element or a component.
    * The default value is a `button`.
    */
-  component?: string | Function,
+  component?: string | ComponentType<*>,
   /**
    * If `true`, the base button will be disabled.
    */
