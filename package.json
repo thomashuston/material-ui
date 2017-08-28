@@ -157,7 +157,7 @@
     "react-docgen": "^3.0.0-beta6",
     "react-dom": "latest",
     "react-redux": "^5.0.6",
-    "react-swipeable-views": "^0.12.6",
+    "react-swipeable-views": "^0.12.7",
     "react-test-renderer": "^15.6.1",
     "recast": "^0.12.6",
     "recursive-readdir-sync": "^1.0.6",
@@ -176,7 +176,7 @@
   "size-limit": [
     {
       "path": "build/index.js",
-      "limit": "122 KB"
+      "limit": "123 KB"
     }
   ],
   "nyc": {

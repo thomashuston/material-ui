@@ -8,6 +8,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Drawer from 'material-ui/Drawer';
 import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
+import Hidden from 'material-ui/Hidden';
 import AppDrawerNavItem from 'docs/src/modules/components/AppDrawerNavItem';
 import Link from 'docs/src/modules/components/Link';
 import { pageToTitle } from 'docs/src/modules/utils/helpers';
@@ -23,7 +24,12 @@ const styles = theme => ({
       color: theme.palette.primary[500],
     },
   },
+  // https://github.com/philipwalton/flexbugs#3-min-height-on-a-flex-container-wont-apply-to-its-flex-items
+  toolbarIe11: {
+    display: 'flex',
+  },
   toolbar: {
+    flexGrow: 1,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -78,29 +84,14 @@ function reduceChildRoutes(props, activePage, items, childPage, index) {
   return items;
 }
 
+const GITHUB_RELEASE_BASE_URL = 'https://github.com/callemall/material-ui/releases/tag/';
+
 function AppDrawer(props, context) {
-  const { classes, className, docked, onRequestClose } = props;
-  const GITHUB_RELEASE_BASE_URL = 'https://github.com/callemall/material-ui/releases/tag/';
-  let other = {};
+  const { classes, className, disablePermanent, mobileOpen, onRequestClose } = props;
 
-  if (!docked) {
-    other = {
-      keepMounted: true,
-    };
-  }
-
-  return (
-    <Drawer
-      className={className}
-      classes={{
-        paper: classes.paper,
-      }}
-      open={props.open}
-      onRequestClose={onRequestClose}
-      docked={docked}
-      {...other}
-    >
-      <div className={classes.nav}>
+  const drawer = (
+    <div className={classes.nav}>
+      <div className={classes.toolbarIe11}>
         <Toolbar className={classes.toolbar}>
           <Link className={classes.title} href="/" onClick={onRequestClose}>
             <Typography type="title" gutterBottom color="inherit">
@@ -117,18 +108,51 @@ function AppDrawer(props, context) {
             : null}
           <Divider absolute />
         </Toolbar>
-        {renderNavItems(props, context.pages, context.activePage)}
       </div>
-    </Drawer>
+      {renderNavItems(props, context.pages, context.activePage)}
+    </div>
+  );
+
+  return (
+    <div className={className}>
+      <Hidden lgUp={!disablePermanent}>
+        <Drawer
+          classes={{
+            paper: classes.paper,
+          }}
+          type="temporary"
+          open={mobileOpen}
+          onRequestClose={onRequestClose}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      {disablePermanent
+        ? null
+        : <Hidden lgDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.paper,
+              }}
+              type="permanent"
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>}
+    </div>
   );
 }
 
 AppDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
-  docked: PropTypes.bool.isRequired,
+  disablePermanent: PropTypes.bool.isRequired,
+  mobileOpen: PropTypes.bool.isRequired,
   onRequestClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
 };
 
 AppDrawer.contextTypes = {
