@@ -9,6 +9,7 @@ module.exports = {
     browser: true,
     node: true,
     mocha: true,
+    'react-percy/globals': true,
   },
   extends: ['airbnb', 'plugin:import/recommended'],
   parser: 'babel-eslint',
@@ -16,7 +17,7 @@ module.exports = {
     ecmaVersion: 7,
     sourceType: 'module',
   },
-  plugins: ['babel', 'import', 'jsx-a11y', 'mocha', 'flowtype', 'material-ui', 'prettier'],
+  plugins: ['babel', 'import', 'jsx-a11y', 'mocha', 'flowtype', 'material-ui', 'prettier', 'react-percy'],
   settings: {
     'import/resolver': {
       webpack: {
