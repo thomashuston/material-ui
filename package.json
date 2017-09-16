@@ -54,7 +54,7 @@
     "version": "yarn build",
     "release": "np --no-publish --any-branch",
     "postrelease": "yarn docs:deploy && npm publish build --tag next",
-    "percy": "react-percy --config docs/webpackBaseConfig.js"
+    "percy": "react-percy"
   },
   "peerDependencies": {
     "react": "^15.3.0 || ^16.0.0-beta.5",
